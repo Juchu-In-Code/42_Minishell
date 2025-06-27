@@ -16,6 +16,7 @@ void	loop(t_shell *shell)
 {
 	char	*input;
 
+	(void)shell;
 	input = NULL;
 	while (ft_readline(&input)) // o usar una constante o !should_exit
 	{
