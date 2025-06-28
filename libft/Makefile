@@ -6,7 +6,7 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 14:34:08 by jgalizio          #+#    #+#              #
-#    Updated: 2025/06/12 14:30:20 by jgalizio         ###   ########.fr        #
+#    Updated: 2025/06/28 16:13:53 by viaremko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,9 +88,11 @@ MODULES			+= $(addprefix $(DIR_STRINGS)/,	\
 					ft_str_isempty.c			\
 					ft_striteri.c				\
 					ft_strjoin.c				\
+					ft_strjoinv.c				\
 					ft_strlcat.c				\
 					ft_strlcpy.c				\
 					ft_strlen.c					\
+					ft_strlenv.c				\
 					ft_strmapi.c				\
 					ft_strncmp.c				\
 					ft_strnstr.c				\
