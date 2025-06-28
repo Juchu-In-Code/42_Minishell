@@ -6,7 +6,7 @@
 /*   By: viaremko <lodyiaremko@proton.me>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:31:38 by viaremko          #+#    #+#             */
-/*   Updated: 2025/06/28 16:11:32 by viaremko         ###   ########.fr       */
+/*   Updated: 2025/06/28 16:31:45 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../libft.h"
@@ -19,6 +19,8 @@ char	*strjoinv(const char *str, ...)
 	va_list	args;
 	va_list	tmp_args;
 
+	if (!str)
+		return (NULL);
 	va_start(args, str);
 	va_copy(tmp_args, args);
 	size = ft_strlen(str) + ft_strlenv(tmp_args) + 1;
