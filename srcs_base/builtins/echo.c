@@ -1,42 +1,44 @@
 #include "../z_minishell.h"
 
-static int	isOption(char *str, char option)
+static bool	is_dash_n(char *str, char n)
 {
 	int i;
 	
-	i = 1;		//i == 1 -> to skip '-';
+	i = 1;		
 	while (str[i])
 	{
-		if(str[i] != option)
-			return(1);
+		if(str[i] != n)
+			return(false);
 		i++;
 	}
+	return(true);
+}
+
+int	echo(int argc, char **argv)
+{
+	bool no_new_line;
+	int index;
+	
+	no_new_line = false;
+	index = 1;
+	while(index < argc && is_dash_n(argv[index], 'n') == true)
+	{
+		index++;
+		no_new_line = true;
+	}
+	while(index < argc)
+	{
+		printf("%s", argv[index]);
+		index++;
+		if(index != argc)
+			printf("%c", ' ');
+	}
+	if(no_new_line == false)
+		printf("%c", '\n');
 	return(0);
 }
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	int isN;
-	int index;
-	
-	isN = 0;
-	index = 1;
-	if(argc > 1)
-	{
-		while(index < argc && isOption(argv[index], 'n') == 0)
-		{
-			index++;
-			isN = 1;
-		}
-		while(index < argc)
-		{
-			ft_putstr_fd(argv[index],1);
-			index++;
-			if(index != argc)
-			ft_putchar_fd(' ', 1);
-		}
-	}
-		if(isN == 0)
-			ft_putchar_fd('\n', 1);
-	return(0);
+	return(echo(argc, argv));
 }
