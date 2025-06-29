@@ -89,6 +89,7 @@ MODULES			+= $(addprefix $(DIR_STRINGS)/,	\
 					ft_striteri.c				\
 					ft_strjoin.c				\
 					ft_strjoinv.c				\
+					ft_strjoinpp.c				\
 					ft_strlcat.c				\
 					ft_strlcpy.c				\
 					ft_strlen.c					\
@@ -126,7 +127,7 @@ fclean: clean
 	@echo "Cleaning all..."
 	@$(RM) $(BUILD_DIR)
 	@$(RM) $(NAME)
-	@echo "Done! :D"
+	@echo "Done! :]"
 
 re: fclean all
 
