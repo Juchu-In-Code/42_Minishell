@@ -37,8 +37,3 @@ int	echo(int argc, char **argv)
 		printf("%c", '\n');
 	return(0);
 }
-
-int main(int argc, char **argv)
-{
-	return(echo(argc, argv));
-}
