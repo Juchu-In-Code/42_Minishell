@@ -6,9 +6,10 @@
 /*   By: viaremko <lodyiaremko@proton.me>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:31:38 by viaremko          #+#    #+#             */
-/*   Updated: 2025/06/28 16:31:45 by viaremko         ###   ########.fr       */
+/*   Updated: 2025/06/30 11:01:42 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../libft.h"
 
 char	*strjoinv(const char *str, ...)

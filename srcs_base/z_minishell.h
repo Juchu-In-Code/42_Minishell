@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/06/24 09:00:46 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/06/30 11:09:46 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,5 +150,8 @@ void	print_env(t_list *list);
 
 // readline
 bool	ft_readline(char **buff);
+
+// builtins
+int		echo(int argc, char **argv);
 
 #endif
