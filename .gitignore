@@ -1,4 +1,4 @@
-minishell
-/.build
-libft/.build
-libft/libft.a
+Minishell/minishell
+Minishell/.build
+Minishell/libft/.build
+Minishell/libft/libft.a
