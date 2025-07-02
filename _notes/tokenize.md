@@ -31,6 +31,14 @@
     aplicar el uso de las expresiones
 
 
+    mejorar como se gestionan los toks
+        el tokt de todos los tipos no corresponde al mismo mapeo de valores
+        se justifica hacer un enum o mejor hacer defs? 
+        
+        
+
+
+
     
 
 

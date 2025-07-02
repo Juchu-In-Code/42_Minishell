@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 13:09:12 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/02 12:41:52 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/02 17:11:22 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char	*ft_strrchr(const char *s, int c);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_strchr_index(char *str, int char_to_find);
-int		ft_next_match(char *str, int char_to_find);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 size_t	count_tokens(char const *s, char c);

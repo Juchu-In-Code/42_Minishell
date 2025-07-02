@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:27:28 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/02 13:03:34 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:15:24 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,24 @@ bool	tokenize_qts(t_tok *token, char *input, int *i)
 	int	match_end;
 
 	match = ft_strchr_index(T_QTS, input[*i]);
-	match_end = ft_strchr_index(T_QTS, input[*i]);
-	if (match == -1)
+	match_end = ft_strchr_index(&input[*i + 1], T_QTS[match]);
+	if (match == -1 || match_end == -1)
 		return (false);
-	if (match)
-		return (false);
-	if (match == pip)
+	if (match == T_PIP)
 		token = create_token(pip, *i, 1);
-	else if (match == in && ft_strchr_index(T_OPS, input[*i + 2]) == in)
+	else if (match == T_IN && ft_strchr_index(T_OPS, input[*i + 2]) == T_IN)
 	{
 		token = create_token(hdoc, *i, 2);
 		(*i)++;
 	}
-	else if (match == in)
+	else if (match == T_IN)
 		token = create_token(in, *i, 1);
-	else if (match == out && ft_strchr_index(T_OPS, input[*i + 1]) == out)
+	else if (match == T_OUT && ft_strchr_index(T_OPS, input[*i + 1]) == T_OUT)
 	{
 		token = create_token(app, *i, 2);
 		(*i)++;
 	}
-	else if (match == out)
+	else if (match == T_OUT)
 		token = create_token(out, *i, 1);
 	return (true);
 }

@@ -57,8 +57,17 @@
 # define PREAD		1
 
 //	tokens
-# define T_OPS "|<>"
-# define T_QTS "\"\'"
+# define T_OPS		"|<->+"
+# define T_QTS		"\"\'"
+
+# define T_PIP		0
+# define T_IN 		1
+# define T_HDOC		2
+# define T_OUT		3
+# define T_APP		4
+
+# define T_QDOB		0
+# define T_QSIN		1
 
 /*  ____        __ _                  */
 /* |  _ \  ___ / _(_)_ __   ___  ___  */
@@ -74,9 +83,11 @@ typedef enum e_tokt
 {
 	pip,
 	in,
+	hdoc,
 	out,
 	app,
-	hdoc,
+	qdob,
+	qsin,
 	p_start,
 	p_end,
 	exec,
