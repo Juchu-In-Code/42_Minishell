@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/02 11:42:26 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:46:05 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,14 +113,16 @@ typedef struct s_env
 	uint8_t			state;
 }	t_env;
 
+// seguro se necesita una similar para builtins
 typedef struct s_cmd
 {
-	char			**args;
-	ssize_t			io[2];
+	char			**args;		// [0] es command, **args termina en NULL
+	ssize_t			io[2];		// o struct de fds con extra info?
 	uint8_t			state;
 }	t_cmd;
 
-typedef struct s_tok {
+typedef struct s_tok
+{
 	t_tokt			type;
 	size_t			pos;
 	size_t			size;
@@ -128,7 +130,8 @@ typedef struct s_tok {
 
 typedef struct s_tok_ctrl
 {
-	char			*input;
+	//placeholder
+	char			*input;		// si no se le agrega más que ctrl sea solo input
 }	t_tok_ctrl;
 
 typedef struct 

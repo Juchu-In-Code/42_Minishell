@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:27:28 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/02 18:15:24 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:46:22 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,15 @@ bool	tokenize_qts(t_tok *token, char *input, int *i)
 
 	match = ft_strchr_index(T_QTS, input[*i]);
 	match_end = ft_strchr_index(&input[*i + 1], T_QTS[match]);
-	if (match == -1 || match_end == -1)
+	if (match == -1)
 		return (false);
-	if (match == T_PIP)
-		token = create_token(pip, *i, 1);
-	else if (match == T_IN && ft_strchr_index(T_OPS, input[*i + 2]) == T_IN)
-	{
-		token = create_token(hdoc, *i, 2);
-		(*i)++;
-	}
-	else if (match == T_IN)
-		token = create_token(in, *i, 1);
-	else if (match == T_OUT && ft_strchr_index(T_OPS, input[*i + 1]) == T_OUT)
-	{
-		token = create_token(app, *i, 2);
-		(*i)++;
-	}
-	else if (match == T_OUT)
-		token = create_token(out, *i, 1);
+	if (match_end == -1)
+		token = create_token(err_tok, *i, 0);
+	else if (match == T_QDOB)
+		token = create_token(q_dob, *i, match_end);
+	else if (match == T_QSIN)
+		token = create_token(q_sin, *i, match_end);
+	*i += match_end;
 	return (true);
 }
 
@@ -60,30 +51,30 @@ bool	tokenize_ops(t_tok *token, char *input, int *i)
 	match = ft_strchr_index(T_OPS, input[*i]);
 	if (match == -1)
 		return (false);
-	if (match == pip)
-		token = create_token(pip, *i, 1);
-	else if (match == in && ft_strchr_index(T_OPS, input[*i + 2]) == in)
+	if (match == pipex)
+		token = create_token(pipex, *i, 1);
+	else if (match == T_IN && ft_strchr_index(T_OPS, input[*i + 2]) == T_IN)
 	{
-		token = create_token(hdoc, *i, 2);
+		token = create_token(r_hdoc, *i, 2);
 		(*i)++;
 	}
-	else if (match == in)
-		token = create_token(in, *i, 1);
-	else if (match == out && ft_strchr_index(T_OPS, input[*i + 1]) == out)
+	else if (match == T_IN)
+		token = create_token(r_input, *i, 1);
+	else if (match == T_OUT && ft_strchr_index(T_OPS, input[*i + 1]) == T_OUT)
 	{
-		token = create_token(app, *i, 2);
+		token = create_token(r_append, *i, 2);
 		(*i)++;
 	}
-	else if (match == out)
-		token = create_token(out, *i, 1);
+	else if (match == T_OUT)
+		token = create_token(r_output, *i, 1);
 	return (true);
 }
 
 bool	tokenize(t_shell *shell, char *input)
 {
 	t_tok	*token;
-	int	i;
-	int	c;
+	int		i;
+	int		c;
 
 	i = 0;
 	shell->tokens = list_create();
@@ -94,8 +85,9 @@ bool	tokenize(t_shell *shell, char *input)
 		c = input[i];
 		while (ft_isspace(c))
 			i++;
-		//tokenize_qts(token, input, &i);
+		tokenize_qts(token, input, &i);
 		tokenize_ops(token, input, &i);
+		// tokenize_string(token, input, &i);
 		list_insert_tail(shell->env, token);
 		// check fin string
 		i++;
