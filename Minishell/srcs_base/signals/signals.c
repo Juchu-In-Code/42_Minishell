@@ -13,23 +13,22 @@
 
 void signal_handler(int sig)
 {
-	if(sig == SIGQUIT)
-		return;
-	else if (sig == SIGINT)
-		write(1,"\n>> ",4);
-//	else if(EOF)
-//		exit_function;
+	(void)sig;
+	rl_replace_line("",0);
+	rl_on_new_line();
+	rl_redisplay();
+	write(1,"\n>> ",4);
 }
 
 void signal_setup()
 {
 	struct sigaction sa;
-	memset(&sa, 0, sizeof(sa));   // zero initialize the whole struct
+	struct sigaction si;
 	sigemptyset(&sa.sa_mask);     // initialize mask to empty
 	sa.sa_flags = 0;
 	sa.sa_handler = signal_handler;
+	si.sa_handler = SIG_IGN;	
 	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
-//	sigaction(EOF, &sa, NULL);
+	sigaction(SIGQUIT, &si, NULL);
 }
 
