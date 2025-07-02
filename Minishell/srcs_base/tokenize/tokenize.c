@@ -6,42 +6,53 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:27:28 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/06/24 17:04:52 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/02 11:45:55 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../z_minishell.h"
 
-bool	tokenize_ops(t_shell *shell, char *input, int *i)
+t_tok	*create_token(t_tokt type, size_t i, size_t size)
 {
-	int	index;
+	t_tok	*token;
 
-	index = ft_strchr_index(TOKEN_OPS, input[*i]);
-	if (index == -1)
+	token = ft_calloc(1, sizeof(t_tok));
+	if (!token)
+		return (NULL);
+	token->type = type;
+	token->pos = i;
+	token->size = size;
+	return (token);
+}
+
+bool	tokenize_ops(t_tok *token, char *input, int *i)
+{
+	int	match;
+
+	match = ft_strchr_index(T_OPS, input[*i]);
+	if (match == -1)
 		return (false);
-
-	// set tokentype
-	// save pos / pointer
-	// return true
-
-	if (index == 0)
+	if (match == pip)
+		token = create_token(pip, *i, 1);
+	else if (match == in && ft_strchr_index(T_OPS, input[*i + 2]) == in)
 	{
-		// hacer algo
+		token = create_token(hdoc, *i, 2);
 		(*i)++;
 	}
-	else if (index == 1)
+	else if (match == in)
+		token = create_token(in, *i, 1);
+	else if (match == out && ft_strchr_index(T_OPS, input[*i + 1]) == out)
 	{
-		// hacer otro algo
+		token = create_token(app, *i, 2);
 		(*i)++;
 	}
-
-	return (false);
+	else if (match == out)
+		token = create_token(out, *i, 1);
+	return (true);
 }
 
 bool	tokenize(t_shell *shell, char *input)
 {
-		// hacer que t_tok sea union?
-		// gestionarlo con *void?
 	t_tok	*token;
 	int	i;
 	int	c;
@@ -52,18 +63,14 @@ bool	tokenize(t_shell *shell, char *input)
 		return (false);
 	while (input && input[i])
 	{
-		// create token driver
 		c = input[i];
 		while (ft_isspace(c))
 			i++;
-		tokenize_ops(shell, input, &i);
-		// tokenize_strings(shell, input, &i);
-		// save pos / pointersponde con ops -> if strchr ops c
-		// handle operators
-			// some ops behave different depending on the sorrounding context
-			// det what to do w the str types
-		// handle string types
-		// create END token
+		//tokenize_qts(token, input, &i);
+		tokenize_ops(token, input, &i);
+		list_insert_tail(shell->env, token);
+		// check fin string
+		i++;
 	}
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/06/30 11:09:46 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/02 11:42:26 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,9 @@
 # define PWRITE		0
 # define PREAD		1
 
-//	token ops
-//	NOTE: tratemos de matchear esto con t_tokt
-//			Adicionalmente, seguro se necesita otro para quotes y otros toks
-# define TOKEN_OPS "|<>()"
+//	tokens
+# define T_OPS "|<>"
+# define T_QTS "\"\'"
 
 /*  ____        __ _                  */
 /* |  _ \  ___ / _(_)_ __   ___  ___  */
@@ -108,9 +107,10 @@ typedef struct s_cmd {
 	uint8_t			state;
 }	t_cmd;
 
-// crear slice type?
 typedef struct s_tok {
-	//placeholder
+	t_tokt			type;
+	size_t			pos;
+	size_t			size;
 }	t_tok;
 
 typedef struct s_tok_ctrl {
