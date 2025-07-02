@@ -33,6 +33,15 @@
             [x] - extraer funcs de debug para usar con una flag
             [x] - extraer funcs de debug para uso de errores
                 - mostrar mensajes de error mostrando la pos
+    mejorar como se gestionan los toks
+        el tokt de todos los tipos no corresponde al mismo mapeo de valores
+        se justifica hacer un enum o mejor hacer defs? 
+        
+        
+
+
+
+    
 
     el contexto se inicia desde el comienzo del input
             termina:

@@ -6,7 +6,7 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 14:34:08 by jgalizio          #+#    #+#              #
-#    Updated: 2025/07/02 12:59:54 by jgalizio         ###   ########.fr        #
+#    Updated: 2025/07/02 17:11:42 by jgalizio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,7 +90,6 @@ MODULES			+= $(addprefix $(DIR_STRINGS)/,	\
 					ft_itoa.c					\
 					ft_split.c					\
 					ft_strchr.c					\
-					ft_next_match.c				\
 					ft_strchr_index.c			\
 					ft_strcmp.c					\
 					ft_count_arrays.c			\
