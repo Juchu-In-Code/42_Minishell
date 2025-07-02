@@ -6,7 +6,7 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 17:53:37 by jgalizio          #+#    #+#              #
-#    Updated: 2025/07/02 12:03:01 by viaremko         ###   ########.fr        #
+#    Updated: 2025/07/02 13:16:32 by viaremko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME			= minishell
  # CAMBIAR LUEGO
 CC				= gcc
 CFLAGS			= -Wextra -Wall -Werror
-CFLAGS			+= -g
+CFLAGS			+= -g -fsanitize=address
 RM				= rm -rf
 
 LIBFT_DIR		= ./libft
@@ -56,12 +56,14 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,	\
 BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
 BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
 			   		export.c	\
-					)
-
-BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
-BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
 			   		cd.c	\
 					)
+						
+BASE_DIR_SIG = $(BASE_DIR)/signals
+BASE_SRCS		+= $(addprefix $(BASE_DIR_SIG)/,	\
+					signals.c		\
+					)
+
 BASE_DIR_RL = $(BASE_DIR)/readline
 BASE_SRCS		+= $(addprefix $(BASE_DIR_RL)/,		\
 					readline.c						\

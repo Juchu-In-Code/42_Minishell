@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/02 12:00:34 by viaremko         ###   ########.fr       */
+/*   Updated: 2025/07/02 13:18:44 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,10 @@ t_env   *create_dict_entry(char *key, char *val, int state);
 
 // readline
 bool	ft_readline(char **buff);
+
+// signals
+void signal_handler(int sig);
+void signal_setup();
 
 // builtins
 int		echo(int argc, char **argv);
