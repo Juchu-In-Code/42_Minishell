@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/02 13:18:44 by viaremko         ###   ########.fr       */
+/*   Updated: 2025/07/02 11:42:26 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,7 @@ typedef struct s_cmd
 	uint8_t			state;
 }	t_cmd;
 
-typedef struct s_tok
-{
+typedef struct s_tok {
 	t_tokt			type;
 	size_t			pos;
 	size_t			size;
