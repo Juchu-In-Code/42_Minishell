@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/06/30 11:09:46 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/02 12:00:34 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <signal.h>
 # include <sys/types.h>
 # include <unistd.h>
 # include <string.h>

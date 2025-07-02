@@ -6,7 +6,7 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 17:53:37 by jgalizio          #+#    #+#              #
-#    Updated: 2025/06/12 17:32:09 by jgalizio         ###   ########.fr        #
+#    Updated: 2025/07/02 12:03:01 by viaremko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,11 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,	\
 					modify_env.c					\
 					print_env.c						\
 					)
+						
+#BASE_DIR_SIG = $(BASE_DIR)/signals
+#BASE_SRCS		+= $(addprefix $(BASE_DIR_SIG)/,	\
+#					signals.c		\
+#					)
 
 BASE_DIR_RL = $(BASE_DIR)/readline
 BASE_SRCS		+= $(addprefix $(BASE_DIR_RL)/,	\
