@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:27:28 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/02 11:45:55 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/02 13:03:34 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,36 @@ t_tok	*create_token(t_tokt type, size_t i, size_t size)
 	token->pos = i;
 	token->size = size;
 	return (token);
+}
+
+bool	tokenize_qts(t_tok *token, char *input, int *i)
+{
+	int	match;
+	int	match_end;
+
+	match = ft_strchr_index(T_QTS, input[*i]);
+	match_end = ft_strchr_index(T_QTS, input[*i]);
+	if (match == -1)
+		return (false);
+	if (match)
+		return (false);
+	if (match == pip)
+		token = create_token(pip, *i, 1);
+	else if (match == in && ft_strchr_index(T_OPS, input[*i + 2]) == in)
+	{
+		token = create_token(hdoc, *i, 2);
+		(*i)++;
+	}
+	else if (match == in)
+		token = create_token(in, *i, 1);
+	else if (match == out && ft_strchr_index(T_OPS, input[*i + 1]) == out)
+	{
+		token = create_token(app, *i, 2);
+		(*i)++;
+	}
+	else if (match == out)
+		token = create_token(out, *i, 1);
+	return (true);
 }
 
 bool	tokenize_ops(t_tok *token, char *input, int *i)
