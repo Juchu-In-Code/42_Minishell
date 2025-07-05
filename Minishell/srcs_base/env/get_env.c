@@ -20,7 +20,7 @@ t_env	*get_env(t_list *list, char *key)
 	curr_node = list->head;
 	while (curr_node)
 	{
-		curr_env = list->head->data;
+		curr_env = curr_node->data;
 		if (!ft_strcmp(curr_env->dict[KEY], key))
 			return (curr_env);
 		curr_node = curr_node->next;
