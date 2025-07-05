@@ -60,7 +60,7 @@
 # define T_OPS		"|<->+"
 # define T_QTS		"\"\'"
 
-# define T_PIP		0
+# define T_PIPE		0
 # define T_IN 		1
 # define T_HDOC		2
 # define T_OUT		3
@@ -79,21 +79,21 @@
 typedef enum e_tokt
 {
 	// Symbols
-	pipex,
-	r_input,
-	r_hdoc,
-	r_output,
-	r_append,
+	id_pipe,
+	id_input,
+	id_hdoc,
+	id_output,
+	id_append,
 	// Quotes
-	q_dob,
-	q_sin,
+	id_qdob,
+	id_qsin,
 	// Strings
-	string,
+	id_string,
 	// Subshells
-	p_start,
-	p_end,
+	id_pstart,
+	id_pend,
 	// Errors
-	err_tok,
+	id_err_tok,
 }	t_tokt;
 
 // definir controles de estado?

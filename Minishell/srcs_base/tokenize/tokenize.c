@@ -25,6 +25,20 @@ t_tok	*create_token(t_tokt type, size_t i, size_t size)
 	return (token);
 }
 
+bool	tokenize_string(t_tok *token, char *input, int *i)
+{
+	int	size;
+
+	size = 0;
+	if (!input || !*input)
+		return (false);
+	while (input[size] && !isspace(input[size]))
+		size++;
+	token = create_token(id_string, *i, size);
+	*i += size;
+	return (true);
+}
+
 bool	tokenize_qts(t_tok *token, char *input, int *i)
 {
 	int	match;
@@ -35,11 +49,11 @@ bool	tokenize_qts(t_tok *token, char *input, int *i)
 	if (match == -1)
 		return (false);
 	if (match_end == -1)
-		token = create_token(err_tok, *i, 0);
+		token = create_token(id_err_tok, *i, 0);
 	else if (match == T_QDOB)
-		token = create_token(q_dob, *i, match_end);
+		token = create_token(id_qdob, *i, match_end);
 	else if (match == T_QSIN)
-		token = create_token(q_sin, *i, match_end);
+		token = create_token(id_qsin, *i, match_end);
 	*i += match_end;
 	return (true);
 }
@@ -51,22 +65,22 @@ bool	tokenize_ops(t_tok *token, char *input, int *i)
 	match = ft_strchr_index(T_OPS, input[*i]);
 	if (match == -1)
 		return (false);
-	if (match == pipex)
-		token = create_token(pipex, *i, 1);
+	if (match == T_PIPE)
+		token = create_token(id_pipe, *i, 1);
 	else if (match == T_IN && ft_strchr_index(T_OPS, input[*i + 2]) == T_IN)
 	{
-		token = create_token(r_hdoc, *i, 2);
+		token = create_token(id_hdoc, *i, 2);
 		(*i)++;
 	}
 	else if (match == T_IN)
-		token = create_token(r_input, *i, 1);
+		token = create_token(id_input, *i, 1);
 	else if (match == T_OUT && ft_strchr_index(T_OPS, input[*i + 1]) == T_OUT)
 	{
-		token = create_token(r_append, *i, 2);
+		token = create_token(id_append, *i, 2);
 		(*i)++;
 	}
 	else if (match == T_OUT)
-		token = create_token(r_output, *i, 1);
+		token = create_token(id_output, *i, 1);
 	return (true);
 }
 
@@ -87,7 +101,7 @@ bool	tokenize(t_shell *shell, char *input)
 			i++;
 		tokenize_qts(token, input, &i);
 		tokenize_ops(token, input, &i);
-		// tokenize_string(token, input, &i);
+		tokenize_string(token, input, &i);
 		list_insert_tail(shell->env, token);
 		// check fin string
 		i++;
