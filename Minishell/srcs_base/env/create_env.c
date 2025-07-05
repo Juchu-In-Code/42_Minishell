@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:51:04 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/06/16 16:31:51 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/05 07:28:14 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	clone_env(t_shell *shell, char **env)
 	t_env	*entry;
 	int		i;
 
-	shell->env = list_create();
+	shell->env = list_create(NULL);
 	if (!shell->env)
 		return (false);
 	if (!env || !*env)

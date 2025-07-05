@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 07:35:16 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/06/16 17:39:57 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/05 09:02:22 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	loop(t_shell *shell)
 {
 	char	*input;
 
-	(void)shell;
 	input = NULL;
 	while (ft_readline(&input)) // o usar una constante o !should_exit
 	{
@@ -27,6 +26,8 @@ void	loop(t_shell *shell)
 		//		redirects + pipes
 		//		forks + execute
 		// clean
+		tokenize(shell, input);
+		__debug_tokens(shell->tokens, input);
 		free(input);
 		input = NULL;
 	}

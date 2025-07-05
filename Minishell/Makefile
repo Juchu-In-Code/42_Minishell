@@ -6,7 +6,7 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 17:53:37 by jgalizio          #+#    #+#              #
-#    Updated: 2025/06/12 17:32:09 by jgalizio         ###   ########.fr        #
+#    Updated: 2025/07/05 08:04:53 by jgalizio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ NAME			= minishell
 CC				= gcc
 CFLAGS			= -Wextra -Wall -Werror
 CFLAGS			+= -g
-CFLAGS			+= -std=c99
-CFLAGS			+= -fsanitize=address
+# CFLAGS			+= -std=c99
+# CFLAGS			+= -fsanitize=address
 RM				= rm -rf
 
 LIBFT_DIR		= ./libft
@@ -56,8 +56,14 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,	\
 					)
 
 BASE_DIR_RL = $(BASE_DIR)/readline
-BASE_SRCS		+= $(addprefix $(BASE_DIR_RL)/,	\
+BASE_SRCS		+= $(addprefix $(BASE_DIR_RL)/,		\
 					readline.c						\
+					)
+
+BASE_DIR_TOK = $(BASE_DIR)/tokenize
+BASE_SRCS		+= $(addprefix $(BASE_DIR_TOK)/,	\
+					__debug_tokens.c				\
+					tokenize.c						\
 					)
 
 BONUS_SRCS		= $(addprefix $(BONUS_DIR)/,	\

@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/02 19:46:05 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/05 08:50:11 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,5 +171,10 @@ bool	ft_readline(char **buff);
 
 // builtins
 int		echo(int argc, char **argv);
+
+
+// tokenize
+bool	tokenize(t_shell *shell, char *input);
+void	__debug_tokens(t_list *token_list, char *input);
 
 #endif

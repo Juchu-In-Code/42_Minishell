@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:27:28 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/02 19:46:22 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/05 09:07:10 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,40 +25,41 @@ t_tok	*create_token(t_tokt type, size_t i, size_t size)
 	return (token);
 }
 
-bool	tokenize_string(t_tok *token, char *input, int *i)
+bool	tokenize_string(t_tok **token, char *input, int *i)
 {
 	int	size;
 
 	size = 0;
 	if (!input || !*input)
 		return (false);
-	while (input[size] && !isspace(input[size]))
+	// BUG: make it also stop whenever a token symbol is found 
+	while (input[size + *i] && !ft_isspace(input[size + *i]))
 		size++;
-	token = create_token(id_string, *i, size);
+	*token = create_token(id_string, *i, size);
 	*i += size;
 	return (true);
 }
 
-bool	tokenize_qts(t_tok *token, char *input, int *i)
+bool	tokenize_qts(t_tok **token, char *input, int *i)
 {
 	int	match;
-	int	match_end;
+	int	size;
 
 	match = ft_strchr_index(T_QTS, input[*i]);
-	match_end = ft_strchr_index(&input[*i + 1], T_QTS[match]);
 	if (match == -1)
 		return (false);
-	if (match_end == -1)
-		token = create_token(id_err_tok, *i, 0);
+	size = ft_strchr_index(&input[*i + 1], T_QTS[match]) + 1;
+	if (!size)
+		*token = create_token(id_err_tok, *i, 1);
 	else if (match == T_QDOB)
-		token = create_token(id_qdob, *i, match_end);
+		*token = create_token(id_qdob, *i, size + 1);
 	else if (match == T_QSIN)
-		token = create_token(id_qsin, *i, match_end);
-	*i += match_end;
+		*token = create_token(id_qsin, *i, size + 1);
+	*i += size + 1;
 	return (true);
 }
 
-bool	tokenize_ops(t_tok *token, char *input, int *i)
+bool	tokenize_ops(t_tok **token, char *input, int *i)
 {
 	int	match;
 
@@ -66,56 +67,38 @@ bool	tokenize_ops(t_tok *token, char *input, int *i)
 	if (match == -1)
 		return (false);
 	if (match == T_PIPE)
-		token = create_token(id_pipe, *i, 1);
-	else if (match == T_IN && ft_strchr_index(T_OPS, input[*i + 2]) == T_IN)
-	{
-		token = create_token(id_hdoc, *i, 2);
-		(*i)++;
-	}
+		*token = create_token(id_pipe, *i, 1);
+	else if (match == T_IN && ft_strchr_index(T_OPS, input[*i + 1]) == T_IN)
+		*token = create_token(id_hdoc, (*i)++, 2);
 	else if (match == T_IN)
-		token = create_token(id_input, *i, 1);
+		*token = create_token(id_input, *i, 1);
 	else if (match == T_OUT && ft_strchr_index(T_OPS, input[*i + 1]) == T_OUT)
-	{
-		token = create_token(id_append, *i, 2);
-		(*i)++;
-	}
+		*token = create_token(id_append, (*i)++, 2);
 	else if (match == T_OUT)
-		token = create_token(id_output, *i, 1);
+		*token = create_token(id_output, *i, 1);
 	return (true);
 }
 
 bool	tokenize(t_shell *shell, char *input)
 {
 	t_tok	*token;
+	int		len;
 	int		i;
-	int		c;
 
 	i = 0;
-	shell->tokens = list_create();
+	len = ft_strlen(input);
+	shell->tokens = list_create(NULL);
 	if (!shell->tokens)
 		return (false);
-	while (input && input[i])
+	while (i < len)
 	{
-		c = input[i];
-		while (ft_isspace(c))
+		while (ft_isspace(input[i]))
 			i++;
-		tokenize_qts(token, input, &i);
-		tokenize_ops(token, input, &i);
-		tokenize_string(token, input, &i);
-		list_insert_tail(shell->env, token);
-		// check fin string
+		if (tokenize_qts(&token, input, &i)
+			|| tokenize_ops(&token, input, &i)
+			|| tokenize_string(&token, input, &i))
+			list_insert_tail(shell->tokens, token);
 		i++;
 	}
 	return (true);
 }
-
-// func tokenize
-//
-// while input
-//	skip whitespace
-//	hacer comprobaciones
-//	por cada token que se encuentre, avanzar hasta terminar de consumirlo.
-//	en caso de encontrar un token que no cierre, guardar el token abierto y registrar el nuevo
-//	si un token no se puede terminar de consumir, quiere decir que hay o un error de sintaxis
-//	en caso de encontrar un token incorrecto, (como un token de cierre sin uno de apertura antes) error de sintaxis
-//
