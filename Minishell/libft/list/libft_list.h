@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 13:03:04 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/06/12 14:38:44 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/05 07:20:07 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,11 @@ typedef struct s_list
 
 typedef void	(*t_free)(void*);
 
-t_list	*list_create(void);
+t_list	*list_create(void *control);
 void	list_insert_tail(t_list *list, void *data);
 void	list_insert_head(t_list *list, void *data);
 void	*list_remove_head(t_list *list, t_free free_func);
 void	*list_remove_tail(t_list *list, t_free free_func);
 void	list_free(t_list *list, t_free free_func);
-
-// revisar
-// t_item	*ft_lstnew(void *content);
-// t_item	*ft_lstlast(t_item *lst);
-// t_item	*ft_lstmap(t_item *lst, void *(*f)(void*), void (*del)(void*));
-// int		ft_lstsize(t_item *lst);
-// void	ft_lstadd_back(t_item *lst, t_item *newitem);
-// void	ft_lstadd_front(t_item *lst, t_item *newitem);
-// void	ft_lstclear(t_item *lst, void (*del)(void*));
-// void	ft_lstdelone(t_item *lst, void (*del)(void*));
-// void	ft_lstiter(t_item *lst, void (*f)(void*));
 
 #endif

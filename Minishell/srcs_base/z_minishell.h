@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/06/30 11:09:46 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/02 19:46:05 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,18 @@
 # define PWRITE		0
 # define PREAD		1
 
-//	token ops
-//	NOTE: tratemos de matchear esto con t_tokt
-//			Adicionalmente, seguro se necesita otro para quotes y otros toks
-# define TOKEN_OPS "|<>()"
+//	tokens
+# define T_OPS		"|<->+"
+# define T_QTS		"\"\'"
+
+# define T_PIPE		0
+# define T_IN 		1
+# define T_HDOC		2
+# define T_OUT		3
+# define T_APP		4
+
+# define T_QDOB		0
+# define T_QSIN		1
 
 /*  ____        __ _                  */
 /* |  _ \  ___ / _(_)_ __   ___  ___  */
@@ -68,19 +76,24 @@
 /* |____/ \___|_| |_|_| |_|\___||___/ */
 /* ================================== */
 
-
-// mejorar el num de tok esperado
-// pensar en segregar en varios defines?
 typedef enum e_tokt
 {
-	pip,
-	in,
-	out,
-	app,
-	hdoc,
-	p_start,
-	p_end,
-	exec,
+	// Symbols
+	id_pipe,
+	id_input,
+	id_hdoc,
+	id_output,
+	id_append,
+	// Quotes
+	id_qdob,
+	id_qsin,
+	// Strings
+	id_string,
+	// Subshells
+	id_pstart,
+	id_pend,
+	// Errors
+	id_err_tok,
 }	t_tokt;
 
 // definir controles de estado?
@@ -102,23 +115,28 @@ typedef struct s_env
 }	t_env;
 
 // seguro se necesita una similar para builtins
-typedef struct s_cmd {
+typedef struct s_cmd
+{
 	char			**args;		// [0] es command, **args termina en NULL
 	ssize_t			io[2];		// o struct de fds con extra info?
 	uint8_t			state;
 }	t_cmd;
 
-// crear slice type?
-typedef struct s_tok {
-	//placeholder
+typedef struct s_tok
+{
+	t_tokt			type;
+	size_t			pos;
+	size_t			size;
 }	t_tok;
 
-typedef struct s_tok_ctrl {
+typedef struct s_tok_ctrl
+{
 	//placeholder
 	char			*input;		// si no se le agrega más que ctrl sea solo input
 }	t_tok_ctrl;
 
-typedef struct s_shell {
+typedef struct s_shell
+{
 	t_list			*env;
 	t_list			*tokens;	// se podría agregar qenv o path a un ctrl
 	t_env			*qenv[3];	// revisar, quizás se puede reformatear?
