@@ -26,7 +26,8 @@ void    cd(t_shell *shell, int ac, char **av)
                 {
                         tmp = get_env_val(shell->env, "PWD");
                         dir_path = ft_strjoinv(tmp,"/",av[1],NULL); 
-                        //check if join has ended with success
+			if(!dir_path)
+                		return((void)printf("minishell: cd: bad malloc\n"));
                 }
         }
         else                                                                                                               
@@ -34,7 +35,7 @@ void    cd(t_shell *shell, int ac, char **av)
         if(chdir(dir_path) != 0)
                 return((void)printf("minishell: cd: can't find path\n"));
         if(!get_env(shell->env, "OLDPWD"))
-                list_insert_tail(shell->env,create_dict_entry("OLDPWD", "", 0));
+                list_insert_tail(shell->env,create_dict_entry(ft_strdup("OLDPWD"),ft_strdup(""), 0));
         tmp = ft_strdup(get_env_val(shell->env, "PWD"));
         change_env_value(get_env(shell->env, "OLDPWD"), tmp);
         change_env_value(get_env(shell->env, "PWD"), dir_path);
