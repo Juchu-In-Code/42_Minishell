@@ -19,12 +19,23 @@ void    cd(t_shell *shell, int ac, char **av)
         if(ac > 2)                                                                                                         
                 return((void)printf("minishell: cd: too many arguments\n"));                                               
         if(av[1])                                                                                                          
-                dir_path = av[1];                                                                                          
+        {
+                if(ft_strncmp(av[1],"/",1) == 0) //in case of absolute path;
+                        dir_path = ft_strdup(av[1]);                                                                                     
+                else
+                {
+                        tmp = get_env_val(shell->env, "PWD");
+                        dir_path = ft_strjoinv(tmp,"/",av[1],NULL); 
+                        //check if join has ended with success
+                }
+        }
         else                                                                                                               
-                dir_path = get_env_val(shell->env, "HOME");
+                dir_path = ft_strdup(get_env_val(shell->env, "HOME"));
         if(chdir(dir_path) != 0)
                 return((void)printf("minishell: cd: can't find path\n"));
-        tmp = get_env_val(shell->env, "PWD");
-        change_env_value(get_env(shell->env, "PWD"), dir_path);
+        if(!get_env(shell->env, "OLDPWD"))
+                list_insert_tail(shell->env,create_dict_entry("OLDPWD", "", 0));
+        tmp = ft_strdup(get_env_val(shell->env, "PWD"));
         change_env_value(get_env(shell->env, "OLDPWD"), tmp);
+        change_env_value(get_env(shell->env, "PWD"), dir_path);
 }
