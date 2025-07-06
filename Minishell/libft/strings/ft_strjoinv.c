@@ -12,7 +12,7 @@
 
 #include "../libft.h"
 
-char	*strjoinv(const char *str, ...)
+char	*ft_strjoinv(const char *str, ...)
 {
 	char	*return_str;
 	char	*tmp_str;
