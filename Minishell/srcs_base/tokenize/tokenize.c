@@ -32,11 +32,12 @@ bool	tokenize_string(t_tok **token, char *input, int *i)
 	size = 0;
 	if (!input || !*input)
 		return (false);
-	// BUG: make it also stop whenever a token symbol is found 
-	while (input[size + *i] && !ft_isspace(input[size + *i]))
+	while (input[size + *i]
+		&& !ft_isspace(input[size + *i])
+		&& !ft_strchr("\"\'<>|", input[size + *i]))
 		size++;
 	*token = create_token(id_string, *i, size);
-	*i += size;
+	*i += size - 1;
 	return (true);
 }
 
@@ -55,7 +56,7 @@ bool	tokenize_qts(t_tok **token, char *input, int *i)
 		*token = create_token(id_qdob, *i, size + 1);
 	else if (match == T_QSIN)
 		*token = create_token(id_qsin, *i, size + 1);
-	*i += size + 1;
+	*i += size;
 	return (true);
 }
 
@@ -85,12 +86,12 @@ bool	tokenize(t_shell *shell, char *input)
 	int		len;
 	int		i;
 
-	i = 0;
+	i = -1;
 	len = ft_strlen(input);
 	shell->tokens = list_create(NULL);
 	if (!shell->tokens)
 		return (false);
-	while (i < len)
+	while (++i < len)
 	{
 		while (ft_isspace(input[i]))
 			i++;
@@ -98,7 +99,6 @@ bool	tokenize(t_shell *shell, char *input)
 			|| tokenize_ops(&token, input, &i)
 			|| tokenize_string(&token, input, &i))
 			list_insert_tail(shell->tokens, token);
-		i++;
 	}
 	return (true);
 }

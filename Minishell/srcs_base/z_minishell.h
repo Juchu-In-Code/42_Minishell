@@ -96,11 +96,6 @@ typedef enum e_tokt
 	id_err_tok,
 }	t_tokt;
 
-// definir controles de estado?
-// definir tipo de builtin?
-// definir valores de error?
-// definir definir señales?
-
 /*  ____  _                   _        */
 /* / ___|| |_ _ __ _   _  ___| |_ ___  */
 /* \___ \| __| '__| | | |/ __| __/ __| */
@@ -114,11 +109,10 @@ typedef struct s_env
 	uint8_t			state;
 }	t_env;
 
-// seguro se necesita una similar para builtins
 typedef struct s_cmd
 {
-	char			**args;		// [0] es command, **args termina en NULL
-	ssize_t			io[2];		// o struct de fds con extra info?
+	char			**args;
+	ssize_t			io[2];
 	uint8_t			state;
 }	t_cmd;
 
@@ -131,19 +125,16 @@ typedef struct s_tok
 
 typedef struct s_tok_ctrl
 {
-	//placeholder
-	char			*input;		// si no se le agrega más que ctrl sea solo input
+	char			*input;
 }	t_tok_ctrl;
 
 typedef struct s_shell
 {
 	t_list			*env;
-	t_list			*tokens;	// se podría agregar qenv o path a un ctrl
-	t_env			*qenv[3];	// revisar, quizás se puede reformatear?
-	ssize_t			bkstd[3];	// revisar bien cuando usarlo
-	struct termios	termios;	// revisar bien para que darle uso
-	// last command tokens
-	// info / state
+	t_list			*tokens;
+	t_env			*qenv[3];
+	ssize_t			bkstd[3];
+	struct termios	termios;
 }	t_shell;
 
 /*            ____            _        _                                      */
@@ -171,7 +162,6 @@ bool	ft_readline(char **buff);
 
 // builtins
 int		echo(int argc, char **argv);
-
 
 // tokenize
 bool	tokenize(t_shell *shell, char *input);
