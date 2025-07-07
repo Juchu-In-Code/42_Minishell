@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/05 08:50:11 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/07 19:31:50 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,21 +79,21 @@
 typedef enum e_tokt
 {
 	// Symbols
-	id_pipe,
-	id_input,
-	id_hdoc,
-	id_output,
-	id_append,
+		id_pipe,
+		id_input,
+		id_hdoc,
+		id_output,
+		id_append,
 	// Quotes
-	id_qdob,
-	id_qsin,
+		id_qdob,
+		id_qsin,
 	// Strings
-	id_string,
+		id_string,
 	// Subshells
-	id_pstart,
-	id_pend,
+		id_pstart,
+		id_pend,
 	// Errors
-	id_err_tok,
+		id_err_tok,
 }	t_tokt;
 
 /*  ____  _                   _        */
