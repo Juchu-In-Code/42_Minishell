@@ -113,11 +113,10 @@ typedef struct s_env
 	uint8_t			state;
 }	t_env;
 
-// seguro se necesita una similar para builtins
 typedef struct s_cmd
 {
-	char			**args;		// [0] es command, **args termina en NULL
-	ssize_t			io[2];		// o struct de fds con extra info?
+	char			**args;
+	ssize_t			io[2];
 	uint8_t			state;
 }	t_cmd;
 
@@ -130,8 +129,7 @@ typedef struct s_tok
 
 typedef struct s_tok_ctrl
 {
-	//placeholder
-	char			*input;		// si no se le agrega más que ctrl sea solo input
+	char			*input;
 }	t_tok_ctrl;
 
 typedef struct 
