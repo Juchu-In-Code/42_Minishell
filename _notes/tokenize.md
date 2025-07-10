@@ -14,7 +14,7 @@
 
     [ ] - FASE II -> interpretar
         a) revisar que la sintaxis sea correcta
-        b) 
+        b) juntar los tokens con su contexto correspondiente
         c)
 
     [ ] - FASE II -> definir
@@ -22,35 +22,60 @@
         b) establecer funcionalidad y relaciones
         c) establecer orden
 
-    entender las partes
-    juntar las partes que corresponden juntas
-    aplicar el uso de las expresiones
 
-    mejorar como se gestionan los toks
-        el tokt de todos los tipos no corresponde al mismo mapeo de valores
-        se justifica hacer un enum o mejor hacer defs? 
+    hacer q tokenize sea una func con su propio "main"
+        lexer           - segmentar
+        interpreter     - agrupar y analizar sintaxis
+        tokenizer       - generar la lista de tokens en orden, con su func
         
-        
+        utilidades:
+            
+            [ ] - extraer funcs de debug para usar con una flag
+            [ ] - extraer funcs de debug para uso de errores
+                - mostrar mensajes de error mostrando la pos
 
+    el contexto se inicia desde el comienzo del input
+            termina:
+                 - en un pipe
+                 - al final del input
+    el primer string del contexto es tomado como comando
+    si no hay comandos en el contexto, el contexto se acepta
 
- check syntax
-		clean everything if not
+    al iniciar el contexto:
+        aceptables: string, redirs, quotes
 
- check if the resulting tokens have expansions
-		mark them for expansion
+    redirs:
+        acpetables: string, quotes
+        si en el contexto hay multipes redirs, se ejecutan todos pero solo el último toma relevancia
+        si un > o >> está previo un | entonces el input del pipe se cierra
 
- analize the token order, each token asks or ansers an open question
+    quotes y strings:
+        la primera en encontrarse al iniciar un contexto, es tomada como un comando
+        al seguir una redir, se asigna a esta
 
+    al encontrar un pipe:
+        se cierra el contexto anterior, inicia un nuevo contexto de pipe
+        al iniciar un pipe debe existir un comando en el contexto anterior
 
- a string starting a job becomes a command (which can be either an executable
- of after a pipe asks where to read and send information to
- redirs ask 
+    context pipeline:
+        se activa al encontrar un pipe, de modo que se pueda gestionar
 
+    context subshell:
+        luego de terminar de tokenizar el contexto de subshell se ejecuta primero
+        enviando la linea completa a un fork con sus propiedades individuales
 
+    establecer cada contexto en orden:
+        pipes, heredocs, otras redirs, y finalmente ejecución
 
-    
+     check if the resulting tokens have expansions
+            mark them for expansion
 
+    expansion:
+            quotes -
+            envars -
 
+     a string starting a job becomes a command (which can be either an executable
+     of after a pipe asks where to read and send information to
 
                              ___ ___
                             |__ \__ \

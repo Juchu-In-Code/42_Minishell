@@ -6,7 +6,7 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 17:53:37 by jgalizio          #+#    #+#              #
-#    Updated: 2025/07/05 08:04:53 by jgalizio         ###   ########.fr        #
+#    Updated: 2025/07/10 16:34:08 by jgalizio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,8 +62,14 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_RL)/,		\
 
 BASE_DIR_TOK = $(BASE_DIR)/tokenize
 BASE_SRCS		+= $(addprefix $(BASE_DIR_TOK)/,	\
-					__debug_tokens.c				\
-					tokenize.c						\
+					a_tokenize.c					\
+					b_interpreter.c					\
+					u_debug_tokens.c				\
+					)
+
+BASE_DIR_UTILS = $(BASE_DIR)/utils
+BASE_SRCS		+= $(addprefix $(BASE_DIR_UTILS)/,	\
+					line_indicator.c				\
 					)
 
 BONUS_SRCS		= $(addprefix $(BONUS_DIR)/,	\

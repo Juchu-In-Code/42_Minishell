@@ -113,12 +113,6 @@
         el mensaje de error es:
         bash: export: `invalid-key': not a valid identifier
 
-        NO PLANEAR SOPORTE PARA:
-            - export [key] sin =
-            (que podría causar que una env local se promueva a env global)
-            ?? - a menos que sencillamente pase de largo y no haga nada?
-                    (excepto quejarse de malos inputs)
-
         NO PLANEAR
             comillas sin terminar
 
