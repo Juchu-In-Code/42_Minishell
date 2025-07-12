@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 07:35:16 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/10 16:35:22 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/12 21:18:56 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ void	loop(t_shell *shell)
 		//		forks + execute
 		// clean
 		tokenize(shell, input);
-		debug_tokens(shell->tokens, input);
+		if (*input)
+			debug_tokens(shell->tokens, input);
+		token_syntax_checker(shell->tokens, input);
 		free(input);
 		input = NULL;
 	}

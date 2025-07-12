@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:27:28 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/10 16:42:48 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/12 20:18:05 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ static void	print_toktype(t_tokt toktype)
 		"PIPE", "REDIR_IN", "REDIR_HDOC",
 		"REDIR_OUT", "REDIR_APPEND", "DOUBLE_Q",
 		"SINGLE_Q", "STRING", "PAREN_L", "PAREN_R",
-		"SYNTAX_ERR" };
+		"SYNTAX_ERR", "FIN" };
 
-	printf("%s", toks[toktype]);
+	printf(ANS_Y" %s", toks[toktype]);
 }
 
 void	debug_tokens(t_list *token_list, char *input)
@@ -34,10 +34,11 @@ void	debug_tokens(t_list *token_list, char *input)
 	while (current)
 	{
 		token = current->data;
+		if (token->type == id_fin)
+			break;
 		put_debug_indicator(input, token->pos, token->size);
-		printf(ANS_U" ");
 		print_toktype(token->type);
-		printf(" -> [ ");
+		printf(ANS_U" -> [ ");
 		printf("Index: %zu | Size: %zu ]\n\n"ANS_RES, token->pos, token->size);
 		current = current->next;
 	}

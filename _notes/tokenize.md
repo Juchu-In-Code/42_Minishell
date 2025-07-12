@@ -30,8 +30,8 @@
         
         utilidades:
             
-            [ ] - extraer funcs de debug para usar con una flag
-            [ ] - extraer funcs de debug para uso de errores
+            [x] - extraer funcs de debug para usar con una flag
+            [x] - extraer funcs de debug para uso de errores
                 - mostrar mensajes de error mostrando la pos
 
     el contexto se inicia desde el comienzo del input

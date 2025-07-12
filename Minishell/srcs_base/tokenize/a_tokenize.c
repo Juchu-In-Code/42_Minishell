@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
+/*   a_tokenize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:27:28 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/05 09:07:10 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/12 20:16:10 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,6 @@ bool	tokenize(t_shell *shell, char *input)
 			|| tokenize_string(&token, input, &i))
 			list_insert_tail(shell->tokens, token);
 	}
+	list_insert_tail(shell->tokens, create_token(id_fin, i, 0));
 	return (true);
 }

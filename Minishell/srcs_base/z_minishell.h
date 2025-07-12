@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/10 16:35:18 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/12 20:12:17 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ typedef enum e_tokt
 	id_pend,
 	// Errors
 	id_err_tok,
+	// Control
+	id_fin
 }	t_tokt;
 
 /*  ____  _                   _        */
@@ -127,6 +129,11 @@ typedef struct s_tok_ctrl
 {
 	char			*input;
 }	t_tok_ctrl;
+
+typedef struct 
+{
+	char			*input;
+}	t_tokkkk;
 
 typedef struct s_shell
 {
@@ -166,9 +173,13 @@ int		echo(int argc, char **argv);
 // tokenize
 bool	tokenize(t_shell *shell, char *input);
 void	debug_tokens(t_list *token_list, char *input);
+void	token_syntax_checker(t_list *token_list, char *input);
 
 // utils
 void	put_char_range(char c, int len, char *color);
 void	put_debug_indicator(char *input, int start, int len);
+
+bool	is_redir(t_tokt t);
+bool	is_quoted(t_tokt t);
 
 #endif

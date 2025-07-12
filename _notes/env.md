@@ -116,4 +116,16 @@
         NO PLANEAR
             comillas sin terminar
 
+export
 
+    while av[i]
+        buscar el =
+        si existe = ...
+         crear variables de la entrada de: key <=> val
+        verificaciones
+            - verif val
+            - verif si hay +
+            
+        status = verif la key
+            - 
+        si status erroneo, asignar +1 flag
