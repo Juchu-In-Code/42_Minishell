@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/05 08:50:11 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/12 20:12:17 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,8 @@ typedef struct
 	char			*input;
 }	t_tokkkk;
 
-typedef struct s_shell {
+typedef struct s_shell
+{
 	bool			is_active;
 	unsigned char	last_exit_code;
 	t_list			*env;
@@ -200,8 +201,14 @@ int		ft_exit(int ac, char **av, t_shell* shell);
 int		ft_env(int ac, char **av, t_shell* shell);
 int 	ft_unset(int ac, char **av, t_shell *shell);
 
+/*/ tokenize
+bool	tokenize(t_shell *shell, char *input);
+void	debug_tokens(t_list *token_list, char *input);
+void	token_syntax_checker(t_list *token_list, char *input);
+*/
 // tokenize
 bool	tokenize(t_shell *shell, char *input);
+void	__debug_tokens(t_list *token_list, char *input);
 void	debug_tokens(t_list *token_list, char *input);
 void	token_syntax_checker(t_list *token_list, char *input);
 
@@ -216,8 +223,9 @@ bool	is_quoted(t_tokt t);
 void free_env_entry(void *env_entry);
 void cleanup(t_shell *shell);
 
-// tokenize
-bool	tokenize(t_shell *shell, char *input);
-void	__debug_tokens(t_list *token_list, char *input);
+
+
+bool	is_redir(t_tokt t);
+bool	is_quoted(t_tokt t);
 
 #endif

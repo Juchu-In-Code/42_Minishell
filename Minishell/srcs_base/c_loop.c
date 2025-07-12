@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 07:35:16 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/05 09:02:22 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/12 21:18:56 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,19 @@ void	loop(t_shell *shell)
 		}
 		
 		ft_free_matrix((void *)av);
+/*=======
+		// signals
+		// tokenize
+		// process and expand
+		//		manage subshells...
+		//		redirects + pipes
+		//		forks + execute
+		// clean
+		tokenize(shell, input);
+		if (*input)
+			debug_tokens(shell->tokens, input);
+		token_syntax_checker(shell->tokens, input);
+>>>>>>> 5adda08 (feat: finished token_syntax_error system)*/
 		free(input);
 		input = NULL;
 	}
