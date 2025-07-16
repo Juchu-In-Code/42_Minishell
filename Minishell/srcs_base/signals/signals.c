@@ -24,6 +24,7 @@ void signal_setup()
 {
 	struct sigaction sa;
 	struct sigaction si;
+
 	sigemptyset(&sa.sa_mask);     // initialize mask to empty
 	sa.sa_flags = 0;
 	sa.sa_handler = signal_handler;
