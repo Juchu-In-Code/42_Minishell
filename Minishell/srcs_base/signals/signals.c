@@ -11,25 +11,24 @@
 /* ************************************************************************** */
 #include "../z_minishell.h"
 
-void signal_handler(int sig)
+void	signal_handler(int sig)
 {
 	(void)sig;
-	rl_replace_line("",0);
+	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-	write(1,"\n>> ",4);
+	write(1, "\n>> ", 4);
 }
 
-void signal_setup()
+void	signal_setup(void)
 {
-	struct sigaction sa;
-	struct sigaction si;
+	struct sigaction	sa;
+	struct sigaction	si;
 
-	sigemptyset(&sa.sa_mask);     // initialize mask to empty
+	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sa.sa_handler = signal_handler;
-	si.sa_handler = SIG_IGN;	
+	si.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &si, NULL);
 }
-
