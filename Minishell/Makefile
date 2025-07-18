@@ -52,6 +52,10 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,	\
 					modify_env.c					\
 					print_env.c						\
 					)
+BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
+BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
+			   		export.c	\
+					)
 
 BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
 BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
