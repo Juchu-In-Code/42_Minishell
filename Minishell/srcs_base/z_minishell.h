@@ -156,5 +156,6 @@ bool	ft_readline(char **buff);
 
 // builtins
 int		echo(int argc, char **argv);
+int		export(char **av, t_shell *shell);
 
 #endif
