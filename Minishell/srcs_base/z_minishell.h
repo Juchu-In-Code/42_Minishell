@@ -171,6 +171,7 @@ bool	ft_readline(char **buff);
 
 // builtins
 int		echo(int argc, char **argv);
+int		cd(t_shell *shell, int ac, char **av);
 
 // tokenize
 bool	tokenize(t_shell *shell, char *input);
