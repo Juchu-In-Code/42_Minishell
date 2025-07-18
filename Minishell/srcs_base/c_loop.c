@@ -27,6 +27,11 @@ void	loop(t_shell *shell)
 		//		redirects + pipes
 		//		forks + execute
 		// clean
+		char **av = ft_split(input, ' ');
+		print_env(shell->env);
+		printf("\n\n\nAFTER\n\n\n");
+		cd(shell, 2, av);
+		print_env(shell->env);
 		free(input);
 		input = NULL;
 	}

@@ -55,6 +55,10 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,	\
 					print_env.c						\
 					)
 
+BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
+BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
+			   		cd.c	\
+					)
 BASE_DIR_RL = $(BASE_DIR)/readline
 BASE_SRCS		+= $(addprefix $(BASE_DIR_RL)/,	\
 					readline.c						\
