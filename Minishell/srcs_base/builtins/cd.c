@@ -10,60 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../z_minishell.h"
-
-static char    *ft_strlstchr(const char *s, char *until)
+char *get_path(char *dir_path, t_list *env)
 {
-        char    *dup;
-        size_t  len;
-
-        len = ft_strlen(s) - 1;
-        if (!s || !until)
-                return (NULL);
-        while (len > 0 && !ft_strchr(until, s[len]))
-                len--;
-        dup = ft_calloc(len + 1, sizeof(char));
-        if (!dup)
-                return (NULL);
-        ft_strlcpy(dup, s, len + 1);
-        return (dup);
-}
-
-static char *resolve_path(char **av, t_shell *shell)
-{
-	char *t;
-
-	if(av[1] && av[1][0] == '/') //in case of absolute path;
-		return (ft_strdup(av[1]));
-	if(av[1] && av[1][0] == '-' && av[1][1] == '\0')
+	char *tmp;
+	if(!dir_path)
 	{
-        	if(!get_env(shell->env, "OLDPWD"))
+		tmp = ft_strdup(get_env_val(env, "HOME"));
+		if(!tmp)
 		{
-			printf("Can't find OLDPWD\n");
-			return (NULL);
-		}
-		t = ft_strdup(get_env_val(shell->env, "OLDPWD"));
-		printf("%s\n", t);
-		return (t);
-	}
-	if(av[1] && ft_strncmp(av[1], "..", ft_strlen(av[1])) == 0)
-	{
-		char *val = get_env_val(shell->env, "PWD");
-		t = ft_strlstchr(val, "/");
-		if (!t)
+			printf("No HOME env var found");
 			return(NULL);
-		return(t);
+		}
+		chdir(tmp);
+		return(tmp);
 	}
-	else if(av[1])
+	if(chdir(dir_path) != 0)
 	{
-		t = ft_strjoinv(get_env_val(shell->env, "PWD"),"/",av[1],NULL); 
-		if(!t)
-			return (NULL);
-		return(t);
+		perror("minishell: cd: ");
+		free(dir_path);
+		return (NULL);
 	}
-	return(ft_strdup(get_env_val(shell->env, "HOME")));
+	return (getcwd(NULL, 0));
 }
 
-int	cd(t_shell *shell, int ac, char **av)
+int	cd(t_list *env, int ac, char **av)
 {
 	char	*dir_path;
 	char	*tmp;
@@ -74,20 +44,22 @@ int	cd(t_shell *shell, int ac, char **av)
 		printf("minishell: cd: too many arguments\n");
 		return(1);
 	}
-	dir_path = resolve_path(av, shell);
-	if(chdir(dir_path) != 0)
+	tmp = ft_strdup(get_env_val(env, "PWD"));
+	if(!tmp)
 	{
-		perror("minishell: cd: ");
-		free(dir_path);
-		return (1);
+		entr = create_dict_entry(ft_strdup("PWD"), getcwd(NULL, 0) , 1);
+		list_insert_tail(env, entr);
 	}
-	if(!get_env(shell->env, "OLDPWD"))
+	dir_path = get_path(av[1], env);
+	if(!dir_path)
+		return(1);
+	if(!get_env(env, "OLDPWD"))
 	{
 		entr = create_dict_entry(ft_strdup("OLDPWD"), ft_strdup(""), 1);
-		list_insert_tail(shell->env, entr);
+		list_insert_tail(env, entr);
 	}
-	tmp = ft_strdup(get_env_val(shell->env, "PWD"));
-	change_env_value(get_env(shell->env, "OLDPWD"), tmp);
-	change_env_value(get_env(shell->env, "PWD"), dir_path);
+	change_env_value(get_env(env, "OLDPWD"), tmp);
+	change_env_value(get_env(env, "PWD"), dir_path);
 	return (0);
 }
+
