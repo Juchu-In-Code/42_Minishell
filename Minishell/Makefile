@@ -16,8 +16,6 @@ NAME			= minishell
 CC				= gcc
 CFLAGS			= -Wextra -Wall -Werror
 CFLAGS			+= -g
-CFLAGS			+= -std=c99
-CFLAGS			+= -fsanitize=address
 RM				= rm -rf
 
 LIBFT_DIR		= ./libft

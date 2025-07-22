@@ -10,24 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../z_minishell.h"
-char *get_path(char *dir_path, t_list *env)
+
+/*NOTE: dir_path (get_path function parameter) has to be dynamically allocated 
+ * to enter into env list as an allocated char * so in case of incorrect
+ * directory we have to free dir_path
+ */
+
+char	*get_path(char *dir_path, t_list *env)
 {
-	char *tmp;
-	if(!dir_path)
+	char	*tmp;
+
+	if (!dir_path)
 	{
 		tmp = ft_strdup(get_env_val(env, "HOME"));
-		if(!tmp)
+		if (!tmp)
 		{
 			printf("No HOME env var found");
-			return(NULL);
+			return (NULL);
 		}
 		chdir(tmp);
-		return(tmp);
+		return (tmp);
 	}
-	if(chdir(dir_path) != 0)
+	else if (chdir(dir_path) != 0)
 	{
-		perror("minishell: cd: ");
-		free(dir_path);
+		perror("minishell: cd");
+		if (dir_path)
+			free(dir_path);
 		return (NULL);
 	}
 	return (getcwd(NULL, 0));
@@ -39,21 +47,20 @@ int	cd(t_list *env, int ac, char **av)
 	char	*tmp;
 	t_env	*entr;
 
-	if(ac > 2)
-	{
+	if (ac > 2)
 		printf("minishell: cd: too many arguments\n");
-		return(1);
-	}
+	if (ac > 2)
+		return (1);
 	tmp = ft_strdup(get_env_val(env, "PWD"));
-	if(!tmp)
+	if (!tmp)
 	{
-		entr = create_dict_entry(ft_strdup("PWD"), getcwd(NULL, 0) , 1);
+		entr = create_dict_entry(ft_strdup("PWD"), getcwd(NULL, 0), 1);
 		list_insert_tail(env, entr);
 	}
 	dir_path = get_path(av[1], env);
-	if(!dir_path)
-		return(1);
-	if(!get_env(env, "OLDPWD"))
+	if (!dir_path)
+		return (1);
+	if (!get_env(env, "OLDPWD"))
 	{
 		entr = create_dict_entry(ft_strdup("OLDPWD"), ft_strdup(""), 1);
 		list_insert_tail(env, entr);
@@ -62,4 +69,3 @@ int	cd(t_list *env, int ac, char **av)
 	change_env_value(get_env(env, "PWD"), dir_path);
 	return (0);
 }
-
