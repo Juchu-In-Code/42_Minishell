@@ -49,7 +49,8 @@ BASE_SRCS		= $(addprefix $(BASE_DIR)/,	\
 BASE_DIR_ENV = $(BASE_DIR)/env
 BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,				\
 					create_env.c					\
-					get_env.c					\
+					get_env.c						\
+					detach_env.c						\
 					modify_env.c					\
 					print_env.c					\
 					env_list_to_ptr.c	\

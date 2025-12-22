@@ -145,9 +145,11 @@ void	loop(t_shell *shell);
 char	**env_list_to_ptr(t_list *env);
 bool	clone_env(t_shell *shell, char **env);
 char	*get_env_val(t_list *list, char *key);
+void	detach_env(t_list *list, char *key);
 t_env	*get_env(t_list *list, char *key);
 t_env	*line_to_dict_entry(char *line);
 bool	line_to_env(t_shell *shell, char *line);
+
 void	print_env(t_list *list);
 void	change_env_value(t_env *env, char *new_val);
 
