@@ -16,7 +16,6 @@ NAME			= minishell
 CC				= gcc
 CFLAGS			= -Wextra -Wall -Werror
 CFLAGS			+= -g
-CFLAGS			+= -fsanitize=address
 RM				= rm -rf
 
 LIBFT_DIR		= ./libft
@@ -59,6 +58,10 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,				\
 BASE_DIR_SIG = $(BASE_DIR)/signals
 BASE_SRCS		+= $(addprefix $(BASE_DIR_SIG)/,	\
 					signals.c		\
+					)
+BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
+BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
+			   		export.c	\
 					)
 
 BASE_DIR_RL = $(BASE_DIR)/readline

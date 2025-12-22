@@ -151,7 +151,9 @@ t_env	*line_to_dict_entry(char *line);
 bool	line_to_env(t_shell *shell, char *line);
 
 void	print_env(t_list *list);
-void	change_env_value(t_env *env, char *new_val);
+void	change_env_value(t_env *env, char *new_val, int update_state);
+void	append_env_value(t_env *env, char *new_val, int update_state);
+t_env   *create_dict_entry(char *key, char *val, int state);
 
 // readline
 bool	ft_readline(char **buff);
@@ -162,5 +164,6 @@ void signal_setup();
 
 // builtins
 int		echo(int argc, char **argv);
+int		export(char **av, t_shell *shell);
 
 #endif
