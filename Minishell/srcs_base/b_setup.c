@@ -6,14 +6,12 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 19:51:04 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/06/12 18:57:09 by jgalizio         ###   ########.fr       */
+/*   Updated: 2025/07/02 13:15:54 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "z_minishell.h"
 
 // setupsubshell
-
 bool	setup(t_shell *shell, char **env)
 {
 	if (!clone_env(shell, env))
@@ -22,6 +20,7 @@ bool	setup(t_shell *shell, char **env)
 	// setup quickaccess
 	// setup segmented path
 	// signal handler
+	signal_setup();
 	shell->bkstd[IN] = dup(IN);
 	shell->bkstd[OUT] = dup(OUT);
 	shell->bkstd[ERR] = dup(ERR);
