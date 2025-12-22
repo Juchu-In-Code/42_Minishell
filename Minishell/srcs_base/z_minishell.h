@@ -142,6 +142,7 @@ bool	setup(t_shell *shell, char **env);
 void	loop(t_shell *shell);
 
 // env
+char	**env_list_to_ptr(t_list *env);
 bool	clone_env(t_shell *shell, char **env);
 char	*get_env_val(t_list *list, char *key);
 t_env	*get_env(t_list *list, char *key);
