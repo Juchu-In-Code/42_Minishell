@@ -6,7 +6,7 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 17:53:37 by jgalizio          #+#    #+#              #
-#    Updated: 2025/06/12 17:32:09 by jgalizio         ###   ########.fr        #
+#    Updated: 2025/07/02 13:16:32 by viaremko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,11 +46,22 @@ BASE_SRCS		= $(addprefix $(BASE_DIR)/,	\
 					)
 
 BASE_DIR_ENV = $(BASE_DIR)/env
-BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,	\
+BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,				\
 					create_env.c					\
 					get_env.c						\
+					detach_env.c						\
 					modify_env.c					\
-					print_env.c						\
+					print_env.c					\
+					env_list_to_ptr.c	\
+					)
+						
+BASE_DIR_SIG = $(BASE_DIR)/signals
+BASE_SRCS		+= $(addprefix $(BASE_DIR_SIG)/,	\
+					signals.c		\
+					)
+BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
+BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
+			   		export.c	\
 					)
 
 BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
