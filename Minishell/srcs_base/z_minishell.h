@@ -182,6 +182,7 @@ void signal_setup();
 int		echo(int argc, char **argv);
 int		cd(t_list *env, int ac, char **av);
 int		export(char **av, t_shell *shell);
+int     cd(t_list *env, int ac, char **av);
 
 // tokenize
 bool	tokenize(t_shell *shell, char *input);
