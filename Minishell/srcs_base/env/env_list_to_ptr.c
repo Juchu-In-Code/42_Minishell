@@ -25,7 +25,7 @@ static	char	*make_env_entry(t_env *env)
 {
 	if (!env || !env->dict[KEY] || !env->dict[VAL])
 		return (NULL);
-	return (strjoinv(env->dict[KEY], "=", env->dict[VAL], NULL));
+	return (ft_strjoinv(env->dict[KEY], "=", env->dict[VAL], NULL));
 }
 
 static bool	fill_env_array(char **result, t_list *env)

@@ -65,7 +65,7 @@ int	cd(t_list *env, int ac, char **av)
 		entr = create_dict_entry(ft_strdup("OLDPWD"), ft_strdup(""), 1);
 		list_insert_tail(env, entr);
 	}
-	change_env_value(get_env(env, "OLDPWD"), tmp);
-	change_env_value(get_env(env, "PWD"), dir_path);
+	change_env_value(get_env(env, "OLDPWD"), tmp, 0);
+	change_env_value(get_env(env, "PWD"), dir_path, 0);
 	return (0);
 }
