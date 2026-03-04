@@ -45,7 +45,7 @@ BASE_SRCS		= $(addprefix $(BASE_DIR)/,	\
 					c_loop.c				\
 					)
 
-BASE_DIR_ENV = $(BASE_DIR)/env
+BASE_DIR_ENV = $(BASE_DIR)/env_lib
 BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,				\
 					create_env.c					\
 					get_env.c						\
@@ -58,6 +58,8 @@ BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
 BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
 			   		export.c	\
 			   		cd.c	\
+					pwd.c\
+					echo.c\
 					)
 						
 BASE_DIR_SIG = $(BASE_DIR)/signals
@@ -82,6 +84,8 @@ BASE_DIR_UTILS = $(BASE_DIR)/utils
 BASE_SRCS		+= $(addprefix $(BASE_DIR_UTILS)/,	\
 					line_indicator.c				\
 					)
+
+
 
 BONUS_SRCS		= $(addprefix $(BONUS_DIR)/,	\
 					)

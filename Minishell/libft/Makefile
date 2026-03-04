@@ -26,8 +26,12 @@ DIR_LIST		= ./list
 DIR_MEM			= ./memory
 DIR_NUMS		= ./nums
 DIR_STRINGS		= ./strings
+DIR_UTILS		= ./utils
 
-MODULES			= $(addprefix $(DIR_CHAR)/,		\
+MODULES			= $(addprefix $(DIR_UTILS)/, \
+			  		ft_get_array_length.c)
+
+MODULES			+= $(addprefix $(DIR_CHAR)/,		\
 					ft_isalnum.c				\
 					ft_isalpha.c				\
 					ft_isascii.c				\
