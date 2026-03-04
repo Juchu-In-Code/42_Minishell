@@ -12,64 +12,60 @@
 
 #include "z_minishell.h"
 
-/*
-char *get_path(char *dir_path, t_list *env)
+bool exec_builtin(int ac, char **av, t_shell *shell, t_list *env)
 {
-	char *tmp;
-	if(!dir_path)
+	if(!av || !*av || av[0] == NULL ||ft_strlen(av[0]) == 0)
 	{
-		tmp = ft_strdup(get_env_val(env, "HOME"));
-		if(!tmp)
-		{
-			printf("No HOME env var found");
-			return(NULL);
-		}
-		return(ft_strdup(get_env_val(env, "HOME")));
+		printf("Bad things happened\n");
+		return false; 
 	}
-	if(chdir(dir_path) != 0)
+	
+	printf("av[0] = %s\n", av[0]);
+	if(!ft_strcmp(av[0], "echo"))
 	{
-		perror("minishell: cd: ");
-		//free(dir_path);
-		return (NULL);
+		//int	echo(int argc, char **argv)
+		printf("echo detected\n");
+		echo(ac, av);
 	}
-	return (getcwd(NULL, 0));
+	else if(!ft_strcmp(av[0], "cd"))
+	{
+		printf("cd detected\n");
+		//int	cd(t_list *env, int ac, char **av)
+		cd(env, ac, av);
+	}
+	else if(!ft_strcmp(av[0], "pwd"))
+	{
+		printf("pwd detected\n");
+		pwd();
+	}
+	else if(!ft_strcmp(av[0], "export"))
+	{
+		//int	export(char **av, t_shell *shell)
+		printf("detected export\n");
+		export(&av[1], shell);
+		//this export implementation only accepts its arguments
+		//"export" with export(av, shell) actually gets parsed as 
+		//export export. -> so i send it args from the (&av[1]) so the
+		//first av gets omited and function works as intended
+	}
+/*	else if(!ft_strcmp(av[0], "unset"))
+		//unset();
+	else if(!ft_strcmp(av[0], "env"))
+		//env();
+	else if(!ft_strcmp(av[0], "exit"))
+		//exit();*/
+	else
+		return false;
+
+	return true;
 }
 
-int	cd(t_list *env, int ac, char **av)
-{
-	char	*dir_path;
-	char	*tmp;
-	t_env	*entr;
-
-	if(ac > 2)
-	{
-		printf("minishell: cd: too many arguments\n");
-		return(1);
-	}
-	tmp = ft_strdup(get_env_val(env, "PWD"));
-	if(!tmp)
-	{
-		entr = create_dict_entry(ft_strdup("PWD"), getcwd(NULL, 0) , 1);
-		list_insert_tail(env, entr);
-	}
-	dir_path = get_path(av[1], env);
-	if(!get_env(env, "OLDPWD"))
-	{
-		entr = create_dict_entry(ft_strdup("OLDPWD"), ft_strdup(""), 1);
-		list_insert_tail(env, entr);
-	}
-	change_env_value(get_env(env, "OLDPWD"), tmp);
-	change_env_value(get_env(env, "PWD"), dir_path);
-	return (0);
-}
-*/
 void	loop(t_shell *shell)
 {
 	char	*input;
 
-	(void)shell;
 	input = NULL;
-	while (ft_readline(&input)) // o usar una constante o !should_exit
+	while (ft_readline(&input))
 	{
 		// signals
 		// tokenize
@@ -79,12 +75,11 @@ void	loop(t_shell *shell)
 		//		forks + execute
 		// clean
 		char **av = ft_split(input, ' ');
-		print_env(shell->env);
-		printf("\n\n\nAFTER\n\n\n");
-		cd(shell->env, 2, av);
-		print_env(shell->env);
+		int ac = ft_get_array_length(av);
+		
+		exec_builtin(ac, av, shell, shell->env);
+
 		free(input);
 		input = NULL;
 	}
-	// clean again?
 }

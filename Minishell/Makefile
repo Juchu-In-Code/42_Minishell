@@ -45,7 +45,7 @@ BASE_SRCS		= $(addprefix $(BASE_DIR)/,	\
 					c_loop.c				\
 					)
 
-BASE_DIR_ENV = $(BASE_DIR)/env
+BASE_DIR_ENV = $(BASE_DIR)/env_lib
 BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,				\
 					create_env.c					\
 					get_env.c						\
@@ -62,12 +62,11 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_SIG)/,	\
 BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
 BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
 			   		export.c	\
+			   		cd.c	\
+					pwd.c\
+					echo.c\
 					)
 
-BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
-BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
-			   		cd.c	\
-					)
 BASE_DIR_RL = $(BASE_DIR)/readline
 BASE_SRCS		+= $(addprefix $(BASE_DIR_RL)/,	\
 					readline.c						\

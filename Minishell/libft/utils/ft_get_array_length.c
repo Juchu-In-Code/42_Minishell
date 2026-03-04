@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft_utils.h                                      :+:      :+:    :+:   */
+/*   ft_get_array_length.c				:+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: viaremko <viaremko@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/06 15:39:21 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/06/06 15:42:05 by jgalizio         ###   ########.fr       */
+/*   Created: 2026/03/11 11:40:58 by viaremko          #+#    #+#             */
+/*   Updated: 2026/03/16 18:46:56 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_UTILS_H
-# define LIBFT_UTILS_H
+int	ft_get_array_length(char **av)
+{
+	int	i;
 
-# include "../libft_incs.h"
-int     ft_get_array_length(char **av);
-#endif
+	i = 0;
+	if (!av)
+		return (0);
+	while (av[i])
+		i++;
+	return (i);
+}
