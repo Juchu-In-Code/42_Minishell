@@ -15,6 +15,7 @@
 
 # include "../libft_incs.h"
 
+bool    ft_is_str_numeric(char *s);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
 char	*ft_strchr(const char *s, int c);
