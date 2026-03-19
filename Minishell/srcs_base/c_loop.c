@@ -48,14 +48,19 @@ bool exec_builtin(int ac, char **av, t_shell *shell, t_list *env)
 		//export export. -> so i send it args from the (&av[1]) so the
 		//first av gets omited and function works as intended
 	}
-/*	else if(!ft_strcmp(av[0], "unset"))
-		//unset();
 	else if(!ft_strcmp(av[0], "env"))
-		//env();
+	{
+		if(ac > 1)	
+		{
+			printf("env: too many arguments\n");
+			return false;
+		}
+		print_env(env);
+	}
+	else if(!ft_strcmp(av[0], "unset"))
+		detach_env(env, av[1]);
 	else if(!ft_strcmp(av[0], "exit"))
-		//exit();*/
-	else
-		return false;
+		ft_exit(ac ,av);
 
 	return true;
 }

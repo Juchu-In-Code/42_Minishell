@@ -167,5 +167,6 @@ void    pwd(void);
 int		echo(int argc, char **argv);
 int		export(char **av, t_shell *shell);
 int     cd(t_list *env, int ac, char **av);
+int	ft_exit(int ac, char **av);
 
 #endif

@@ -16,6 +16,8 @@ static t_item	*get_list_item(t_list *list, char *key)
 	t_item	*curr_node;
 	t_env	*curr_env;
 
+	if (!list || !key || !*key )
+		return (NULL);
 	curr_node = list->head;
 	while (curr_node)
 	{
@@ -43,6 +45,10 @@ void	detach_env(t_list *list, char *key)
 	else
 		list->tail = item->prev;
 	list->size--;
+
+	t_env *env = (t_env *)item->data;
+	free(env->dict[KEY]);
+	free(env->dict[VAL]);
 	free(item->data);
 	free(item);
 }

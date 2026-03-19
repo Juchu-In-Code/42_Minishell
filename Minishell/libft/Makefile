@@ -83,6 +83,7 @@ MODULES			+= $(addprefix $(DIR_NUMS)/,	\
 					)
 
 MODULES			+= $(addprefix $(DIR_STRINGS)/,	\
+					ft_is_str_numeric.c				\
 					ft_itoa.c					\
 					ft_split.c					\
 					ft_strchr.c					\
