@@ -24,6 +24,8 @@ bool	setup(t_shell *shell, char **env)
 	shell->bkstd[IN] = dup(IN);
 	shell->bkstd[OUT] = dup(OUT);
 	shell->bkstd[ERR] = dup(ERR);
+	shell->is_active = true;
+	shell->last_exit_code = 0;
 	// bk other stuff
 	tcgetattr(IN, &shell->termios);
 	// heredoc id

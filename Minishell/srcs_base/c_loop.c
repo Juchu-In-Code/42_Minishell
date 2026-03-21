@@ -12,7 +12,7 @@
 
 #include "z_minishell.h"
 
-bool exec_builtin(int ac, char **av, t_shell *shell, t_list *env)
+bool exec_builtin(int ac, char **av, t_shell *shell)
 {
 	if(!av || !*av || av[0] == NULL ||ft_strlen(av[0]) == 0)
 	{
@@ -22,26 +22,14 @@ bool exec_builtin(int ac, char **av, t_shell *shell, t_list *env)
 	
 	printf("av[0] = %s\n", av[0]);
 	if(!ft_strcmp(av[0], "echo"))
-	{
-		//int	echo(int argc, char **argv)
-		printf("echo detected\n");
 		echo(ac, av);
-	}
 	else if(!ft_strcmp(av[0], "cd"))
-	{
-		printf("cd detected\n");
-		//int	cd(t_list *env, int ac, char **av)
-		cd(env, ac, av);
-	}
+		cd(shell->env, ac, av);
 	else if(!ft_strcmp(av[0], "pwd"))
-	{
-		printf("pwd detected\n");
 		pwd();
-	}
 	else if(!ft_strcmp(av[0], "export"))
 	{
 		//int	export(char **av, t_shell *shell)
-		printf("detected export\n");
 		export(&av[1], shell);
 		//this export implementation only accepts its arguments
 		//"export" with export(av, shell) actually gets parsed as 
@@ -49,19 +37,12 @@ bool exec_builtin(int ac, char **av, t_shell *shell, t_list *env)
 		//first av gets omited and function works as intended
 	}
 	else if(!ft_strcmp(av[0], "env"))
-	{
-		if(ac > 1)	
-		{
-			printf("env: too many arguments\n");
-			return false;
-		}
-		print_env(env);
-	}
+		ft_env(ac, shell->env);
 	else if(!ft_strcmp(av[0], "unset"))
-		detach_env(env, av[1]);
+		detach_env(shell->env, av[1]);
 	else if(!ft_strcmp(av[0], "exit"))
-		ft_exit(ac ,av);
-
+		ft_exit(ac, av, shell);
+	
 	return true;
 }
 
@@ -70,7 +51,7 @@ void	loop(t_shell *shell)
 	char	*input;
 
 	input = NULL;
-	while (ft_readline(&input))
+	while (shell->is_active && ft_readline(&input))
 	{
 		// signals
 		// tokenize
@@ -82,7 +63,8 @@ void	loop(t_shell *shell)
 		char **av = ft_split(input, ' ');
 		int ac = ft_get_array_length(av);
 		
-		exec_builtin(ac, av, shell, shell->env);
+		exec_builtin(ac, av, shell);
+		printf("shell state: %b\n", shell->is_active);
 
 		free(input);
 		input = NULL;

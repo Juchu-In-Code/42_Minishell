@@ -120,6 +120,8 @@ typedef struct s_tok_ctrl {
 }	t_tok_ctrl;
 
 typedef struct s_shell {
+	bool			is_active;
+	unsigned char	last_exit_code;
 	t_list			*env;
 	t_list			*tokens;	// se podría agregar qenv o path a un ctrl
 	t_env			*qenv[3];	// revisar, quizás se puede reformatear?
@@ -167,6 +169,7 @@ void    pwd(void);
 int		echo(int argc, char **argv);
 int		export(char **av, t_shell *shell);
 int     cd(t_list *env, int ac, char **av);
-int	ft_exit(int ac, char **av);
+void	ft_exit(int ac, char **av, t_shell* shell);
+int		ft_env(int ac, t_list *env);
 
 #endif
