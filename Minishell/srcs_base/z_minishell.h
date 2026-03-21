@@ -146,6 +146,13 @@ typedef struct s_shell {
 	struct termios	termios;
 }	t_shell;
 
+typedef int (*t_builtin_fn)(int ac, char **av, t_shell *shell);
+
+typedef struct s_builtin {
+	char            *name;
+	t_builtin_fn    func;
+} t_builtin;
+
 /*            ____            _        _                                      */
 /*           |  _ \ _ __ ___ | |_ ___ | |_ _   _ _ __   ___  ___              */
 /*           | |_) | '__/ _ \| __/ _ \| __| | | | '_ \ / _ \/ __|             */
@@ -180,13 +187,14 @@ void signal_handler(int sig);
 void signal_setup();
 
 // builtins
-void    pwd(void);
-int		echo(int argc, char **argv);
-int		cd(t_list *env, int ac, char **av);
-int		export(char **av, t_shell *shell);
-int     cd(t_list *env, int ac, char **av);
-void	ft_exit(int ac, char **av, t_shell* shell);
-int		ft_env(int ac, t_list *env);
+bool	exec_builtin(int ac, char **av, t_shell *shell);
+int		ft_pwd(int ac, char **av, t_shell* shell);
+int		ft_echo(int ac, char **av, t_shell* shell);
+int		ft_export(int ac, char **av, t_shell* shell);
+int		ft_cd(int ac, char **av, t_shell* shell);
+int		ft_exit(int ac, char **av, t_shell* shell);
+int		ft_env(int ac, char **av, t_shell* shell);
+int 	ft_unset(int ac, char **av, t_shell *shell);
 
 // tokenize
 bool	tokenize(t_shell *shell, char *input);

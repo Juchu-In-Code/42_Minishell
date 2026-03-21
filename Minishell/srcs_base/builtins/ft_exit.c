@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "../z_minishell.h"
 
-void	ft_exit(int ac, char **av, t_shell* shell)
+int	ft_exit(int ac, char **av, t_shell* shell)
 {
 	ft_fprintf(1, "exit\n");
 	
@@ -20,7 +20,7 @@ void	ft_exit(int ac, char **av, t_shell* shell)
 	{
 		//should exit with the last program exit code
 		shell->is_active = false;
-		return;
+		return shell->last_exit_code;
 	}
 
 	//if this line is reached it means av[1] exists
@@ -28,20 +28,18 @@ void	ft_exit(int ac, char **av, t_shell* shell)
 	{
 		//should actually exit but indicate "arg is not numeric"
 		ft_fprintf(2, "minishell: exit: %s numeric argument required\n", av[1]);
-		shell->last_exit_code = 2;
 		shell->is_active = false;
-		return;
+		return (2);
 	}
 
 	if(ac > 2)
 	{
 		//shouldn't exit and indicate too many args
 		ft_fprintf(2, "minishell: exit: too many arguments\n");
-		shell->last_exit_code = 1;
-		return;
+		return (1);
 	}
 	
 	//last_exit_code var is an unsigned char -> used for simple and correct conversion to 0-255 value from an int
-	shell->last_exit_code = (unsigned char)ft_atol(av[1]);
 	shell->is_active = false;
+	return(ft_atol(av[1]));
 }

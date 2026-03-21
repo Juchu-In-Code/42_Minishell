@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: viaremko <viaremko@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -105,18 +105,19 @@ static bool	export_line(t_shell *shell, char *line)
 	return (true);
 }
 
-int	export(char **av, t_shell *shell)
+int	ft_export(int ac, char **av, t_shell *shell)
 {
 	int	i;
 	int	ret_val;
-
+	
+	(void)ac;
 	if (!av[0])
 	{
 		print_env_list(shell->env, "declare -x ");
 		return (0);
 	}
 	ret_val = 0;
-	i = -1;
+	i = 0;
 	while (av[++i])
 		ret_val += export_line(shell, av[i]);
 	return (ret_val != 0);

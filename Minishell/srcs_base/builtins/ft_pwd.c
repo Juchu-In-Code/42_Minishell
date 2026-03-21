@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: viaremko <lodyiaremko@proton.me>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,17 +9,19 @@
 /*   Updated: 2025/07/03 14:36:00 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "z_minishell.h"
+#include "../z_minishell.h"
 
-int ft_env(int ac, char **av, t_shell *shell)
+int ft_pwd(int ac, char **av, t_shell *shell)
 {
-    (void)av;
-    if(ac > 1)	
-    {
-    	ft_fprintf(2, "minishell: env: too many arguments\n");
-        return 1;
-	}
+	char	*cwd;
 
-	print_env(shell->env);
-    return 0;
+	(void)ac;
+	(void)av;
+	(void)shell;
+	
+	cwd = malloc(PATH_MAX);
+	getcwd(cwd, PATH_MAX);
+	printf("%s\n", cwd);
+	free(cwd);
+	return (0);
 }

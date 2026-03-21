@@ -41,7 +41,7 @@ char	*get_path(char *dir_path, t_list *env)
 	return (getcwd(NULL, 0));
 }
 
-int	cd(t_list *env, int ac, char **av)
+int	ft_cd(int ac, char **av, t_shell *shell)
 {
 	char	*dir_path;
 	char	*tmp;
@@ -51,21 +51,21 @@ int	cd(t_list *env, int ac, char **av)
 		printf("minishell: cd: too many arguments\n");
 	if (ac > 2)
 		return (1);
-	tmp = ft_strdup(get_env_val(env, "PWD"));
+	tmp = ft_strdup(get_env_val(shell->env, "PWD"));
 	if (!tmp)
 	{
 		entr = create_dict_entry(ft_strdup("PWD"), getcwd(NULL, 0), 1);
-		list_insert_tail(env, entr);
+		list_insert_tail(shell->env, entr);
 	}
-	dir_path = get_path(av[1], env);
+	dir_path = get_path(av[1], shell->env);
 	if (!dir_path)
 		return (1);
-	if (!get_env(env, "OLDPWD"))
+	if (!get_env(shell->env, "OLDPWD"))
 	{
 		entr = create_dict_entry(ft_strdup("OLDPWD"), ft_strdup(""), 1);
-		list_insert_tail(env, entr);
+		list_insert_tail(shell->env, entr);
 	}
-	change_env_value(get_env(env, "OLDPWD"), tmp, 0);
-	change_env_value(get_env(env, "PWD"), dir_path, 0);
+	change_env_value(get_env(shell->env, "OLDPWD"), tmp, 0);
+	change_env_value(get_env(shell->env, "PWD"), dir_path, 0);
 	return (0);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: viaremko <lodyiaremko@proton.me>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,14 +9,12 @@
 /*   Updated: 2025/07/03 14:36:00 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../z_minishell.h"
+#include "z_minishell.h"
 
-void	pwd(void)
+int ft_unset(int ac, char **av, t_shell *shell)
 {
-	char	*cwd;
-
-	cwd = malloc(PATH_MAX);
-	getcwd(cwd, PATH_MAX);
-	printf("%s\n", cwd);
-	free(cwd);
+    int i = 0;
+    while(++i < ac)
+        detach_env(shell->env, av[i]);   
+    return (0);
 }

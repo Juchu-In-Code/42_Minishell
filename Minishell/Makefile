@@ -56,12 +56,14 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,				\
 					)
 BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
 BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
-			   		export.c	\
-			   		cd.c	\
-					pwd.c\
-					echo.c\
-					exit.c\
+				   	exec_builtin.c\
+			   		ft_export.c	\
+			   		ft_cd.c	\
+					ft_pwd.c\
+					ft_echo.c\
+					ft_exit.c\
 					ft_env.c\
+					ft_unset.c\
 					)
 						
 BASE_DIR_SIG = $(BASE_DIR)/signals
