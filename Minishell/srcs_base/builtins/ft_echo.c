@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -26,23 +26,24 @@ static bool	is_dash_n(char *str, char n)
 	return (true);
 }
 
-int	echo(int argc, char **argv)
+int	ft_echo(int ac, char **av, t_shell *shell)
 {
 	bool	no_new_line;
 	int		index;
-
+	
+	(void)shell;
 	no_new_line = false;
 	index = 1;
-	while (index < argc && is_dash_n(argv[index], 'n') == true)
+	while (index < ac && is_dash_n(av[index], 'n') == true)
 	{
 		index++;
 		no_new_line = true;
 	}
-	while (index < argc)
+	while (index < ac)
 	{
-		printf("%s", argv[index]);
+		printf("%s", av[index]);
 		index++;
-		if (index != argc)
+		if (index != ac)
 			printf(" ");
 	}
 	if (no_new_line == false)
