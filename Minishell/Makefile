@@ -61,6 +61,7 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
 					pwd.c\
 					echo.c\
 					exit.c\
+					ft_env.c\
 					)
 						
 BASE_DIR_SIG = $(BASE_DIR)/signals

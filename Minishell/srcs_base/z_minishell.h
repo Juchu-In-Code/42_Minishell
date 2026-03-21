@@ -136,8 +136,9 @@ typedef struct
 	char			*input;
 }	t_tokkkk;
 
-typedef struct s_shell
-{
+typedef struct s_shell {
+	bool			is_active;
+	unsigned char	last_exit_code;
 	t_list			*env;
 	t_list			*tokens;
 	t_env			*qenv[3];
@@ -184,7 +185,8 @@ int		echo(int argc, char **argv);
 int		cd(t_list *env, int ac, char **av);
 int		export(char **av, t_shell *shell);
 int     cd(t_list *env, int ac, char **av);
-int	ft_exit(int ac, char **av);
+void	ft_exit(int ac, char **av, t_shell* shell);
+int		ft_env(int ac, t_list *env);
 
 // tokenize
 bool	tokenize(t_shell *shell, char *input);
