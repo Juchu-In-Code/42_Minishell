@@ -32,6 +32,7 @@ void	loop(t_shell *shell)
 			{
 				printf("line: %s\n", line);
 				free(line);
+				shell->last_exit_code = 0;
 			}
 			else
 			{
