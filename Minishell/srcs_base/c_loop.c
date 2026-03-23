@@ -34,7 +34,10 @@ void	loop(t_shell *shell)
 				free(line);
 			}
 			else
+			{
 				printf("executable not found\n");
+				shell->last_exit_code = 127;
+			}
 		}
 		ft_free_matrix((void *)av);
 		free(input);

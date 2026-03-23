@@ -32,5 +32,5 @@ int	main(int ac, char **av, char **env)
 	setup(&shell, env);
 	loop(&shell);
 	cleanup(&shell);
-	return (0);
+	return (shell.last_exit_code);
 }
