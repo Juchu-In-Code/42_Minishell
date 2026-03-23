@@ -40,11 +40,9 @@ bool exec_builtin(int ac, char **av, t_shell *shell)
 {
 	const t_builtin *builtins = builtin_setup();
 	int i = 0;
-	
-    if (!av || !av[0] || !av[0][0])
-	{
+
+	if (!av || !av[0] || !av[0][0])
 		return false; 
-	}
 
 	while(builtins[i].name != NULL)
 	{

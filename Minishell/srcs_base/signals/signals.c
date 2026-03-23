@@ -25,6 +25,8 @@ void	signal_setup(void)
 	struct sigaction	sa;
 	struct sigaction	si;
 
+	ft_memset(&sa, 0, sizeof(sa));
+	ft_memset(&si, 0, sizeof(sa));
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sa.sa_handler = signal_handler;
