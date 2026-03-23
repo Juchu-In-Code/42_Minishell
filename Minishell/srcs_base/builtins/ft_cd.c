@@ -25,7 +25,7 @@ char	*get_path(char *dir_path, t_list *env)
 		tmp = ft_strdup(get_env_val(env, "HOME"));
 		if (!tmp)
 		{
-			printf("No HOME env var found");
+			ft_fprintf(2, "minishell: cd: HOME not set\n");
 			return (NULL);
 		}
 		chdir(tmp);
@@ -48,8 +48,11 @@ int	ft_cd(int ac, char **av, t_shell *shell)
 	t_env	*entr;
 
 	if (ac > 2)
-		printf("minishell: cd: too many arguments\n");
+		ft_fprintf(2, "minishell: cd: too many arguments\n");
 	if (ac > 2)
+		return (1);
+	dir_path = get_path(av[1], shell->env);
+	if (!dir_path)
 		return (1);
 	tmp = ft_strdup(get_env_val(shell->env, "PWD"));
 	if (!tmp)
@@ -57,9 +60,6 @@ int	ft_cd(int ac, char **av, t_shell *shell)
 		entr = create_dict_entry(ft_strdup("PWD"), getcwd(NULL, 0), 1);
 		list_insert_tail(shell->env, entr);
 	}
-	dir_path = get_path(av[1], shell->env);
-	if (!dir_path)
-		return (1);
 	if (!get_env(shell->env, "OLDPWD"))
 	{
 		entr = create_dict_entry(ft_strdup("OLDPWD"), ft_strdup(""), 1);
