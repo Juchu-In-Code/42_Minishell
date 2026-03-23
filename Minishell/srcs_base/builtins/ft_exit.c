@@ -27,7 +27,7 @@ int	ft_exit(int ac, char **av, t_shell* shell)
 	if(ft_is_str_numeric(av[1]) == false)
 	{
 		//should actually exit but indicate "arg is not numeric"
-		ft_fprintf(2, "minishell: exit: %s numeric argument required\n", av[1]);
+		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n", av[1]);
 		shell->is_active = false;
 		return (2);
 	}
