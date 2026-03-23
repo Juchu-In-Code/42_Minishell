@@ -89,6 +89,8 @@ MODULES			+= $(addprefix $(DIR_STRINGS)/,	\
 					ft_strchr.c					\
 					ft_strchr_index.c			\
 					ft_strcmp.c					\
+					ft_count_arrays.c			\
+					ft_print_matrix.c			\
 					ft_strdup.c					\
 					ft_str_isempty.c			\
 					ft_striteri.c				\

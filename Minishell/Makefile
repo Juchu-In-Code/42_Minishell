@@ -14,8 +14,7 @@ NAME			= minishell
 
  # CAMBIAR LUEGO
 CC				= gcc
-CFLAGS			= -Wextra -Wall -Werror
-CFLAGS			+= -g
+CFLAGS			= -Wextra -Wall -Werror -g
 RM				= rm -rf
 
 LIBFT_DIR		= ./libft
@@ -73,8 +72,12 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
 
 BASE_DIR_RL = $(BASE_DIR)/readline
 BASE_SRCS		+= $(addprefix $(BASE_DIR_RL)/,	\
-					readline.c						\
+					readline.c	\
 					)
+
+BASE_DIR_EXEC = $(BASE_DIR)/execution
+BASE_SRCS		+= $(addprefix $(BASE_DIR_EXEC)/, \
+					get_line_to_exec.c)
 
 BONUS_SRCS		= $(addprefix $(BONUS_DIR)/,	\
 					)

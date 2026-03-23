@@ -14,6 +14,7 @@
 # define Z_MINISHELL_H
 
 # include <stdio.h>
+# include <sys/stat.h>
 # include <stdlib.h>
 # include <signal.h>
 # include <sys/types.h>
@@ -170,6 +171,9 @@ bool	ft_readline(char **buff);
 // signals
 void signal_handler(int sig);
 void signal_setup();
+
+//execution
+char     *get_line_to_exec(char *key, t_list *env);
 
 // builtins
 bool	exec_builtin(int ac, char **av, t_shell *shell);
