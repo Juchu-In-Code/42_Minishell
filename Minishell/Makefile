@@ -90,6 +90,9 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_UTILS)/,	\
 					)
 
 
+BASE_DIR_EXEC = $(BASE_DIR)/execution
+BASE_SRCS		+= $(addprefix $(BASE_DIR_EXEC)/, \
+					get_line_to_exec.c)
 
 BONUS_SRCS		= $(addprefix $(BONUS_DIR)/,	\
 					)

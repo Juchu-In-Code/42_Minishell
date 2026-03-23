@@ -39,5 +39,9 @@ size_t	ft_strlenv(va_list args);
 t_bool	ft_str_isempty(char *str);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 char	*ft_strunt(const char *s, char *until);
+int     ft_count_arrays(char **arr);
+void    ft_print_matrix(char **arr);
+
+
 
 #endif
