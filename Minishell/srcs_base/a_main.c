@@ -31,6 +31,6 @@ int	main(int ac, char **av, char **env)
 	verify(ac, av);
 	setup(&shell, env);
 	loop(&shell);
-	// cleanup
+	cleanup(&shell);
 	return (0);
 }

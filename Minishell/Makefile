@@ -14,8 +14,8 @@ NAME			= minishell
 
  # CAMBIAR LUEGO
 CC				= gcc
-CFLAGS			= -Wextra -Wall -Werror
-CFLAGS			+= -g -fsanitize=address
+CFLAGS			= -Wextra -Wall -Werror -g 
+CFLAGS			+=-fsanitize=address -fno-omit-frame-pointer
 RM				= rm -rf
 
 LIBFT_DIR		= ./libft
@@ -43,6 +43,7 @@ BASE_SRCS		= $(addprefix $(BASE_DIR)/,	\
 					a_main.c				\
 					b_setup.c				\
 					c_loop.c				\
+					d_cleanup.c				\
 					)
 
 BASE_DIR_ENV = $(BASE_DIR)/env_lib

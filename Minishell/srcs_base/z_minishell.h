@@ -212,4 +212,7 @@ void	put_debug_indicator(char *input, int start, int len);
 bool	is_redir(t_tokt t);
 bool	is_quoted(t_tokt t);
 
+//cleanup
+void free_env_entry(void *env_entry);
+void cleanup(t_shell *shell);
 #endif
