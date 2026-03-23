@@ -185,4 +185,7 @@ int		ft_exit(int ac, char **av, t_shell* shell);
 int		ft_env(int ac, char **av, t_shell* shell);
 int 	ft_unset(int ac, char **av, t_shell *shell);
 
+//cleanup
+void free_env_entry(void *env_entry);
+void cleanup(t_shell *shell);
 #endif

@@ -36,6 +36,7 @@ void	loop(t_shell *shell)
 			else
 				printf("executable not found\n");
 		}
+		ft_free_matrix((void *)av);
 		free(input);
 		input = NULL;
 	}
