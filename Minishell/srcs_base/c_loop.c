@@ -20,26 +20,32 @@ void	loop(t_shell *shell)
 	input = NULL;
 	while (shell->is_active && ft_readline(&input))
 	{
+
 		char **av = ft_split(input, ' ');
 		int ac = ft_get_array_length(av);
-		
-		//it's a boolean function (true on detected builtin)	
-		if(!exec_builtin(ac, av, shell))
+
+		if(ac)
 		{
-			//line is heap allocated
-			line = get_line_to_exec(av[0], shell->env);
-			if(line)
+			//it's a boolean function (true on detected builtin)	
+			if(!exec_builtin(ac, av, shell))
 			{
-				printf("line: %s\n", line);
-				free(line);
-				shell->last_exit_code = 0;
-			}
-			else
-			{
-				printf("executable not found\n");
-				shell->last_exit_code = 127;
+				//line is heap allocated
+				line = get_line_to_exec(av[0], shell->env);
+				if(line)
+				{
+					
+					printf("line: %s\n", line);
+					free(line);
+					shell->last_exit_code = 0;
+				}
+				else
+				{
+					ft_fprintf(2, "minishell: %s: No such file or directory\n", av[0]);
+					shell->last_exit_code = 127;
+				}
 			}
 		}
+		
 		ft_free_matrix((void *)av);
 		free(input);
 		input = NULL;
