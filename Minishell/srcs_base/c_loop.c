@@ -24,6 +24,10 @@ void	loop(t_shell *shell)
 		char **av = ft_split(input, ' ');
 		int ac = ft_get_array_length(av);
 
+		tokenize(shell, input);
+		if (*input)
+			debug_tokens(shell->tokens, input);
+		token_syntax_checker(shell->tokens, input);
 		if(ac)
 		{
 			//it's a boolean function (true on detected builtin)	
@@ -33,7 +37,7 @@ void	loop(t_shell *shell)
 				line = get_line_to_exec(av[0], shell->env);
 				if(line)
 				{
-					
+
 					printf("line: %s\n", line);
 					free(line);
 					shell->last_exit_code = 0;
@@ -45,9 +49,11 @@ void	loop(t_shell *shell)
 				}
 			}
 		}
-		
+
 		ft_free_matrix((void *)av);
-/*=======
+
+		free(input);
+		input = NULL;
 		// signals
 		// tokenize
 		// process and expand
@@ -55,12 +61,5 @@ void	loop(t_shell *shell)
 		//		redirects + pipes
 		//		forks + execute
 		// clean
-		tokenize(shell, input);
-		if (*input)
-			debug_tokens(shell->tokens, input);
-		token_syntax_checker(shell->tokens, input);
->>>>>>> 5adda08 (feat: finished token_syntax_error system)*/
-		free(input);
-		input = NULL;
 	}
 }
