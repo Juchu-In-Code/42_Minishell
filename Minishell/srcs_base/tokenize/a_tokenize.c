@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 19:27:28 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/12 20:16:10 by jgalizio         ###   ########.fr       */
+/*   Updated: 2026/04/14 12:07:26 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool	tokenize_ops(t_tok **token, char *input, int *i)
 	int	match;
 
 	match = ft_strchr_index(T_OPS, input[*i]);
-	if (match == -1)
+	if (match == -1 || (match == 2 || match == 4))
 		return (false);
 	if (match == T_PIPE)
 		*token = create_token(id_pipe, *i, 1);
