@@ -132,6 +132,11 @@ typedef struct s_shell {
 	// info / state
 }	t_shell;
 
+typedef struct s_pipe {
+	int prev_read;
+	int fd[2];
+} t_pipe;
+
 typedef int (*t_builtin_fn)(int ac, char **av, t_shell *shell);
 
 typedef struct s_builtin {
