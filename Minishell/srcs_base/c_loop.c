@@ -12,6 +12,28 @@
 
 #include "z_minishell.h"
 
+void	execute(char *line, char **av, t_list *env)
+{
+
+	pid_t pid = fork(); 
+	// Both child and parent will now start execution from here.
+	if(pid < 0) 
+	{
+		ft_fprintf(2, "Error creating child");
+	}
+	else if(pid == 0) 
+	{
+		//Child
+		execve(line, av, env_list_to_ptr(env));
+	}
+	else 
+	{
+		// Parent process code goes here
+		// Parent has to wait for childs
+		wait(NULL);
+	}
+}
+
 void	loop(t_shell *shell)
 {
 	char	*input;
@@ -35,6 +57,7 @@ void	loop(t_shell *shell)
 				{
 					
 					printf("line: %s\n", line);
+					execute(line, av, shell->env);
 					free(line);
 					shell->last_exit_code = 0;
 				}
