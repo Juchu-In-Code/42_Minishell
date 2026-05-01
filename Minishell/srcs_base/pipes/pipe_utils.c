@@ -68,20 +68,3 @@ static void	heredoc_manager(char *delim)
 		close(hdoc_fd);
 	}
 }
-
-if (child)
-{
-    redirect(infile, STDIN_FILENO);
-    redirect(outfile, STDOUT_FILENO);
-}
-else
-{
-    if (prev_pipe != -1)
-        close(prev_pipe);
-
-    if (!last)
-    {
-        close(pipe_fd[1]);
-        prev_pipe = pipe_fd[0];
-    }
-}

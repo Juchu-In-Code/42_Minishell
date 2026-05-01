@@ -31,7 +31,7 @@ void    expand(t_item *item, t_list *env)
 
 void expansor(t_list *tokens, t_list *env)
 {
-    t_item	*current;
+	t_item	*current;
 	t_item	*next;
 
 	current = tokens->head;
@@ -41,7 +41,7 @@ void expansor(t_list *tokens, t_list *env)
 	{
 		next = current->next;
 		if (current->expansion)
-            expand(current, env);
+           		expand(current, env);
 		current = next;
 	}
 }
