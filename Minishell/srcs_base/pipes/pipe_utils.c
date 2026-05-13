@@ -1,3 +1,44 @@
+#Function that creates an array of pipes. 
+#Parser should send an exact number of pipes needed so the function will allocate all nesessary pipes.
+
+t_pipe 
+{
+	pipe[2];
+}
+
+void	free_bad_malloc(t_pipes* pipes, i)
+{
+	while (i >= 0)
+	{
+		free(pipes[i])
+		i--;
+	}
+	free(pipes);
+}
+
+t_pipes[] alloc_pipes(int pipe_count)
+{
+	int	i;
+	t_pipes[] pipes;
+
+	if(pipe_count < 1)
+		return (NULL);
+
+	i = 0;
+	malloc(pipes);
+	if(!pipes)
+		return (null);
+	
+	while (i < pipe_count)
+	{
+		malloc(pipes[i]);
+		if(!pipes[i])
+			free_bad_malloc(pipes[], i);
+		i++;
+	}
+}
+
+
 void	redirect(ssize_t fd, ssize_t redirect_to)
 {
 	if (fd != -1)
