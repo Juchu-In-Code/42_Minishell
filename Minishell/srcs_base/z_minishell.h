@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/02 13:18:44 by viaremko         ###   ########.fr       */
+/*   Updated: 2026/05/13 19:38:59 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ int		ft_export(int ac, char **av, t_shell* shell);
 int		ft_cd(int ac, char **av, t_shell* shell);
 int		ft_exit(int ac, char **av, t_shell* shell);
 int		ft_env(int ac, char **av, t_shell* shell);
-int 	ft_unset(int ac, char **av, t_shell *shell);
+int 		ft_unset(int ac, char **av, t_shell *shell);
 
 //cleanup
 void free_env_entry(void *env_entry);
