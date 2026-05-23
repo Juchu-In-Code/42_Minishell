@@ -13,7 +13,7 @@
 #include "z_minishell.h"
 
 
-void	execute(char *line, char **av, t_list *env, int *prev_read_fd, int cmd_n, int total_cmd)
+void	execute(char *line, int ac, char **av, t_shell *shell, int *prev_read_fd, int cmd_n, int total_cmd)
 {
 	int fd[2];
 	pipe(fd);
@@ -28,6 +28,10 @@ void	execute(char *line, char **av, t_list *env, int *prev_read_fd, int cmd_n, i
 	{
 		//Child
 		
+		//in case of no pipes + the command is builtin -> no fork;
+		if(total_cmd == 1 && exec_builtin(ac, av, shell))
+			return;
+		
 		//first command case
 		if(cmd_n == 1)
 			dup2(fd[1], 1);
@@ -40,7 +44,6 @@ void	execute(char *line, char **av, t_list *env, int *prev_read_fd, int cmd_n, i
 			dup2(*prev_read_fd, 0);
 			dup2(fd[1], 1);
 		}
-		
 
 		//prev_read_fd and fd[1] both have to be closed because their fd's are swiched with sdin and stdout.
 		//so those variables are just copies and there is no need to have them anymore.
@@ -52,7 +55,17 @@ void	execute(char *line, char **av, t_list *env, int *prev_read_fd, int cmd_n, i
 		//but parent needs it to pass it to the next child process
 		close(fd[0]);
 
-		execve(line, av, env_list_to_ptr(env));
+		//returns false if not a builtin
+		//else -> executes a builtin and returns true
+		if(exec_builtin(ac, av, shell))
+			exit(0);
+		else
+		{
+			execve(line, av, env_list_to_ptr(shell->env));
+			perror("Command not found");
+			exit(127);
+		}
+
 	}
 	else 
 	{
@@ -74,29 +87,26 @@ void    loop(t_shell *shell)
 	int	prev_read_fd = -1; 
 	int	cmd_n = 1;
 
-	//Hardcoded Command: cat Makefile | grep DIR | sort -r | cat -e
-	char *cmd1_line = "/bin/cat";          
-	char *cmd1_av[] = {"cat", "Makefile", NULL};
+	//hardcoded cmd1_ac to execute builtin
+	int	cmd1_ac = 2;
+	char	*line; 
 
-	char *cmd2_line = "/usr/bin/grep";
-	char *cmd2_av[] = {"grep", "DIR", NULL};
 
-	char *cmd3_line = "/usr/bin/sort";
-	char *cmd3_av[] = {"sort", "-r", NULL};
 
-	char *cmd4_line = "/bin/cat";
-	char *cmd4_av[] = {"cat", "-e", NULL};
+	//Hardcoded Command: echo "Builtin esta ejecutandose con exito" | grep exito | sort -r | cat -e
+	char **cmds_av[4];
+	cmds_av[0] = (char *[]){"echo", "Builtin esta ejecutandose con exito", NULL};
+	cmds_av[1] = (char *[]){"grep", "exito", NULL};
+	cmds_av[2] = (char *[]){"sort", "-r", NULL};
+	cmds_av[3] = (char *[]){"cat", "-e", NULL};
 
 	while(cmd_n <= total_cmd)
 	{
-		if (cmd_n == 1)
-		    execute(cmd1_line, cmd1_av, shell->env, &prev_read_fd, cmd_n, total_cmd);
-		else if (cmd_n == 2)
-		    execute(cmd2_line, cmd2_av, shell->env, &prev_read_fd, cmd_n, total_cmd);
-		else if (cmd_n == 3)
-		    execute(cmd3_line, cmd3_av, shell->env, &prev_read_fd, cmd_n, total_cmd);
-		else if (cmd_n == 4)
-		    execute(cmd4_line, cmd4_av, shell->env, &prev_read_fd, cmd_n, total_cmd);
+		//cmd_n - 1 is needed because cmds_av is looking for an INDEX in the array not the raw cmd number (starts from 1)
+		line = get_line_to_exec(cmds_av[cmd_n - 1][0], shell->env);
+		execute(line, cmd1_ac ,cmds_av[cmd_n - 1], shell, &prev_read_fd, cmd_n, total_cmd);
+		if(line)
+			free(line);
 		cmd_n++;
 	}
 
