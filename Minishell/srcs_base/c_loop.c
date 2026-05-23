@@ -13,24 +13,29 @@
 #include "z_minishell.h"
 
 
-void	execute(char *line, int ac, char **av, t_shell *shell, int *prev_read_fd, int cmd_n, int total_cmd)
+pid_t	execute(char *line, int ac, char **av, t_shell *shell, int *prev_read_fd, int cmd_n, int total_cmd)
 {
 	int fd[2];
+
+	//in case of no pipes + the command is builtin -> no fork;
+	//last exit code is handeled inside the exec function.
+	if(total_cmd == 1 && exec_builtin(ac, av, shell))
+		return(-1);//-1 is returned because no child process is created
+
+
+	//pipe creation and forking starts here!
 	pipe(fd);
 	pid_t pid = fork(); 
-
 	// Both child and parent will start execution from here.
 	if(pid < 0) 
 	{
 		ft_fprintf(2, "Error creating child");
+		return (-1);//-1 is returned because no child process is created
 	}
 	else if(pid == 0) 
 	{
 		//Child
 		
-		//in case of no pipes + the command is builtin -> no fork;
-		if(total_cmd == 1 && exec_builtin(ac, av, shell))
-			return;
 		
 		//first command case
 		if(cmd_n == 1)
@@ -65,7 +70,8 @@ void	execute(char *line, int ac, char **av, t_shell *shell, int *prev_read_fd, i
 			perror("Command not found");
 			exit(127);
 		}
-
+		
+		return (pid);
 	}
 	else 
 	{
@@ -77,6 +83,7 @@ void	execute(char *line, int ac, char **av, t_shell *shell, int *prev_read_fd, i
 		close(fd[1]);
 		if(cmd_n == total_cmd)
 			close(*prev_read_fd);
+		return(pid);
 	}
 }
 
@@ -86,6 +93,8 @@ void    loop(t_shell *shell)
 	int	total_cmd = 4;
 	int	prev_read_fd = -1; 
 	int	cmd_n = 1;
+	pid_t	pid;
+	pid_t	last_pid;
 
 	//hardcoded cmd1_ac to execute builtin
 	int	cmd1_ac = 2;
@@ -93,28 +102,39 @@ void    loop(t_shell *shell)
 
 
 
-	//Hardcoded Command: echo "Builtin esta ejecutandose con exito" | grep exito | sort -r | cat -e
+	//Hardcoded Command: echo "Testing minishell" | cat -e | ls /not_found | grep minishell
 	char **cmds_av[4];
-	cmds_av[0] = (char *[]){"echo", "Builtin esta ejecutandose con exito", NULL};
-	cmds_av[1] = (char *[]){"grep", "exito", NULL};
-	cmds_av[2] = (char *[]){"sort", "-r", NULL};
-	cmds_av[3] = (char *[]){"cat", "-e", NULL};
+
+	cmds_av[0] = (char *[]){"echo", "Testing minishell", NULL};
+	cmds_av[1] = (char *[]){"cat", "-e", NULL};
+	cmds_av[2] = (char *[]){"ls", "/not_found", NULL};
+	cmds_av[3] = (char *[]){"grep", "minishell", NULL};
 
 	while(cmd_n <= total_cmd)
 	{
 		//cmd_n - 1 is needed because cmds_av is looking for an INDEX in the array not the raw cmd number (starts from 1)
 		line = get_line_to_exec(cmds_av[cmd_n - 1][0], shell->env);
-		execute(line, cmd1_ac ,cmds_av[cmd_n - 1], shell, &prev_read_fd, cmd_n, total_cmd);
+		pid = execute(line, cmd1_ac ,cmds_av[cmd_n - 1], shell, &prev_read_fd, cmd_n, total_cmd);
 		if(line)
 			free(line);
+		if(cmd_n == total_cmd)
+			last_pid = pid;
 		cmd_n++;
 	}
 
+	int status;
+	waitpid(last_pid, &status, 0);
+
+	if (WIFEXITED(status))
+		shell->last_exit_code = WEXITSTATUS(status);
+	
 	int i = -1;
 	while(++i < total_cmd)
 	{
 		wait(NULL);
 	}
+	printf("Command executed: echo Testing minishell | cat -e | ls /not_found | grep minishell\n");
+	printf("\nLast exit code: %d\n", shell->last_exit_code);
 }	
 	
 	
