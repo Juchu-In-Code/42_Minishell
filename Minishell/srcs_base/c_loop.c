@@ -63,6 +63,8 @@ static int	open_append(char *filename)
 	return (file_output);
 }
 
+//redirect returns false when some problem on opening is spot
+//in happy redirection scenario -> true is returned
 static	bool	redirect(t_redir_type redir_type, char* file_name)
 {
 	ssize_t fd;
