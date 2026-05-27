@@ -23,6 +23,7 @@
 # include <string.h>
 # include <stdint.h>
 # include <limits.h>
+# include <fcntl.h>
 # include <stdbool.h>
 # include <termios.h>
 # include <readline/readline.h>
