@@ -28,6 +28,60 @@ typedef struct redir
 	t_redir_type	type;
 } t_redir;
 
+//this function generates a name for each heredoc.
+//i is static to maintain the heredoc file number;
+char *get_temp_name()
+{
+	static int	i;
+	char		*name;
+	char		*num;
+
+	i = 0;
+	num = ft_itoa(i++);
+	name = ft_strjoin("/tmp/.minishell_heredoc_", num);
+	free(num);
+	return (name);
+}
+
+
+// this function handles the heredoc and converts it into a simple imput redirection;
+// function returns a filename to store into cmd struct and mark it as INPUT redirection;
+char	*process_heredoc(char *delimiter)
+{
+	char	*filename;
+	char	*input;
+	int	fd;
+
+	//filename is heapallocated;
+	//beware memory leaks;
+	filename = get_temp_name();
+
+	//TODO: check for incorrect permitions;
+	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if(fd < 0)
+	{
+		free(filename);
+		return(NULL);
+	}
+
+	while(1337)
+	{
+		input = readline("> ");
+
+		if(!input || ft_strcmp(input, delimiter) == 0)
+		{
+			free(input);
+			break;
+		}
+
+		write(fd, input, ft_strlen(input));
+		write(fd, "\n", 1);
+		free(input);
+	}
+	close(fd);
+	return (filename);
+}
+
 
 static int	open_input(char *filename)
 {
@@ -131,6 +185,7 @@ pid_t	execute(char *line, int ac, char **av, t_shell *shell, int *prev_read_fd, 
 
 	//in case of no pipes + the command is builtin -> no fork;
 	//last exit code is handeled inside the exec function.
+	//TODO:HANDLE REDIRECTIONS IN THIS CASE
 	if(total_cmd == 1 && exec_builtin(ac, av, shell))
 		return(-1);//-1 is returned because no child process is created
 
