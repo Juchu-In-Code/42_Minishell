@@ -9,138 +9,7 @@
 /*   Updated: 2025/06/16 17:39:57 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "z_minishell.h"
-//TODO: IMPLEMENT A MOCK DATA AND CHECK ALL REDIRECTIONS.
-//TODO: ACCESS AFTER OPEN MAY GIVE ME A RACE CONDITION.
-
-
-typedef enum e_redir_type
-{
-	INPUT,
-	OUTPUT,
-	APPEND
-} t_redir_type;
-
-typedef struct redir
-{
-	char*	file_name;
-	t_redir_type	type;
-} t_redir;
-
-//this function generates a name for each heredoc.
-//i is static to maintain the heredoc file number;
-char *get_temp_name()
-{
-	static int	i;
-	char		*name;
-	char		*num;
-
-	i = 0;
-	num = ft_itoa(i++);
-	name = ft_strjoin("/tmp/.minishell_heredoc_", num);
-	free(num);
-	return (name);
-}
-
-
-// this function handles the heredoc and converts it into a simple imput redirection;
-// function returns a filename to store into cmd struct and mark it as INPUT redirection;
-char	*process_heredoc(char *delimiter)
-{
-	char	*filename;
-	char	*input;
-	int	fd;
-
-	//filename is heapallocated;
-	//beware memory leaks;
-	filename = get_temp_name();
-
-	//TODO: check for incorrect permitions;
-	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if(fd < 0)
-	{
-		free(filename);
-		return(NULL);
-	}
-
-	while(1337)
-	{
-		input = readline("> ");
-
-		if(!input || ft_strcmp(input, delimiter) == 0)
-		{
-			free(input);
-			break;
-		}
-
-		write(fd, input, ft_strlen(input));
-		write(fd, "\n", 1);
-		free(input);
-	}
-	close(fd);
-	return (filename);
-}
-
-
-static int	open_input(char *filename)
-{
-	if ((access(filename, F_OK) == 0) && (access(filename, R_OK) == 0))
-		return (open(filename, O_RDONLY));
-	ft_fprintf(STDERR_FILENO, "cannot open %s", filename);
-	return (-1);
-}
-
-static int	open_output(char *filename)
-{
-	int	file_output;
-
-	file_output = open(filename, O_WRONLY | O_TRUNC | O_CREAT, 0664);
-	if (access(filename, F_OK | W_OK) < 0)
-	{
-		ft_fprintf(STDERR_FILENO, "cannot open %s", filename);
-		return (-1);
-	}
-	return (file_output);
-}
-
-static int	open_append(char *filename)
-{
-	int	file_output;
-
-	file_output = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0664);
-	if (access(filename, F_OK | W_OK) < 0)
-	{
-		ft_fprintf(STDERR_FILENO, "cannot open %s", filename);
-		return (-1);
-	}
-	return (file_output);
-}
-
-//redirect returns false when some problem on opening is spot
-//in happy redirection scenario -> true is returned
-static	bool	redirect(t_redir_type redir_type, char* file_name)
-{
-	ssize_t fd;
-
-	if(redir_type == OUTPUT)
-		fd = open_output(file_name);
-	else if(redir_type == APPEND)
-		fd = open_append(file_name);
-	else //INPUT or HEREDOC
-		fd = open_input(file_name);
-
-	if(fd == -1)
-		return(false);
-
-	if(redir_type == OUTPUT || redir_type == APPEND)
-		dup2(fd, STDOUT_FILENO);
-	else
-		dup2(fd, STDIN_FILENO);
-
-	close(fd);
-	return(true);
-}
 
 static	t_list *create_mock_redirs()
 {
@@ -227,24 +96,8 @@ pid_t	execute(char *line, int ac, char **av, t_shell *shell, int *prev_read_fd, 
 		//but parent needs it to pass it to the next child process
 		close(fd[0]);
 
-		//---------REDIRECTS should be a helper func----------------------
-		t_item  *current_node;
-		t_redir *redir_data;
-
-		if (redirs)
-			current_node = redirs->head;
-		else
-			current_node = NULL;
-
-		while (current_node != NULL)
-		{
-			redir_data = (t_redir *)current_node->data;
-
-			if (redirect(redir_data->type, redir_data->file_name) == false)
-				exit(1); 
-
-			current_node = current_node->next;
-		}
+		//---------REDIRECTS are happening here ----------------------
+		handle_redirections(redirs);
 		//---------REDIRECTS helper func END----------------------
 
 		//returns false if not a builtin

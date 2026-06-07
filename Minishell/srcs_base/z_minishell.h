@@ -15,7 +15,7 @@
 
 # include <stdio.h>
 # include <sys/stat.h>
-#include <sys/wait.h>
+# include <sys/wait.h>
 # include <stdlib.h>
 # include <signal.h>
 # include <sys/types.h>
@@ -73,6 +73,15 @@
 /* ================================== */
 
 
+//redirections enum
+typedef enum e_redir_type
+{
+	INPUT,
+	OUTPUT,
+	APPEND
+} t_redir_type;
+
+
 // mejorar el num de tok esperado
 // pensar en segregar en varios defines?
 typedef enum e_tokt
@@ -98,6 +107,12 @@ typedef enum e_tokt
 /*  ___) | |_| |  | |_| | (__| |_\__ \ */
 /* |____/ \__|_|   \__,_|\___|\__|___/ */
 /* =================================== */
+
+typedef struct redir
+{
+	char*	file_name;
+	t_redir_type	type;
+} t_redir;
 
 typedef struct s_env
 {
@@ -176,6 +191,10 @@ void signal_setup();
 
 //execution
 char     *get_line_to_exec(char *key, t_list *env);
+
+//redirections
+void	handle_redirections(t_list *redirs);
+char	*process_heredoc(char *delimiter);
 
 // builtins
 bool	exec_builtin(int ac, char **av, t_shell *shell);
