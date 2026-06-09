@@ -57,8 +57,8 @@
 # define ERR	2
 
 //	pipes IO
-# define PWRITE		0
-# define PREAD		1
+# define PREAD		0
+# define PWRITE		1
 
 //	token ops
 //	NOTE: tratemos de matchear esto con t_tokt
@@ -108,7 +108,23 @@ typedef enum e_tokt
 /* |____/ \__|_|   \__,_|\___|\__|___/ */
 /* =================================== */
 
-typedef struct redir
+// seguro se necesita una similar para builtins
+/* redefined
+typedef struct s_cmd {
+	char			**args;		// [0] es command, **args termina en NULL
+	ssize_t			io[2];		// o struct de fds con extra info?
+	uint8_t			state;
+}	t_cmd;
+*/
+typedef struct s_cmd
+{
+	char	*exec_path;
+	char	**av;
+	int	ac;
+	t_list	*redirs;
+} t_cmd;
+
+typedef struct s_redir
 {
 	char*	file_name;
 	t_redir_type	type;
@@ -120,12 +136,6 @@ typedef struct s_env
 	uint8_t			state;
 }	t_env;
 
-// seguro se necesita una similar para builtins
-typedef struct s_cmd {
-	char			**args;		// [0] es command, **args termina en NULL
-	ssize_t			io[2];		// o struct de fds con extra info?
-	uint8_t			state;
-}	t_cmd;
 
 // crear slice type?
 typedef struct s_tok {
