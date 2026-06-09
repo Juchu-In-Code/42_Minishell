@@ -112,7 +112,9 @@ typedef struct s_cmd {
 
 // crear slice type?
 typedef struct s_tok {
-	//placeholder
+	t_tokt type;
+	size_t pos; 
+	size_t size;
 }	t_tok;
 
 typedef struct s_tok_ctrl {
