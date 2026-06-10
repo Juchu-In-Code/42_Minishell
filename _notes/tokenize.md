@@ -60,6 +60,7 @@
 
     quotes y strings:
         la primera en encontrarse al iniciar un contexto, es tomada como un comando
+    
         al seguir una redir, se asigna a esta
 
     al encontrar un pipe:
@@ -85,6 +86,21 @@
 
      a string starting a job becomes a command (which can be either an executable
      of after a pipe asks where to read and send information to
+
+--------------
+
+    toks de dobq y sinq podrían guardar la pos de la parte que se necesita escribir? o solo 1+ al ppo y -1 al final?
+    contar la cantidad de pipes cuando me encuentro uno sintácticamente válido, entre cada uno, se crean los segmentos para consumir
+    cada segmento va a tener su lista de redirs,
+    es posible que se cuente o guarde la pos de cada uno de esos
+    
+    cada 
+    cuando se expanden los segmentos que contengan $VARS se toma solo como texto plano sin funcionalidad
+    cuando se colapsen las comillas dobles y simples
+    
+    al crear la cadena de texto a ejecutar,
+
+--------------
 
                              ___ ___
                             |__ \__ \

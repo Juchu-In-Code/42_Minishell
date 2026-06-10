@@ -99,6 +99,8 @@ bool	tokenize(t_shell *shell, char *input)
 			|| tokenize_ops(&token, input, &i)
 			|| tokenize_string(&token, input, &i))
 			list_insert_tail(shell->tokens, token);
+		else
+		 return (false);
 	}
 	list_insert_tail(shell->tokens, create_token(id_fin, i, 0));
 	return (true);

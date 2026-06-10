@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/12 20:12:17 by jgalizio         ###   ########.fr       */
+/*   Updated: 2026/06/06 22:20:21 by juchu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,11 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	char			**args;
 	ssize_t			io[2];
-	uint8_t			state;
+	t_list			*hdocs;
+	t_list			*redirs;
+	t_list			*args;
+	char			**final_args;
 }	t_cmd;
 
 typedef struct s_tok
@@ -125,17 +127,19 @@ typedef struct s_tok
 	t_tokt			type;
 	size_t			pos;
 	size_t			size;
+	uint8_t			state;
 }	t_tok;
+
+typedef struct s_redir
+{
+	t_tokt			redir_type;
+	t_tok			target;
+}	t_redir;
 
 typedef struct s_tok_ctrl
 {
 	char			*input;
 }	t_tok_ctrl;
-
-typedef struct 
-{
-	char			*input;
-}	t_tokkkk;
 
 typedef struct s_shell
 {
@@ -143,6 +147,8 @@ typedef struct s_shell
 	unsigned char	last_exit_code;
 	t_list			*env;
 	t_list			*tokens;
+	t_cmd			*cmds;
+	int				pipe_count;
 	t_env			*qenv[3];
 	ssize_t			bkstd[3];
 	struct termios	termios;
@@ -201,16 +207,13 @@ int		ft_exit(int ac, char **av, t_shell* shell);
 int		ft_env(int ac, char **av, t_shell* shell);
 int 	ft_unset(int ac, char **av, t_shell *shell);
 
-/*/ tokenize
-bool	tokenize(t_shell *shell, char *input);
-void	debug_tokens(t_list *token_list, char *input);
-void	token_syntax_checker(t_list *token_list, char *input);
-*/
 // tokenize
 bool	tokenize(t_shell *shell, char *input);
 void	__debug_tokens(t_list *token_list, char *input);
 void	debug_tokens(t_list *token_list, char *input);
-void	token_syntax_checker(t_list *token_list, char *input);
+int		token_syntax_checker(t_list *token_list, char *input);
+bool	assemble_cmds(t_shell *shell);
+t_tok	*create_token(t_tokt type, size_t i, size_t size);
 
 // utils
 void	put_char_range(char c, int len, char *color);
@@ -222,10 +225,5 @@ bool	is_quoted(t_tokt t);
 //cleanup
 void free_env_entry(void *env_entry);
 void cleanup(t_shell *shell);
-
-
-
-bool	is_redir(t_tokt t);
-bool	is_quoted(t_tokt t);
 
 #endif

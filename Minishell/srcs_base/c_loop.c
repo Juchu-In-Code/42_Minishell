@@ -27,7 +27,9 @@ void	loop(t_shell *shell)
 		tokenize(shell, input);
 		if (*input)
 			debug_tokens(shell->tokens, input);
-		token_syntax_checker(shell->tokens, input);
+		shell->pipe_count = token_syntax_checker(shell->tokens, input);
+		assemble_cmds(shell);
+
 		if(ac)
 		{
 			//it's a boolean function (true on detected builtin)	
