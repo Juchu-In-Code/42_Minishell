@@ -12,6 +12,13 @@
 
 #include "z_minishell.h"
 
+char *token_to_string(t_tok *token, char *raw_line)
+{
+	char	*token_str;
+	token_str = ft_substr(raw_line, token->pos, token->size);
+	return(token_str);
+}
+
 bool is_expandable(t_tok *token, char *line)
 {
 	char	*dollar_sign;
@@ -56,7 +63,6 @@ void	loop(t_shell *shell)
 	input = NULL;
 	while (shell->is_active && ft_readline(&input))
 	{
-
 		char **av = ft_split(input, ' ');
 		int ac = ft_get_array_length(av);
 
