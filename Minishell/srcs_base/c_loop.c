@@ -45,7 +45,7 @@ t_tok	*get_mock_token()
 	if (!mock_token)
 		return (NULL);
 
-	mock_token->type = in;
+	mock_token->type = id_input;
 	mock_token->pos = 0;
 	mock_token->size = 11;
 

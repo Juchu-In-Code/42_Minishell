@@ -77,6 +77,20 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_RL)/,	\
 					readline.c	\
 					)
 
+BASE_DIR_TOK = $(BASE_DIR)/tokenize
+BASE_SRCS		+= $(addprefix $(BASE_DIR_TOK)/,	\
+					a_tokenize.c					\
+					b_interpreter.c					\
+					c_assemble_cmds.c				\
+					u_debug_tokens.c				\
+					u_verifications.c				\
+					)
+
+BASE_DIR_UTILS = $(BASE_DIR)/utils
+BASE_SRCS		+= $(addprefix $(BASE_DIR_UTILS)/,	\
+					line_indicator.c				\
+					)
+
 BASE_DIR_EXEC = $(BASE_DIR)/execution
 BASE_SRCS		+= $(addprefix $(BASE_DIR_EXEC)/, \
 					get_line_to_exec.c)

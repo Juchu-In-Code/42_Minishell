@@ -58,10 +58,18 @@
 # define PWRITE		0
 # define PREAD		1
 
-//	token ops
-//	NOTE: tratemos de matchear esto con t_tokt
-//			Adicionalmente, seguro se necesita otro para quotes y otros toks
-# define TOKEN_OPS "|<>()"
+//	tokens
+# define T_OPS		"|<->+"
+# define T_QTS		"\"\'"
+
+# define T_PIPE		0
+# define T_IN 		1
+# define T_HDOC		2
+# define T_OUT		3
+# define T_APP		4
+
+# define T_QDOB		0
+# define T_QSIN		1
 
 /*  ____        __ _                  */
 /* |  _ \  ___ / _(_)_ __   ___  ___  */
@@ -70,19 +78,26 @@
 /* |____/ \___|_| |_|_| |_|\___||___/ */
 /* ================================== */
 
-
-// mejorar el num de tok esperado
-// pensar en segregar en varios defines?
 typedef enum e_tokt
 {
-	pip,
-	in,
-	out,
-	app,
-	hdoc,
-	p_start,
-	p_end,
-	exec,
+	// Symbols
+	id_pipe,
+	id_input,
+	id_hdoc,
+	id_output,
+	id_append,
+	// Quotes
+	id_qdob,
+	id_qsin,
+	// Strings
+	id_string,
+	// Subshells
+	id_pstart,
+	id_pend,
+	// Errors
+	id_err_tok,
+	// Control
+	id_fin
 }	t_tokt;
 
 // definir controles de estado?
@@ -103,35 +118,41 @@ typedef struct s_env
 	uint8_t			state;
 }	t_env;
 
-// seguro se necesita una similar para builtins
-typedef struct s_cmd {
-	char			**args;		// [0] es command, **args termina en NULL
-	ssize_t			io[2];		// o struct de fds con extra info?
-	uint8_t			state;
+typedef struct s_cmd
+{
+	ssize_t			io[2];
+	t_list			*hdocs;
+	t_list			*redirs;
+	t_list			*args;
+	char			**final_args;
 }	t_cmd;
 
-// crear slice type?
-typedef struct s_tok {
-	t_tokt type;
-	size_t pos; 
-	size_t size;
+typedef struct s_tok
+{
+	t_tokt			type;
+	size_t			pos;
+	size_t			size;
+	uint8_t			state;
 }	t_tok;
 
-typedef struct s_tok_ctrl {
-	//placeholder
-	char			*input;		// si no se le agrega más que ctrl sea solo input
-}	t_tok_ctrl;
+typedef struct s_redir
+{
+	t_tokt			redir_type;
+	t_tok			target;
+}	t_redir;
 
-typedef struct s_shell {
+
+typedef struct s_shell
+{
 	bool			is_active;
 	unsigned char	last_exit_code;
 	t_list			*env;
-	t_list			*tokens;	// se podría agregar qenv o path a un ctrl
-	t_env			*qenv[3];	// revisar, quizás se puede reformatear?
-	ssize_t			bkstd[3];	// revisar bien cuando usarlo
-	struct termios	termios;	// revisar bien para que darle uso
-	// last command tokens
-	// info / state
+	t_list			*tokens;
+	t_cmd			*cmds;
+	int				pipe_count;
+	t_env			*qenv[3];
+	ssize_t			bkstd[3];
+	struct termios	termios;
 }	t_shell;
 
 typedef int (*t_builtin_fn)(int ac, char **av, t_shell *shell);
@@ -186,6 +207,21 @@ int		ft_cd(int ac, char **av, t_shell* shell);
 int		ft_exit(int ac, char **av, t_shell* shell);
 int		ft_env(int ac, char **av, t_shell* shell);
 int 	ft_unset(int ac, char **av, t_shell *shell);
+
+// tokenize
+bool	tokenize(t_shell *shell, char *input);
+void	__debug_tokens(t_list *token_list, char *input);
+void	debug_tokens(t_list *token_list, char *input);
+int		token_syntax_checker(t_list *token_list, char *input);
+bool	assemble_cmds(t_shell *shell);
+t_tok	*create_token(t_tokt type, size_t i, size_t size);
+
+// utils
+void	put_char_range(char c, int len, char *color);
+void	put_debug_indicator(char *input, int start, int len);
+
+bool	is_redir(t_tokt t);
+bool	is_quoted(t_tokt t);
 
 //cleanup
 void free_env_entry(void *env_entry);

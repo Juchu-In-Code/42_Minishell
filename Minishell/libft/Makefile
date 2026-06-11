@@ -6,7 +6,7 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 14:34:08 by jgalizio          #+#    #+#              #
-#    Updated: 2025/06/28 16:13:53 by viaremko         ###   ########.fr        #
+#    Updated: 2025/07/02 17:11:42 by jgalizio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,10 @@ MODULES			+= $(addprefix $(DIR_IO)/,		\
 					)
 
 MODULES			+= $(addprefix $(DIR_LIST)/,	\
-					linked.c					\
+					list_create.c				\
+					list_free.c					\
+					list_insert.c				\
+					list_remove.c				\
 					)
 
 MODULES			+= $(addprefix $(DIR_MEM)/,		\

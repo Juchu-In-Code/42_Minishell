@@ -55,7 +55,7 @@ bool	clone_env(t_shell *shell, char **env)
 	t_env	*entry;
 	int		i;
 
-	shell->env = list_create();
+	shell->env = list_create(NULL);
 	if (!shell->env)
 		return (false);
 	if (!env || !*env)
