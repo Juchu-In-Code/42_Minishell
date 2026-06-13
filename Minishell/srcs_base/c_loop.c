@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "z_minishell.h"
+//TODO:refactor execution + redirections integration;
 
 pid_t	execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 {
@@ -130,7 +131,6 @@ void	execution_pipeline(t_shell *shell, char *input)
 
 	if (WIFEXITED(status))
 		shell->last_exit_code = WEXITSTATUS(status);
-	
 	i = -1;
 	while(++i < shell->pipe_count)
 	{
