@@ -34,8 +34,6 @@ char	*get_path(char *dir_path, t_list *env)
 	else if (chdir(dir_path) != 0)
 	{
 		perror("minishell: cd");
-		if (dir_path)
-			free(dir_path);
 		return (NULL);
 	}
 	return (getcwd(NULL, 0));

@@ -72,6 +72,12 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
 					ft_unset.c\
 					)
 
+BASE_DIR_REDIR = $(BASE_DIR)/redirections
+BASE_SRCS		+= $(addprefix $(BASE_DIR_REDIR)/,	\
+					redirections.c	\
+					heredoc.c	\
+					)
+
 BASE_DIR_RL = $(BASE_DIR)/readline
 BASE_SRCS		+= $(addprefix $(BASE_DIR_RL)/,	\
 					readline.c	\

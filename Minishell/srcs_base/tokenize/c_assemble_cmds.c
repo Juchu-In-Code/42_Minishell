@@ -24,6 +24,7 @@ void	create_cmd_lists(t_cmd	*cmd)
 	cmd->hdocs = list_create(NULL);
 	cmd->redirs = list_create(NULL);
 	cmd->args = list_create(NULL);
+	cmd->ac = 0;
 }
 
 bool	assemble_cmds(t_shell *shell)
@@ -58,6 +59,7 @@ bool	assemble_cmds(t_shell *shell)
 		if (is_quoted(token->type) || token->type == id_string)
 		{
 			list_insert_tail(shell->cmds[cmd].args, token);
+			shell->cmds[cmd].ac++;
 		}
 		if (token->type == id_pipe)
 		{

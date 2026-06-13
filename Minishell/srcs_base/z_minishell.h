@@ -18,6 +18,7 @@
 # include <sys/stat.h>
 # include <stdlib.h>
 # include <signal.h>
+# include <sys/wait.h>
 # include <sys/types.h>
 # include <unistd.h>
 # include <string.h>
@@ -56,8 +57,8 @@
 # define ERR	2
 
 //	pipes IO
-# define PWRITE		0
-# define PREAD		1
+# define PWRITE		1
+# define PREAD		0
 
 //	tokens
 # define T_OPS		"|<->+"
@@ -134,6 +135,7 @@ typedef struct s_cmd
 	t_list			*redirs;
 	t_list			*args;
 	char			**final_args;
+	int			ac;
 }	t_cmd;
 
 typedef struct s_tok
