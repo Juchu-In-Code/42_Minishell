@@ -56,3 +56,20 @@ bool exec_builtin(int ac, char **av, t_shell *shell)
 	}
 	return false;
 }
+
+bool is_builtin(char **av)
+{
+	const t_builtin *builtins = builtin_setup();
+	int i = 0;
+
+	if (!av || !av[0] || !av[0][0])
+		return false; 
+
+	while(builtins[i].name != NULL)
+	{
+		if(ft_strcmp(av[0], builtins[i].name) == 0)
+			return true;
+		i++;
+	}
+	return false;
+}

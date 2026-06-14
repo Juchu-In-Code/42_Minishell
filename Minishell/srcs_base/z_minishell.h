@@ -203,10 +203,11 @@ char     *get_line_to_exec(char *key, t_list *env);
 void	execution_pipeline(t_shell *shell, char *input);
 
 //redirections
-void	handle_redirections(t_list *redirs);
+bool	handle_redirections(t_list *redirs);
 char	*process_heredoc(char *delimiter);
 
 // builtins
+bool	is_builtin(char **av);
 bool	exec_builtin(int ac, char **av, t_shell *shell);
 int		ft_pwd(int ac, char **av, t_shell* shell);
 int		ft_echo(int ac, char **av, t_shell* shell);

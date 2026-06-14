@@ -15,9 +15,27 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 {
         int     fd[2];
         char    *path;
-        //TODO:handle 1 builtin with redirections(no child process);
+        /*TODO:handle 1 builtin with redirections(no child process);
         if(shell->pipe_count == 0 && exec_builtin(cmd->ac, cmd->final_args, shell))
-                return(-1);
+                return(-1);*/
+
+        if(shell->pipe_count == 0 && is_builtin(cmd->final_args))
+	{
+		int bk_in;
+		int bk_out;
+
+		bk_in = dup(STDIN_FILENO);
+		bk_out = dup(STDOUT_FILENO);
+
+		if(handle_redirections(cmd->redirs) == true)
+			exec_builtin(cmd->ac, cmd->final_args, shell);
+		dup2(bk_in, STDIN_FILENO);
+		dup2(bk_out, STDOUT_FILENO);
+
+		close(bk_in);
+		close(bk_out);
+		return(-1);
+	}
 
         pipe(fd);
         pid_t pid = fork();
@@ -41,7 +59,8 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
                 close(fd[PWRITE]);
                 close(fd[PREAD]);
                 //TODO:handle redirections until executing
-		handle_redirections(cmd->redirs);
+		if(handle_redirections(cmd->redirs) == false)
+			exit(1);
 
                 if(exec_builtin(cmd->ac, cmd->final_args, shell))
                         exit(0);

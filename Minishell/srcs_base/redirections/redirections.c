@@ -70,7 +70,7 @@ static	bool	redirect(t_tokt redir_type, char* file_name)
 	return(true);
 }
 
-void handle_redirections(t_list *redirs)
+bool handle_redirections(t_list *redirs)
 {
 	t_item  *current_node;
 	t_redir *redir_data;
@@ -85,8 +85,9 @@ void handle_redirections(t_list *redirs)
 		redir_data = (t_redir *)current_node->data;
 
 		if (redirect(redir_data->redir_type, redir_data->file_name) == false)
-			exit(1); 
+			return(false);
 
 		current_node = current_node->next;
 	}
+	return(true);
 }
