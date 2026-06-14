@@ -19,7 +19,6 @@ static char *get_temp_name()
 	char		*name;
 	char		*num;
 
-	i = 0;
 	num = ft_itoa(i++);
 	name = ft_strjoin("/tmp/.minishell_heredoc_", num);
 	free(num);

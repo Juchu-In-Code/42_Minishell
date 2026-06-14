@@ -97,12 +97,22 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input)
 {
         t_item  *curr;
         t_redir   *redir;
+	char	*delimiter;
 
         curr = cmd->redirs->head;
         while(curr != NULL)
         {
                 redir = (t_redir*)curr->data;
-                redir->file_name = token_to_string(&redir->target, raw_input);
+		if(redir->redir_type == id_hdoc)
+		{
+			delimiter = token_to_string(&redir->target, raw_input);
+				
+			printf("DEBUG: delimiter -> %s\n", delimiter);
+			redir->file_name = process_heredoc(delimiter);
+			free(delimiter);
+		}
+		else
+			redir->file_name = token_to_string(&redir->target, raw_input);
                 curr = curr->next;
         }
 }
