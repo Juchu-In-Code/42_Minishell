@@ -94,12 +94,15 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_TOK)/,	\
 
 BASE_DIR_UTILS = $(BASE_DIR)/utils
 BASE_SRCS		+= $(addprefix $(BASE_DIR_UTILS)/,	\
-					line_indicator.c				\
+					line_indicator.c	\
+					token_utils.c 		\
 					)
 
 BASE_DIR_EXEC = $(BASE_DIR)/execution
-BASE_SRCS		+= $(addprefix $(BASE_DIR_EXEC)/, \
-					get_line_to_exec.c)
+BASE_SRCS		+= $(addprefix $(BASE_DIR_EXEC)/, 		\
+					get_line_to_exec.c 		\
+					execute.c			\
+					)
 
 BONUS_SRCS		= $(addprefix $(BONUS_DIR)/,	\
 					)

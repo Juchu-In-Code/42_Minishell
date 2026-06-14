@@ -1,4 +1,17 @@
-pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: viaremko <viaremko@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/26 14:06:12 by viaremko          #+#    #+#             */
+/*   Updated: 2025/07/26 14:13:33 by viaremko         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+#include "../z_minishell.h"
+
+static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 {
         int     fd[2];
         char    *path;
@@ -15,26 +28,16 @@ pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
         }
         else if(pid == 0)
         {
-		//child process
-                if(shell->pipe_count == 0)
-                {
+                //every command have to redirect input except the first one
+                if(i != 0)
+                        dup2(*prev_read_fd, STDIN_FILENO);
+                //every command have to redirect output except the last one
+                if(i != shell->pipe_count)
+                        dup2(fd[PWRITE], STDOUT_FILENO);
 
-                }
-                else if(i == 0)
-                {
-                        dup2(fd[PWRITE], STDOUT_FILENO);
-                }
-                else if(i == shell->pipe_count)
-                {
-                        dup2(*prev_read_fd, STDIN_FILENO);
-                }
-                else
-                {
-                        dup2(*prev_read_fd, STDIN_FILENO);
-                        dup2(fd[PWRITE], STDOUT_FILENO);
-                }
                 if(i != 0)
                         close(*prev_read_fd);
+
                 close(fd[PWRITE]);
                 close(fd[PREAD]);
                 //TODO:handle redirections until executing
@@ -55,11 +58,9 @@ pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
                         free(path);
                         exit(126);
                 }
-                return (pid);
         }
         else
         {
-		//wait for childs
                 if(i != 0)
                         close(*prev_read_fd);
                 *prev_read_fd = fd[PREAD];
@@ -68,4 +69,58 @@ pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
                         close(*prev_read_fd);
                 return(pid);
         }
+}
+
+static void    fill_cmds_argv(t_cmd *cmd, char *raw_input)
+{
+        t_item  *curr;
+        t_tok   *tok;
+        int     i;
+
+        cmd->final_args = malloc(sizeof(char *) * (cmd->ac + 1));
+        if(!cmd->final_args)
+                return;
+        curr = cmd->args->head;
+        i = 0;
+        while(curr != NULL)
+        {
+                tok = (t_tok*)curr->data;
+                cmd->final_args[i] = token_to_string(tok, raw_input);
+                curr = curr->next;
+                i++;
+        }
+        cmd->final_args[i] = NULL;
+}
+
+void    execution_pipeline(t_shell *shell, char *input)
+{
+        int     prev_read;
+        int     i;
+        pid_t   last_pid;
+        pid_t   pid;
+        int status;
+
+        i = -1;
+        prev_read = -1;
+        last_pid = -1;
+        while(++i <= shell->pipe_count)
+        {
+                fill_cmds_argv(&shell->cmds[i], input);
+                pid = execute(&shell->cmds[i], shell, &prev_read, i);
+                last_pid = pid;
+        }
+	if(last_pid != -1)
+	{
+		//explicitly waiting for the last process
+		waitpid(last_pid, &status, 0);
+
+		if (WIFEXITED(status))
+			shell->last_exit_code = WEXITSTATUS(status);
+		//waiting for the rest
+		i = -1;
+		while(++i < shell->pipe_count)
+		{
+			wait(NULL);
+		}
+	}
 }

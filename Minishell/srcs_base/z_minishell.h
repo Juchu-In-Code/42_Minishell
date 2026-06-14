@@ -211,6 +211,7 @@ void signal_setup();
 
 //execution
 char     *get_line_to_exec(char *key, t_list *env);
+void	execution_pipeline(t_shell *shell, char *input);
 
 //redirections
 void	handle_redirections(t_list *redirs);
@@ -237,6 +238,9 @@ t_tok	*create_token(t_tokt type, size_t i, size_t size);
 // utils
 void	put_char_range(char c, int len, char *color);
 void	put_debug_indicator(char *input, int start, int len);
+char	*token_to_string(t_tok *token, char *raw_line);
+bool	is_expandable(t_tok *token, char *line);
+
 
 bool	is_redir(t_tokt t);
 bool	is_quoted(t_tokt t);
