@@ -47,21 +47,21 @@ static int	open_append(char *filename)
 
 //redirect returns false when some problem on opening is spot
 //in happy redirection scenario -> true is returned
-static	bool	redirect(t_redir_type redir_type, char* file_name)
+static	bool	redirect(t_tokt redir_type, char* file_name)
 {
 	ssize_t fd;
 
-	if(redir_type == OUTPUT)
+	if(redir_type == id_output)
 		fd = open_output(file_name);
-	else if(redir_type == APPEND)
+	else if(redir_type == id_append)
 		fd = open_append(file_name);
-	else //INPUT or HEREDOC
+	else //if(redir_type == id_input || redir_type == id_hdoc)
 		fd = open_input(file_name);
 
 	if(fd == -1)
 		return(false);
 
-	if(redir_type == OUTPUT || redir_type == APPEND)
+	if(redir_type == id_output || redir_type == id_append)
 		dup2(fd, STDOUT_FILENO);
 	else
 		dup2(fd, STDIN_FILENO);
@@ -84,7 +84,7 @@ void handle_redirections(t_list *redirs)
 	{
 		redir_data = (t_redir *)current_node->data;
 
-		if (redirect(redir_data->type, redir_data->file_name) == false)
+		if (redirect(redir_data->redir_type, redir_data->file_name) == false)
 			exit(1); 
 
 		current_node = current_node->next;

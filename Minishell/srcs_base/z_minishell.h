@@ -80,14 +80,6 @@
 /* |____/ \___|_| |_|_| |_|\___||___/ */
 /* ================================== */
 
-//redirections enum
-typedef enum e_redir_type
-{
-	INPUT,
-	OUTPUT,
-	APPEND
-} t_redir_type;
-
 typedef enum e_tokt
 {
 	// Symbols
@@ -148,12 +140,9 @@ typedef struct s_tok
 
 typedef struct s_redir
 {
-	//cosas de Julian
 	t_tokt			redir_type;
 	t_tok			target;
-	//cosas de Lody
 	char*	file_name;
-	t_redir_type	type;
 }	t_redir;
 
 typedef struct s_shell

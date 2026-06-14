@@ -41,6 +41,7 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
                 close(fd[PWRITE]);
                 close(fd[PREAD]);
                 //TODO:handle redirections until executing
+		handle_redirections(cmd->redirs);
 
                 if(exec_builtin(cmd->ac, cmd->final_args, shell))
                         exit(0);
@@ -92,6 +93,20 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input)
         cmd->final_args[i] = NULL;
 }
 
+static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input)
+{
+        t_item  *curr;
+        t_redir   *redir;
+
+        curr = cmd->redirs->head;
+        while(curr != NULL)
+        {
+                redir = (t_redir*)curr->data;
+                redir->file_name = token_to_string(&redir->target, raw_input);
+                curr = curr->next;
+        }
+}
+
 void    execution_pipeline(t_shell *shell, char *input)
 {
         int     prev_read;
@@ -105,7 +120,8 @@ void    execution_pipeline(t_shell *shell, char *input)
         last_pid = -1;
         while(++i <= shell->pipe_count)
         {
-                fill_cmds_argv(&shell->cmds[i], input);
+		fill_cmds_argv(&shell->cmds[i], input);
+                fill_cmds_redirs(&shell->cmds[i], input);
                 pid = execute(&shell->cmds[i], shell, &prev_read, i);
                 last_pid = pid;
         }
