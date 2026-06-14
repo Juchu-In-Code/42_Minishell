@@ -50,7 +50,7 @@ bool	assemble_cmds(t_shell *shell)
 			list_insert_tail(shell->cmds[cmd].hdocs, create_red(*token, *nxt));
 			curr = curr->next;
 		}
-		if (is_redir(token->type))
+		if (is_redir(token->type) && !(token->type == id_hdoc))
 		{
 			nxt = curr->next->data;
 			list_insert_tail(shell->cmds[cmd].redirs, create_red(*token, *nxt));
