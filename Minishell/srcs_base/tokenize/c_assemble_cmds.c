@@ -21,7 +21,6 @@ t_redir	*create_red(t_tok source, t_tok target)
 
 void	create_cmd_lists(t_cmd	*cmd)
 {
-	cmd->hdocs = list_create(NULL);
 	cmd->redirs = list_create(NULL);
 	cmd->args = list_create(NULL);
 	cmd->ac = 0;
@@ -44,13 +43,7 @@ bool	assemble_cmds(t_shell *shell)
 	while (curr)
 	{
 		token = curr->data;
-		if (token->type == id_hdoc)
-		{
-			nxt = curr->next->data;
-			list_insert_tail(shell->cmds[cmd].hdocs, create_red(*token, *nxt));
-			curr = curr->next;
-		}
-		if (is_redir(token->type) && !(token->type == id_hdoc))
+		if (is_redir(token->type))
 		{
 			nxt = curr->next->data;
 			list_insert_tail(shell->cmds[cmd].redirs, create_red(*token, *nxt));

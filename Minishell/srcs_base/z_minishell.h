@@ -123,7 +123,6 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	ssize_t			io[2];
-	t_list			*hdocs;
 	t_list			*redirs;
 	t_list			*args;
 	char			**final_args;

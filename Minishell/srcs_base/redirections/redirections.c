@@ -9,7 +9,7 @@
 /*   Updated: 2026/06/06 07:35:16 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "z_minishell.h"
+#include "../z_minishell.h"
 
 static int	open_input(char *filename)
 {

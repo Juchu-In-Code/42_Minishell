@@ -9,7 +9,7 @@
 /*   Updated: 2026/06/06 07:35:16 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "z_minishell.h"
+#include "../z_minishell.h"
 
 //this function generates a name for each heredoc.
 //i is static to maintain the heredoc file number;
