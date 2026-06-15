@@ -95,6 +95,8 @@ bool	tokenize(t_shell *shell, char *input)
 	{
 		while (ft_isspace(input[i]))
 			i++;
+		if (!input[i])
+			break;
 		if (tokenize_qts(&token, input, &i)
 			|| tokenize_ops(&token, input, &i)
 			|| tokenize_string(&token, input, &i))
