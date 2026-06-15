@@ -9,7 +9,7 @@
 /*   Updated: 2025/06/16 17:39:57 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "z_minishell.h"
+#include "../z_minishell.h"
 
 char *token_to_string(t_tok *token, char *raw_line)
 {

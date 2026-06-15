@@ -36,15 +36,14 @@ bool	verify_token(t_tokt t, int *context)
 	return (true);
 }
 
-int	token_syntax_checker(t_list *token_list, char *input)
+bool	token_syntax_checker(t_shell *shell, t_list *token_list, char *input)
 {
 	t_item	*current;
 	t_tok	*token;
 	int		context;
-	int		pipe_count;
 
 	context = 1;
-	pipe_count = 0;
+	shell->pipe_count = 0;
 	current = token_list->head;
 	while (current)
 	{
@@ -57,10 +56,11 @@ int	token_syntax_checker(t_list *token_list, char *input)
 				printf(ANS_R" Unexpected token found, syntax error\n"ANS_RES);
 			else
 				printf(ANS_R"^ Unexpected end of line, syntax error\n"ANS_RES);
+			return(false);
 		}
 		if (token->type == id_pipe)
-			pipe_count++;
+			shell->pipe_count++;
 		current = current->next;
 	}
-	return (pipe_count);
+	return(true);
 }

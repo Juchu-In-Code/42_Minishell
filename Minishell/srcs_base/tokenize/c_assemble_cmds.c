@@ -1,8 +1,6 @@
 
 #include "../z_minishell.h"
 
-
-
 t_redir	*create_red(t_tok source, t_tok target)
 {
 	t_redir	*redir;

@@ -220,7 +220,7 @@ int 	ft_unset(int ac, char **av, t_shell *shell);
 bool	tokenize(t_shell *shell, char *input);
 void	__debug_tokens(t_list *token_list, char *input);
 void	debug_tokens(t_list *token_list, char *input);
-int		token_syntax_checker(t_list *token_list, char *input);
+bool	token_syntax_checker(t_shell *shell, t_list *token_list, char *input);
 bool	assemble_cmds(t_shell *shell);
 t_tok	*create_token(t_tokt type, size_t i, size_t size);
 

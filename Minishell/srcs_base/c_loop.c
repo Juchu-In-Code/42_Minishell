@@ -22,10 +22,9 @@ void	loop(t_shell *shell)
 		tokenize(shell, input);
 		if (*input)
 			debug_tokens(shell->tokens, input);
-		shell->pipe_count = token_syntax_checker(shell->tokens, input);
-		assemble_cmds(shell);
-		if(shell->cmds)
-			execution_pipeline(shell, input);
+		if(token_syntax_checker(shell, shell->tokens, input))
+			if (assemble_cmds(shell))
+				execution_pipeline(shell, input);
 		free(input);
 		input = NULL;
 	}
