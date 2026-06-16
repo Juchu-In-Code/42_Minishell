@@ -47,7 +47,9 @@ bool	assemble_cmds(t_shell *shell)
 			list_insert_tail(shell->cmds[cmd].redirs, create_red(*token, *nxt));
 			curr = curr->next;
 		}
-		if (is_quoted(token->type) || token->type == id_string)
+		if (is_quoted(token->type)
+			|| token->type == id_string
+			|| token->type == id_space)
 		{
 			list_insert_tail(shell->cmds[cmd].args, token);
 			shell->cmds[cmd].ac++;

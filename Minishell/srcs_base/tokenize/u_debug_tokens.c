@@ -18,7 +18,7 @@ static void	print_toktype(t_tokt toktype)
 		"PIPE", "REDIR_IN", "REDIR_HDOC",
 		"REDIR_OUT", "REDIR_APPEND", "DOUBLE_Q",
 		"SINGLE_Q", "STRING", "PAREN_L", "PAREN_R",
-		"SYNTAX_ERR", "FIN" };
+		"SYNTAX_ERR", "SPACE", "FIN" };
 
 	printf(ANS_Y" %s", toks[toktype]);
 }

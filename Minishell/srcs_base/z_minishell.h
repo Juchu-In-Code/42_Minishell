@@ -99,6 +99,7 @@ typedef enum e_tokt
 	// Errors
 	id_err_tok,
 	// Control
+	id_space,
 	id_fin
 }	t_tokt;
 
