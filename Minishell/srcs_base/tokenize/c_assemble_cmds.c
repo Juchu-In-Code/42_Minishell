@@ -28,7 +28,8 @@ bool	assemble_cmds(t_shell *shell)
 {
 	t_item	*curr;
 	t_tok	*token;
-	t_tok	*nxt;
+	t_item	*next_item;
+	t_tok	*next_tok;
 	int		cmd;
 
 	shell->cmds = ft_calloc(shell->pipe_count + 1, sizeof(t_cmd));
@@ -43,11 +44,17 @@ bool	assemble_cmds(t_shell *shell)
 		token = curr->data;
 		if (is_redir(token->type))
 		{
-			nxt = curr->next->data;
-			if(token->type == id_space)
-				nxt = curr->next->data;
-			list_insert_tail(shell->cmds[cmd].redirs, create_red(*token, *nxt));
-			curr = curr->next;
+			next_item = curr->next;
+			next_tok = next_item->data;
+			if(next_tok->type == id_space)
+			{
+				next_item = next_item->next;
+				next_tok = next_item->data;
+			}
+			list_insert_tail(shell->cmds[cmd].redirs, create_red(*token, *next_tok));
+			curr = next_item->next;
+			if (!curr)
+				break;
 		}
 		if (is_quoted(token->type)
 			|| token->type == id_string
