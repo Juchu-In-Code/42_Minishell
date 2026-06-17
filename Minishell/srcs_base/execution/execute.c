@@ -15,10 +15,7 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 {
         int     fd[2];
         char    *path;
-        /*TODO:handle 1 builtin with redirections(no child process);
-        if(shell->pipe_count == 0 && exec_builtin(cmd->ac, cmd->final_args, shell))
-                return(-1);*/
-
+        //1 builtin with redirections(no child process);
         if(shell->pipe_count == 0 && is_builtin(cmd->final_args))
 	{
 		int bk_in;
@@ -58,7 +55,7 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 
                 close(fd[PWRITE]);
                 close(fd[PREAD]);
-                //TODO:handle redirections until executing
+                //handle redirections until executing
 		if(handle_redirections(cmd->redirs) == false)
 			exit(1);
 
@@ -91,6 +88,8 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
         }
 }
 
+/*
+ * OLD fill_cmds
 static void    fill_cmds_argv(t_cmd *cmd, char *raw_input)
 {
         t_item  *curr;
@@ -110,6 +109,106 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input)
                 i++;
         }
         cmd->final_args[i] = NULL;
+}*/
+
+static void    fill_cmds_argv(t_cmd *cmd, char *raw_input)
+{
+	t_item  *curr;
+	t_tok   *tok;
+	int     i;
+	char    *part;
+	char    *temp;
+
+	cmd->final_args = malloc(sizeof(char *) * (cmd->ac + 1));
+	if(!cmd->final_args)
+		return;
+
+	i = -1;
+	while (++i <= cmd->ac)
+		cmd->final_args[i] = NULL;
+
+	curr = cmd->args->head;
+	i = 0;
+
+	while(curr != NULL)
+	{
+		tok = (t_tok*)curr->data;
+
+		//Space case:
+		if (tok->type == id_space)
+		{
+			if (cmd->final_args[i] != NULL)
+			i++;
+		}
+		//Normal string
+		else
+		{
+			//TODO: expand here
+			part = token_to_string(tok, raw_input);
+
+			// if part is NULL - in case of empty expanded var -> set it to "" 
+			if (!part)
+				part = ft_strdup("");
+
+			// first part
+			if (cmd->final_args[i] == NULL)
+			{
+				cmd->final_args[i] = part;
+			}
+			// other parts to join
+			else
+			{
+				temp = cmd->final_args[i];
+				cmd->final_args[i] = ft_strjoin(temp, part);
+
+				free(temp);
+				free(part);
+			}
+		}
+		curr = curr->next;
+	}
+
+	if (cmd->final_args[i] != NULL)
+		i++;
+	cmd->final_args[i] = NULL;
+}
+
+int    count_cmds_args(t_list *args)
+{
+	t_item  *curr;
+	t_tok   *tok;
+	int     count;
+	bool    has_content; 
+
+	if (!args || !args->head)
+		return (0);
+
+	count = 0;
+	has_content = false;
+	curr = args->head;
+
+	while (curr != NULL)
+	{
+		tok = (t_tok *)curr->data;
+
+		if (tok->type == id_space)
+		{
+			if (has_content == true)
+			{
+				count++;
+				has_content = false; 
+			}
+		}
+		else
+			has_content = true;
+
+		curr = curr->next;
+	}
+
+	if (has_content == true)
+		count++;
+
+	return (count);
 }
 
 static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input)
@@ -147,10 +246,13 @@ void    execution_pipeline(t_shell *shell, char *input)
         i = -1;
         prev_read = -1;
         last_pid = -1;
+	printf("DEBUG: Pipe count is %d\n", shell->pipe_count);
         while(++i <= shell->pipe_count)
         {
-		fill_cmds_argv(&shell->cmds[i], input);
-                fill_cmds_redirs(&shell->cmds[i], input);
+		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
+                fill_cmds_argv(&shell->cmds[i],input);
+		fill_cmds_redirs(&shell->cmds[i], input);
+
                 pid = execute(&shell->cmds[i], shell, &prev_read, i);
                 last_pid = pid;
         }

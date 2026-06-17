@@ -49,7 +49,10 @@ bool	token_syntax_checker(t_shell *shell, t_list *token_list, char *input)
 	{
 		token = current->data;
 		if (token->type == id_space)
+		{
 			current = current->next;
+			token = current->data;
+		}
 		if (token->type == id_err_tok || !verify_token(token->type, &context))
 		{
 			printf("\nMinishell:\n");

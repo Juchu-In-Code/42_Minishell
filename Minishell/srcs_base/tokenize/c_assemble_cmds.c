@@ -44,6 +44,8 @@ bool	assemble_cmds(t_shell *shell)
 		if (is_redir(token->type))
 		{
 			nxt = curr->next->data;
+			if(token->type == id_space)
+				nxt = curr->next->data;
 			list_insert_tail(shell->cmds[cmd].redirs, create_red(*token, *nxt));
 			curr = curr->next;
 		}
@@ -52,7 +54,6 @@ bool	assemble_cmds(t_shell *shell)
 			|| token->type == id_space)
 		{
 			list_insert_tail(shell->cmds[cmd].args, token);
-			shell->cmds[cmd].ac++;
 		}
 		if (token->type == id_pipe)
 		{

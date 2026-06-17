@@ -110,8 +110,7 @@ int	ft_export(int ac, char **av, t_shell *shell)
 	int	i;
 	int	ret_val;
 	
-	(void)ac;
-	if (!av[0])
+	if (ac == 1)
 	{
 		print_env_list(shell->env, "declare -x ");
 		return (0);
