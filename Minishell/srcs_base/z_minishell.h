@@ -202,6 +202,9 @@ void signal_setup();
 char     *get_line_to_exec(char *key, t_list *env);
 void	execution_pipeline(t_shell *shell, char *input);
 
+//expansion
+char *expand(char *str, t_shell *shell);
+
 //redirections
 bool	handle_redirections(t_list *redirs);
 char	*process_heredoc(char *delimiter);

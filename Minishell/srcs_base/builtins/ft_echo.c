@@ -16,6 +16,10 @@ static bool	is_dash_n(char *str, char n)
 {
 	int	i;
 
+	if (!str || str[0] != '-')
+		return (false);
+	if (str[1] == '\0')
+		return (false);
 	i = 1;
 	while (str[i])
 	{

@@ -103,6 +103,10 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_EXEC)/, 		\
 					get_line_to_exec.c 		\
 					execute.c			\
 					)
+BASE_DIR_EXPA = $(BASE_DIR)/expansion
+BASE_SRCS		+= $(addprefix $(BASE_DIR_EXPA)/, 		\
+					expansor.c			\
+					)
 
 BONUS_SRCS		= $(addprefix $(BONUS_DIR)/,	\
 					)

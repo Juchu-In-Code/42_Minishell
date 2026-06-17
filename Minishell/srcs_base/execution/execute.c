@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 #include "../z_minishell.h"
 
+
 static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 {
         int     fd[2];
@@ -88,30 +89,26 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
         }
 }
 
-/*
- * OLD fill_cmds
-static void    fill_cmds_argv(t_cmd *cmd, char *raw_input)
+char *expand_token(t_tok *tok, char *raw_input, t_shell *shell)
 {
-        t_item  *curr;
-        t_tok   *tok;
-        int     i;
+    char *str;
+    char *expanded;
 
-        cmd->final_args = malloc(sizeof(char *) * (cmd->ac + 1));
-        if(!cmd->final_args)
-                return;
-        curr = cmd->args->head;
-        i = 0;
-        while(curr != NULL)
-        {
-                tok = (t_tok*)curr->data;
-                cmd->final_args[i] = token_to_string(tok, raw_input);
-                curr = curr->next;
-                i++;
-        }
-        cmd->final_args[i] = NULL;
-}*/
+    if (tok->type == id_qsin || tok->type == id_qdob)
+        str = ft_substr(raw_input, tok->pos + 1, tok->size - 2);
+    else
+	str = ft_substr(raw_input, tok->pos, tok->size);
 
-static void    fill_cmds_argv(t_cmd *cmd, char *raw_input)
+    if(tok->type == id_qsin)
+        return (str);
+
+
+    expanded = expand(str, shell);
+    free(str); 
+    return (expanded);
+}
+
+static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 {
 	t_item  *curr;
 	t_tok   *tok;
@@ -144,7 +141,9 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input)
 		else
 		{
 			//TODO: expand here
-			part = token_to_string(tok, raw_input);
+			//part = token_to_string(tok, raw_input);
+			//shell is needed to access env variables
+			part = expand_token(tok, raw_input, shell);
 
 			// if part is NULL - in case of empty expanded var -> set it to "" 
 			if (!part)
@@ -173,10 +172,11 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input)
 	cmd->final_args[i] = NULL;
 }
 
+
 int    count_cmds_args(t_list *args)
 {
-	t_item  *curr;
-	t_tok   *tok;
+	t_item	*curr;
+	t_tok	*tok;
 	int     count;
 	bool    has_content; 
 
@@ -250,7 +250,7 @@ void    execution_pipeline(t_shell *shell, char *input)
         while(++i <= shell->pipe_count)
         {
 		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
-                fill_cmds_argv(&shell->cmds[i],input);
+                fill_cmds_argv(&shell->cmds[i],input, shell);
 		fill_cmds_redirs(&shell->cmds[i], input);
 
                 pid = execute(&shell->cmds[i], shell, &prev_read, i);
