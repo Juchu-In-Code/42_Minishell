@@ -211,7 +211,7 @@ int    count_cmds_args(t_list *args)
 	return (count);
 }
 
-static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input)
+static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
 {
         t_item  *curr;
         t_redir   *redir;
@@ -226,7 +226,7 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input)
 			delimiter = token_to_string(&redir->target, raw_input);
 				
 			printf("DEBUG: delimiter -> %s\n", delimiter);
-			redir->file_name = process_heredoc(delimiter);
+			redir->file_name = process_heredoc(delimiter, shell);
 			free(delimiter);
 		}
 		else
@@ -251,7 +251,7 @@ void    execution_pipeline(t_shell *shell, char *input)
         {
 		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
                 fill_cmds_argv(&shell->cmds[i],input, shell);
-		fill_cmds_redirs(&shell->cmds[i], input);
+		fill_cmds_redirs(&shell->cmds[i], input, shell);
 
                 pid = execute(&shell->cmds[i], shell, &prev_read, i);
                 last_pid = pid;

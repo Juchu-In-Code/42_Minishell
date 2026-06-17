@@ -27,10 +27,11 @@ static char *get_temp_name()
 
 // this function handles the heredoc and converts it into a simple imput redirection;
 // function returns a filename to store into cmd struct and mark it as INPUT redirection;
-char	*process_heredoc(char *delimiter)
+char	*process_heredoc(char *delimiter, t_shell *shell)
 {
 	char	*filename;
 	char	*input;
+	char	*expanded;
 	int	fd;
 
 	//filename is heapallocated;
@@ -47,17 +48,18 @@ char	*process_heredoc(char *delimiter)
 	while(1337)
 	{
 		input = readline("> ");
+		expanded = expand(input, shell);
 
 		if(!input || ft_strcmp(input, delimiter) == 0)
 		{
-			free(input);
 			break;
 		}
 
-		write(fd, input, ft_strlen(input));
+		write(fd, expanded, ft_strlen(input));
 		write(fd, "\n", 1);
-		free(input);
 	}
+	free(input);
+	free(expanded);
 	close(fd);
 	return (filename);
 }
