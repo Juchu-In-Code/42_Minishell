@@ -148,6 +148,7 @@ typedef struct s_redir
 typedef struct s_shell
 {
 	bool			is_active;
+	bool			degug_mode;
 	unsigned char	last_exit_code;
 	t_list			*env;
 	t_list			*tokens;
@@ -173,7 +174,6 @@ typedef struct s_builtin {
 /*           ==============================|___/|_|==============             */
 
 // program flow
-void	verify(int ac, char **av);
 bool	setup(t_shell *shell, char **env);
 void	loop(t_shell *shell);
 

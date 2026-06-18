@@ -1,4 +1,4 @@
-#include "z_minishell.h"
+#include "../z_minishell.h"
 /*Builtins: 
 every builtin int this project has a specific signature
 to be considered a builtin function.

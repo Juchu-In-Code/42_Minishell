@@ -9,7 +9,7 @@
 /*   Updated: 2025/07/03 14:36:00 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "z_minishell.h"
+#include "../z_minishell.h"
 
 int ft_env(int ac, char **av, t_shell *shell)
 {

@@ -20,7 +20,7 @@ void	loop(t_shell *shell)
 	{
 
 		tokenize(shell, input);
-		if (*input)
+		if (*input && shell->degug_mode)
 			debug_tokens(shell->tokens, input);
 		if(token_syntax_checker(shell, shell->tokens, input))
 			if (assemble_cmds(shell))

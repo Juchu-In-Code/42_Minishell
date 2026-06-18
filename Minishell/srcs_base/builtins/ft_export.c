@@ -9,7 +9,7 @@
 /*   Updated: 2025/07/18 17:33:26 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "z_minishell.h"
+#include "../z_minishell.h"
 /*NOTE: 
  *	status = 0 -> ERROR;
  *	status = 1 -> VAL=KEY;
