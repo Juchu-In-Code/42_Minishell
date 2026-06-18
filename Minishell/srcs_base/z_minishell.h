@@ -207,7 +207,7 @@ char *expand(char *str, t_shell *shell);
 
 //redirections
 bool	handle_redirections(t_list *redirs);
-char	*process_heredoc(char *delimiter, t_shell *shell);
+char	*process_heredoc(char *delimiter, bool has_quotes, t_shell *shell);
 
 // builtins
 bool	is_builtin(char **av);

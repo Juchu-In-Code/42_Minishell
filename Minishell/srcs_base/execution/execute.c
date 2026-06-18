@@ -216,6 +216,7 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
         t_item  *curr;
         t_redir   *redir;
 	char	*delimiter;
+	bool	has_quotes;
 
         curr = cmd->redirs->head;
         while(curr != NULL)
@@ -224,9 +225,19 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
 		if(redir->redir_type == id_hdoc)
 		{
 			delimiter = token_to_string(&redir->target, raw_input);
+			if (redir->target.type == id_qsin || redir->target.type == id_qdob)
+			{
+				has_quotes = true;
+				delimiter = ft_substr(raw_input, redir->target.pos+1, redir->target.size-2);
+			}
+			else
+			{
+				has_quotes = false;
+				delimiter = token_to_string(&redir->target, raw_input);
+			}
 				
 			printf("DEBUG: delimiter -> %s\n", delimiter);
-			redir->file_name = process_heredoc(delimiter, shell);
+			redir->file_name = process_heredoc(delimiter, has_quotes, shell);
 			free(delimiter);
 		}
 		else
