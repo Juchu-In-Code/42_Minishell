@@ -59,7 +59,7 @@ char	*process_heredoc(char *delimiter, bool has_quotes, t_shell *shell)
 		else
 			to_write = expand(input, shell);
 
-		write(fd, to_write, ft_strlen(input));
+		write(fd, to_write, ft_strlen(to_write));
 		write(fd, "\n", 1);
 		free(input);
 		free(to_write);
