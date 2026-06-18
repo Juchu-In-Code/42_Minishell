@@ -58,9 +58,7 @@ bool	assemble_cmds(t_shell *shell)
 		if (is_quoted(current_token->type)
 			|| current_token->type == id_string
 			|| current_token->type == id_space)
-		{
 			list_insert_tail(shell->cmds[cmd].args, current_token);
-		}
 		if (current_token->type == id_pipe)
 		{
 			cmd++;

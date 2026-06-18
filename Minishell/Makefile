@@ -32,7 +32,6 @@ BONUS_HEADERS	= $(BONUS_DIR)/z_minishell_bonus.h
 LIBFT_HEADERS	= $(LIBFT_DIR)/libft.h
 
 HEADERS			= -I ./libft
-BASE_INC		= -I $(BASE_DIR) $(HEADERS)
 BONUS_INC		= -I $(BONUS_DIR) $(HEADERS)
 
 LIB_FLAGS		= -lreadline

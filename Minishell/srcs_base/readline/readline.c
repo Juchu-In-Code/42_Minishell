@@ -16,7 +16,10 @@ bool	ft_readline(char **buff)
 {
 	// TODO:
 		// hacer funcs de prompt
-	*buff = readline(">> ");
+	if (isatty(STDIN_FILENO))
+		*buff = readline(">> ");
+	else
+		*buff = get_next_line(STDIN_FILENO);
 	if (!*buff)
 		return (false);
 	if (**buff)
