@@ -241,7 +241,9 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
 			free(delimiter);
 		}
 		else
-			redir->file_name = token_to_string(&redir->target, raw_input);
+		{
+				redir->file_name = expand_token(&redir->target, raw_input, shell);
+		}
                 curr = curr->next;
         }
 }
