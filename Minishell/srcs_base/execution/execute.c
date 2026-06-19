@@ -266,6 +266,9 @@ void    execution_pipeline(t_shell *shell, char *input)
                 fill_cmds_argv(&shell->cmds[i],input, shell);
 		fill_cmds_redirs(&shell->cmds[i], input, shell);
 
+		if(!shell->cmds[i].final_args || !shell->cmds[i].final_args[0])
+			continue;
+
                 pid = execute(&shell->cmds[i], shell, &prev_read, i);
                 last_pid = pid;
         }
