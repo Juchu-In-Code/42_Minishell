@@ -11,13 +11,21 @@
 /* ************************************************************************** */
 #include "z_minishell.h"
 
+extern int g_sigexit;
+
 void	loop(t_shell *shell)
 {
 	char	*input;
 
 	input = NULL;
+	set_signal_interactive();
 	while (shell->is_active && ft_readline(&input))
 	{
+		if(g_sigexit != 0)
+		{
+			shell->last_exit_code = g_sigexit;
+			g_sigexit = 0;
+		}
 
 		tokenize(shell, input);
 		if (*input && shell->degug_mode)
@@ -27,5 +35,6 @@ void	loop(t_shell *shell)
 				execution_pipeline(shell, input);
 		free(input);
 		input = NULL;
+		set_signal_interactive();
 	}
 }

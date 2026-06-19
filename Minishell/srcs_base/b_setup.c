@@ -20,7 +20,6 @@ bool	setup(t_shell *shell, char **env)
 	// setup quickaccess
 	// setup segmented path
 	// signal handler
-	signal_setup();
 	shell->bkstd[IN] = dup(IN);
 	shell->bkstd[OUT] = dup(OUT);
 	shell->bkstd[ERR] = dup(ERR);

@@ -44,6 +44,7 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
         }
         else if(pid == 0)
         {
+		set_signal_child();
                 //every command have to redirect input except the first one
                 if(i != 0)
                         dup2(*prev_read_fd, STDIN_FILENO);
@@ -79,6 +80,7 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
         }
         else
         {
+		set_signal_parent();
                 if(i != 0)
                         close(*prev_read_fd);
                 *prev_read_fd = fd[PREAD];
@@ -217,7 +219,9 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
         t_redir   *redir;
 	char	*delimiter;
 	bool	has_quotes;
-
+	int	fd_tty;
+	
+	fd_tty = dup(STDIN_FILENO);
         curr = cmd->redirs->head;
         while(curr != NULL)
         {
@@ -237,13 +241,20 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
 			}
 				
 			printf("Delimiter -> %s\n", delimiter);
+			set_signal_heredoc();
 			redir->file_name = process_heredoc(delimiter, has_quotes, shell);
 			free(delimiter);
+			
+			if(g_sigexit == 130)
+			{
+				dup2(fd_tty, STDIN_FILENO);
+				close(fd_tty);
+				return;
+			}
 		}
 		else
-		{
-				redir->file_name = expand_token(&redir->target, raw_input, shell);
-		}
+			redir->file_name = expand_token(&redir->target, raw_input, shell);
+
                 curr = curr->next;
         }
 }
@@ -264,6 +275,8 @@ void    execution_pipeline(t_shell *shell, char *input)
 		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
 		fill_cmds_argv(&shell->cmds[i],input, shell);
 		fill_cmds_redirs(&shell->cmds[i], input, shell);
+		if(g_sigexit == 130)
+			return;
 
 		if(!shell->cmds[i].final_args || !shell->cmds[i].final_args[0])
 			continue;
@@ -278,11 +291,16 @@ void    execution_pipeline(t_shell *shell, char *input)
 
 		if (WIFEXITED(status))
 			shell->last_exit_code = WEXITSTATUS(status);
-		//waiting for the rest
-		i = -1;
-		while(++i < shell->pipe_count)
+		if (WIFSIGNALED(status))
 		{
-			wait(NULL);
+			if(WTERMSIG(status) == SIGINT)
+				write(STDOUT_FILENO, "\n", 1);
 		}
+	}
+	//waiting for the rest
+	i = -1;
+	while(++i < shell->pipe_count)
+	{
+		wait(NULL);
 	}
 }

@@ -10,27 +10,58 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../z_minishell.h"
+extern int g_sigexit;
 
-void	signal_handler(int sig)
+static void	sig_interactive(int sig)
 {
 	(void)sig;
+	g_sigexit = 130;
+	write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-	write(1, "\n>> ", 4);
 }
 
-void	signal_setup(void)
+static void	sig_heredoc(int sig)
+{
+	(void)sig;
+	g_sigexit = 130;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	close(STDIN_FILENO);
+}
+
+static void	set_signal(int signal, void (*sig_instruction)(int))
 {
 	struct sigaction	sa;
-	struct sigaction	si;
 
 	ft_memset(&sa, 0, sizeof(sa));
-	ft_memset(&si, 0, sizeof(sa));
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
-	sa.sa_handler = signal_handler;
-	si.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &si, NULL);
+	sa.sa_handler = sig_instruction;
+	sigaction(signal, &sa, NULL);
+}
+
+void	set_signal_parent(void)
+{
+	set_signal(SIGINT, SIG_IGN);
+	set_signal(SIGQUIT, SIG_IGN);
+}
+
+void	set_signal_child(void)
+{
+	set_signal(SIGINT, SIG_DFL);
+	set_signal(SIGQUIT, SIG_DFL);
+}
+
+void	set_signal_heredoc(void) 
+{
+	set_signal(SIGINT, sig_heredoc);
+	set_signal(SIGQUIT, SIG_IGN);
+}
+
+void	set_signal_interactive(void) 
+{
+	set_signal(SIGINT, sig_interactive);
+	set_signal(SIGQUIT, SIG_IGN);
 }

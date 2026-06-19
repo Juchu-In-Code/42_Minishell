@@ -73,6 +73,7 @@
 # define T_QDOB		0
 # define T_QSIN		1
 
+extern int g_sigexit;
 /*  ____        __ _                  */
 /* |  _ \  ___ / _(_)_ __   ___  ___  */
 /* | | | |/ _ \ |_| | '_ \ / _ \/ __| */
@@ -195,8 +196,10 @@ t_env   *create_dict_entry(char *key, char *val, int state);
 bool	ft_readline(char **buff);
 
 // signals
-void signal_handler(int sig);
-void signal_setup();
+void	set_signal_parent(void);
+void	set_signal_child(void);
+void	set_signal_heredoc(void); 
+void	set_signal_interactive(void);
 
 //execution
 char     *get_line_to_exec(char *key, t_list *env);

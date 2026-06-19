@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "z_minishell.h"
+int g_sigexit = 0;
 
 static bool	verify(int ac, char **av, char **env, t_shell *shell)
 {
