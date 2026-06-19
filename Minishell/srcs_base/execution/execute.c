@@ -236,7 +236,7 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
 				delimiter = token_to_string(&redir->target, raw_input);
 			}
 				
-			printf("DEBUG: delimiter -> %s\n", delimiter);
+			printf("Delimiter -> %s\n", delimiter);
 			redir->file_name = process_heredoc(delimiter, has_quotes, shell);
 			free(delimiter);
 		}
@@ -259,18 +259,17 @@ void    execution_pipeline(t_shell *shell, char *input)
         i = -1;
         prev_read = -1;
         last_pid = -1;
-	printf("DEBUG: Pipe count is %d\n", shell->pipe_count);
         while(++i <= shell->pipe_count)
         {
 		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
-                fill_cmds_argv(&shell->cmds[i],input, shell);
+		fill_cmds_argv(&shell->cmds[i],input, shell);
 		fill_cmds_redirs(&shell->cmds[i], input, shell);
 
 		if(!shell->cmds[i].final_args || !shell->cmds[i].final_args[0])
 			continue;
 
-                pid = execute(&shell->cmds[i], shell, &prev_read, i);
-                last_pid = pid;
+		pid = execute(&shell->cmds[i], shell, &prev_read, i);
+		last_pid = pid;
         }
 	if(last_pid != -1)
 	{
