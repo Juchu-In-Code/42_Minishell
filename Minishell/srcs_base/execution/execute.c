@@ -60,9 +60,8 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
                 //handle redirections until executing
 		if(handle_redirections(cmd->redirs) == false)
 			exit(1);
-
-                if(exec_builtin(cmd->ac, cmd->final_args, shell))
-                        exit(0);
+		if(is_builtin(cmd->final_args))
+			exit(exec_builtin(cmd->ac, cmd->final_args, shell));
                 else
                 {
                         path = get_line_to_exec(cmd->final_args[0], shell->env);

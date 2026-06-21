@@ -36,9 +36,10 @@ static const t_builtin *builtin_setup()
     return builtins;
 }
 
-bool exec_builtin(int ac, char **av, t_shell *shell)
+int exec_builtin(int ac, char **av, t_shell *shell)
 {
 	const t_builtin *builtins = builtin_setup();
+	int result;
 	int i = 0;
 
 	if (!av || !av[0] || !av[0][0])
@@ -48,13 +49,13 @@ bool exec_builtin(int ac, char **av, t_shell *shell)
 	{
 		if(ft_strcmp(av[0], builtins[i].name) == 0)
 		{
-			int result = builtins[i].func(ac, av, shell);
-			shell->last_exit_code = (unsigned char)result;
-			return true;
+			result = builtins[i].func(ac, av, shell);
+			shell->last_exit_code = result;
+			return result;
 		}
 		i++;
 	}
-	return false;
+	return -1;
 }
 
 bool is_builtin(char **av)

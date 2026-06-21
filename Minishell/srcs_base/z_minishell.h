@@ -214,7 +214,7 @@ char	*process_heredoc(char *delimiter, bool has_quotes, t_shell *shell);
 
 // builtins
 bool	is_builtin(char **av);
-bool	exec_builtin(int ac, char **av, t_shell *shell);
+int	exec_builtin(int ac, char **av, t_shell *shell);
 int		ft_pwd(int ac, char **av, t_shell* shell);
 int		ft_echo(int ac, char **av, t_shell* shell);
 int		ft_export(int ac, char **av, t_shell* shell);
