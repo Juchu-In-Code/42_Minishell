@@ -61,8 +61,6 @@ static char	*read_to_buff(int fd, char *buff_leftovers, char *buffer)
 	return (buff_leftovers);
 }
 
-//TODO: generate a new version that either handles leftovers staticly or outside
-//TODO: Add it to the .h and makefile
 char	*gnl(int fd, char *line_to_return)
 {
 	static char	*buff_leftovers[MAX_FD];

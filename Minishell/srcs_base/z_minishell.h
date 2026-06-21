@@ -73,7 +73,14 @@
 # define T_QDOB		0
 # define T_QSIN		1
 
-extern int g_sigexit;
+//	Text and Errors
+# define MS			"Minishell: "
+# define E_MS		ANS_R "Minishell: " ANS_RES
+
+# define E_DEBUG	"Incorrect argument passed, use -D for debug mode.\n"
+# define E_ENV		"A correct set of environment variables must be provided.\n"
+# define E_ARG		"Too many arguments passed\n"
+
 /*  ____        __ _                  */
 /* |  _ \  ___ / _(_)_ __   ___  ___  */
 /* | | | |/ _ \ |_| | '_ \ / _ \/ __| */
@@ -104,10 +111,7 @@ typedef enum e_tokt
 	id_fin
 }	t_tokt;
 
-// definir controles de estado?
-// definir tipo de builtin?
-// definir valores de error?
-// definir definir señales?
+extern int g_sigexit;
 
 /*  ____  _                   _        */
 /* / ___|| |_ _ __ _   _  ___| |_ ___  */
@@ -236,7 +240,6 @@ void	put_char_range(char c, int len, char *color);
 void	put_debug_indicator(char *input, int start, int len);
 char	*token_to_string(t_tok *token, char *raw_line);
 bool	is_expandable(t_tok *token, char *line);
-
 
 bool	is_redir(t_tokt t);
 bool	is_quoted(t_tokt t);

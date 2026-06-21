@@ -11,9 +11,12 @@
 /* ************************************************************************** */
 #include "z_minishell.h"
 
-// setupsubshell
+extern int g_sigexit;
+
 bool	setup(t_shell *shell, char **env)
 {
+	g_sigexit = 0;
+
 	if (!clone_env(shell, env))
 		return(false);
 	// add custom envs

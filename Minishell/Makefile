@@ -12,7 +12,6 @@
 
 NAME			= minishell
 
- # CAMBIAR LUEGO
 CC				= gcc
 CFLAGS			= -Wextra -Wall -Werror -g
 # CFLAGS			+=-fsanitize=address -fno-omit-frame-pointer
@@ -118,7 +117,7 @@ all: $(NAME)
 
 $(NAME): $(BASE_TARGET)
 
-bonus: $(BONUS_TARGET)
+# bonus: $(BONUS_TARGET)
 
 $(BASE_TARGET): $(BASE_OBJS) $(LIBFT)
 	@echo "Creating minishell..."
@@ -163,7 +162,8 @@ fclean: clean
 
 re: fclean all
 
-rebonus: fclean bonus
+# rebonus: fclean bonus
 
-.PHONY: all clean bonus fclean re rebonus
+#.PHONY: all clean bonus fclean re rebonus
 
+.PHONY: all clean fclean re

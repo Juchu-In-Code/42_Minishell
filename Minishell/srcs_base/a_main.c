@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 #include "z_minishell.h"
-int g_sigexit = 0;
+
+//TODO: Send msg errors through stderr
 
 static bool	verify(int ac, char **av, char **env, t_shell *shell)
 {
@@ -21,22 +22,24 @@ static bool	verify(int ac, char **av, char **env, t_shell *shell)
 			shell->degug_mode = true;
 		else
 		{
-			printf(ANS_R"Minishell: Incorrect argument passed, use -D for debug mode."ANS_RES);
+			printf(ANS_R E_MS E_DEBUG ANS_RES);
 			return (false);
 		}
 	}
 	if (ac > 2)
 	{
-		printf(ANS_R"Minishell: Too many arguments passed, use -D for debug mode."ANS_RES);
+			printf(ANS_R E_MS E_ARG ANS_RES);
 		return (false);
 	}
 	if (!env || !*env)
 	{
-		printf(ANS_R"Minishell: A correct set of environment variables must be provided."ANS_RES);
+		printf(ANS_R E_MS E_ENV ANS_RES);
 		return (false);
 	}
 	return (true);
 }
+
+int g_sigexit;
 
 int	main(int ac, char **av, char **env)
 {
