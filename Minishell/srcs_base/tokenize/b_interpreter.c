@@ -61,6 +61,7 @@ bool	token_syntax_checker(t_shell *shell, t_list *token_list, char *input)
 				printf(ANS_R" Unexpected token found, syntax error\n"ANS_RES);
 			else
 				printf(ANS_R"^ Unexpected end of line, syntax error\n"ANS_RES);
+			shell->last_exit_code = 2;
 			return(false);
 		}
 		if (token->type == id_pipe)
