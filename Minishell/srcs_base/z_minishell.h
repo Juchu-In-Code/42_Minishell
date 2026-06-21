@@ -251,4 +251,5 @@ bool	is_quoted(t_tokt t);
 //cleanup
 void free_env_entry(void *env_entry);
 void cleanup(t_shell *shell);
+void heredoc_cleanup(t_shell *shell);
 #endif

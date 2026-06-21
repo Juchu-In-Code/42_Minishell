@@ -277,7 +277,10 @@ void    execution_pipeline(t_shell *shell, char *input)
 		fill_cmds_argv(&shell->cmds[i],input, shell);
 		fill_cmds_redirs(&shell->cmds[i], input, shell);
 		if(g_sigexit == 130)
+		{
+			heredoc_cleanup(shell);
 			return;
+		}
 
 		if(!shell->cmds[i].final_args || !shell->cmds[i].final_args[0])
 			continue;
@@ -304,4 +307,5 @@ void    execution_pipeline(t_shell *shell, char *input)
 	{
 		wait(NULL);
 	}
+	heredoc_cleanup(shell);
 }
