@@ -17,7 +17,7 @@ static void	sig_interactive(int sig)
 {
 	(void)sig;
 	g_sigexit = 130;
-	write(STDOUT_FILENO, ANS_R"\n", 7);
+	write(STDOUT_FILENO, ANS_R"\n", sizeof(ANS_R"\n"));
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();

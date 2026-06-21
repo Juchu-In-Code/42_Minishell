@@ -37,6 +37,21 @@
 /* |_|  |_|\__,_|\___|_|  \___/|___/ */
 /* ================================= */
 
+//  GNU Readline internal ignore markers
+# define RL_START   "\001"
+# define RL_END     "\002"
+
+//  ansi color escape codes wrapped in readline ignore markers
+# define ANS_R      RL_START "\033[31m" RL_END
+# define ANS_G      RL_START "\033[32m" RL_END
+# define ANS_U      RL_START "\033[34m" RL_END
+# define ANS_Y      RL_START "\033[33m" RL_END
+# define ANS_C      RL_START "\033[36m" RL_END
+# define ANS_M      RL_START "\033[35m" RL_END
+# define ANS_W      RL_START "\033[37m" RL_END
+# define ANS_RES    RL_START "\033[0m"  RL_END
+
+/*
 //	ansi color escape codes
 # define ANS_R		"\033[31m"
 # define ANS_G		"\033[32m"
@@ -46,6 +61,7 @@
 # define ANS_M		"\033[35m"
 # define ANS_W		"\033[37m"
 # define ANS_RES	"\033[0m"
+*/
 
 //	enviroment variables dictionary
 # define KEY	0
