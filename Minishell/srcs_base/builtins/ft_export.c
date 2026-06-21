@@ -91,6 +91,8 @@ static bool	export_line(t_shell *shell, char *line)
 	if (!parse_key_value(line, state, data))
 		return (false);
 	entry = get_env(shell->env, data[KEY]);
+	if (state == 0)
+		return false;
 	if (state == 1 && entry)
 		change_env_value(entry, data[VAL], state);
 	else if (state == 2 && entry)
@@ -119,5 +121,5 @@ int	ft_export(int ac, char **av, t_shell *shell)
 	i = 0;
 	while (av[++i])
 		ret_val += export_line(shell, av[i]);
-	return (ret_val != 0);
+	return (ret_val == 0);
 }

@@ -27,6 +27,8 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 
 		if(handle_redirections(cmd->redirs) == true)
 			exec_builtin(cmd->ac, cmd->final_args, shell);
+		else
+			shell->last_exit_code = 1;
 		dup2(bk_in, STDIN_FILENO);
 		dup2(bk_out, STDOUT_FILENO);
 
