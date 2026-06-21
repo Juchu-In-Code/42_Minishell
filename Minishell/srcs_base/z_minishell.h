@@ -13,22 +13,22 @@
 #ifndef Z_MINISHELL_H
 # define Z_MINISHELL_H
 
-# include <fcntl.h>
-# include <stdio.h>
-# include <sys/stat.h>
-# include <stdlib.h>
-# include <signal.h>
-# include <sys/wait.h>
-# include <sys/types.h>
-# include <unistd.h>
-# include <string.h>
-# include <stdint.h>
-# include <limits.h>
-# include <stdbool.h>
-# include <termios.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "../libft/libft.h"
+# include	<fcntl.h>
+# include	<stdio.h>
+# include	<sys/stat.h>
+# include	<stdlib.h>
+# include	<signal.h>
+# include	<sys/wait.h>
+# include	<sys/types.h>
+# include	<unistd.h>
+# include	<string.h>
+# include	<stdint.h>
+# include	<limits.h>
+# include	<stdbool.h>
+# include	<termios.h>
+# include	<readline/readline.h>
+# include	<readline/history.h>
+# include	"../libft/libft.h"
 
 /*  __  __                           */
 /* |  \/  | __ _  ___ _ __ ___  ___  */
@@ -38,30 +38,18 @@
 /* ================================= */
 
 //  GNU Readline internal ignore markers
-# define RL_START   "\001"
-# define RL_END     "\002"
+# define RL_START	"\001"
+# define RL_END		"\002"
 
-//  ansi color escape codes wrapped in readline ignore markers
-# define ANS_R      RL_START "\033[31m" RL_END
-# define ANS_G      RL_START "\033[32m" RL_END
-# define ANS_U      RL_START "\033[34m" RL_END
-# define ANS_Y      RL_START "\033[33m" RL_END
-# define ANS_C      RL_START "\033[36m" RL_END
-# define ANS_M      RL_START "\033[35m" RL_END
-# define ANS_W      RL_START "\033[37m" RL_END
-# define ANS_RES    RL_START "\033[0m"  RL_END
-
-/*
 //	ansi color escape codes
-# define ANS_R		"\033[31m"
-# define ANS_G		"\033[32m"
-# define ANS_U		"\033[34m"
-# define ANS_Y		"\033[33m"
-# define ANS_C		"\033[36m"
-# define ANS_M		"\033[35m"
-# define ANS_W		"\033[37m"
-# define ANS_RES	"\033[0m"
-*/
+# define ANS_R		RL_START "\033[31m" RL_END
+# define ANS_G		RL_START "\033[32m" RL_END
+# define ANS_U		RL_START "\033[34m" RL_END
+# define ANS_Y		RL_START "\033[33m" RL_END
+# define ANS_C		RL_START "\033[36m" RL_END
+# define ANS_M		RL_START "\033[35m" RL_END
+# define ANS_W		RL_START "\033[37m" RL_END
+# define ANS_RES	RL_START "\033[0m"  RL_END
 
 //	enviroment variables dictionary
 # define KEY	0
@@ -104,7 +92,7 @@
 /* |____/ \___|_| |_|_| |_|\___||___/ */
 /* ================================== */
 
-typedef enum e_tokt
+typedef	enum e_tokt
 {
 	// Symbols
 	id_pipe,
@@ -127,7 +115,7 @@ typedef enum e_tokt
 	id_fin
 }	t_tokt;
 
-extern int g_sigexit;
+extern	int	g_sigexit;
 
 /*  ____  _                   _        */
 /* / ___|| |_ _ __ _   _  ___| |_ ___  */
@@ -136,13 +124,13 @@ extern int g_sigexit;
 /* |____/ \__|_|   \__,_|\___|\__|___/ */
 /* =================================== */
 
-typedef struct s_env
+typedef	struct	s_env
 {
 	char			*dict[2];
 	uint8_t			state;
 }	t_env;
 
-typedef struct s_cmd
+typedef	struct	s_cmd
 {
 	ssize_t			io[2];
 	t_list			*redirs;
@@ -151,7 +139,7 @@ typedef struct s_cmd
 	int			ac;
 }	t_cmd;
 
-typedef struct s_tok
+typedef	struct	s_tok
 {
 	t_tokt			type;
 	size_t			pos;
@@ -159,14 +147,14 @@ typedef struct s_tok
 	uint8_t			state;
 }	t_tok;
 
-typedef struct s_redir
+typedef	struct	s_redir
 {
 	t_tokt			redir_type;
 	t_tok			target;
-	char*	file_name;
+	char*			file_name;
 }	t_redir;
 
-typedef struct s_shell
+typedef	struct	s_shell
 {
 	bool			is_active;
 	bool			degug_mode;
@@ -180,9 +168,9 @@ typedef struct s_shell
 	struct termios	termios;
 }	t_shell;
 
-typedef int (*t_builtin_fn)(int ac, char **av, t_shell *shell);
+typedef	int	(*t_builtin_fn)(int ac, char **av, t_shell *shell);
 
-typedef struct s_builtin {
+typedef	struct	s_builtin {
 	char            *name;
 	t_builtin_fn    func;
 } t_builtin;
