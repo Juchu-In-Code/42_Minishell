@@ -193,7 +193,7 @@ void	append_env_value(t_env *env, char *new_val, int update_state);
 t_env   *create_dict_entry(char *key, char *val, int state);
 
 // readline
-bool	ft_readline(char **buff);
+bool	ft_readline(t_shell *shell, char **buff);
 
 // signals
 void	set_signal_parent(void);
