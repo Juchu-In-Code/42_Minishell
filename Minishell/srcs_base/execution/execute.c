@@ -232,7 +232,7 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
                 redir = (t_redir*)curr->data;
 		if(redir->redir_type == id_hdoc)
 		{
-			delimiter = token_to_string(&redir->target, raw_input);
+			//delimiter = token_to_string(&redir->target, raw_input);
 			if (redir->target.type == id_qsin || redir->target.type == id_qdob)
 			{
 				has_quotes = true;
@@ -255,13 +255,13 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
 				close(fd_tty);
 				return;
 			}
-				close(fd_tty);
 		}
 		else
 			redir->file_name = expand_token(&redir->target, raw_input, shell);
 
                 curr = curr->next;
         }
+	close(fd_tty);
 }
 
 void    execution_pipeline(t_shell *shell, char *input)
@@ -277,6 +277,8 @@ void    execution_pipeline(t_shell *shell, char *input)
         last_pid = -1;
         while(++i <= shell->pipe_count)
 	{
+		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
+		fill_cmds_argv(&shell->cmds[i],input, shell);
 		fill_cmds_redirs(&shell->cmds[i], input, shell);
 		if(g_sigexit == 130)
 		{
@@ -287,9 +289,6 @@ void    execution_pipeline(t_shell *shell, char *input)
 	i = -1;
         while(++i <= shell->pipe_count)
         {
-		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
-		fill_cmds_argv(&shell->cmds[i],input, shell);
-
 		//enter sin nada
 		if((!shell->cmds[i].final_args || !shell->cmds[i].final_args[0]) &&(!shell->cmds[i].redirs || !shell->cmds[i].redirs->head))
 			continue; 
