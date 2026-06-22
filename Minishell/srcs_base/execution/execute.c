@@ -62,6 +62,8 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
                 //handle redirections until executing
 		if(handle_redirections(cmd->redirs) == false)
 			exit(1);
+		if(!cmd->final_args || !cmd->final_args[0])
+			exit(0);
 		if(is_builtin(cmd->final_args))
 			exit(exec_builtin(cmd->ac, cmd->final_args, shell));
                 else
@@ -281,9 +283,6 @@ void    execution_pipeline(t_shell *shell, char *input)
 			heredoc_cleanup(shell);
 			return;
 		}
-
-		if(!shell->cmds[i].final_args || !shell->cmds[i].final_args[0])
-			continue;
 
 		pid = execute(&shell->cmds[i], shell, &prev_read, i);
 		last_pid = pid;
