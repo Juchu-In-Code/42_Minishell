@@ -25,7 +25,7 @@ char	*get_prompt(t_shell *shell)
 	else
 	{
 		val = ft_itoa(shell->last_exit_code);
-		prompt = ft_strjoinv(ANS_R,val,">> ",ANS_RES);
+		prompt = ft_strjoinv(ANS_R,val,">> ",ANS_RES, NULL);
 		free (val);
 		return (prompt);
 	}
