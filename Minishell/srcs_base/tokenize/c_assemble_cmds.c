@@ -1,6 +1,19 @@
 
 #include "../z_minishell.h"
 
+t_tok	*copy_token(t_tok *to_copy)
+{
+	t_tok	*token;
+
+	token = ft_calloc(1, sizeof(t_tok));
+	if (!token)
+		return (NULL);
+	token->type = to_copy->type;
+	token->pos = to_copy->pos;
+	token->size = to_copy->size;
+	return (token);
+}
+
 t_redir	*create_red(t_tok source, t_tok target)
 {
 	t_redir	*redir;
@@ -58,7 +71,7 @@ bool	assemble_cmds(t_shell *shell)
 		if (is_quoted(current_token->type)
 			|| current_token->type == id_string
 			|| current_token->type == id_space)
-			list_insert_tail(shell->cmds[cmd].args, current_token);
+			list_insert_tail(shell->cmds[cmd].args, copy_token(current_token));
 		if (current_token->type == id_pipe)
 		{
 			cmd++;

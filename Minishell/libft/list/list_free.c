@@ -17,16 +17,25 @@ void	list_free(t_list *list, t_free free_func)
 	t_item	*current;
 	t_item	*next;
 
-	current = list->head;
 	if (!list)
-		return ;
+		return;
+	current = list->head;
 	while (current)
 	{
 		next = current->next;
-		if (free_func && current->data)
-			free_func(current->data);
+		if (current->data)
+		{
+			if (free_func)
+				free_func(current->data);
+			else
+			{
+				free(current->data);
+				current->data = NULL;
+			}
+		}
 		free(current);
 		current = next;
 	}
 	free(list);
+	list = NULL;
 }

@@ -41,7 +41,8 @@ void	loop(t_shell *shell)
 				execution_pipeline(shell, input);
 		ft_free((void*)&input);
 		list_free(shell->tokens, NULL);
-		free_cmds(shell);
+		if(shell->cmds)
+			free_cmds(shell);
 		set_signal_interactive();
 	}
 }
