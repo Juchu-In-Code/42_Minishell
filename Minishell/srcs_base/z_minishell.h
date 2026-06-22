@@ -136,7 +136,7 @@ typedef	struct	s_cmd
 	t_list			*redirs;
 	t_list			*args;
 	char			**final_args;
-	int			ac;
+	int				ac;
 }	t_cmd;
 
 typedef	struct	s_tok
@@ -151,21 +151,19 @@ typedef	struct	s_redir
 {
 	t_tokt			redir_type;
 	t_tok			target;
-	char*			file_name;
+	char			*file_name;
 }	t_redir;
 
 typedef	struct	s_shell
 {
 	bool			is_active;
-	bool			degug_mode;
+	bool			debug_mode;
 	unsigned char	last_exit_code;
+	int				pipe_count;
+	ssize_t			bkstd[3];
 	t_list			*env;
 	t_list			*tokens;
 	t_cmd			*cmds;
-	int				pipe_count;
-	t_env			*qenv[3];
-	ssize_t			bkstd[3];
-	struct termios	termios;
 }	t_shell;
 
 typedef	int	(*t_builtin_fn)(int ac, char **av, t_shell *shell);
@@ -249,7 +247,9 @@ bool	is_redir(t_tokt t);
 bool	is_quoted(t_tokt t);
 
 //cleanup
-void free_env_entry(void *env_entry);
-void cleanup(t_shell *shell);
-void heredoc_cleanup(t_shell *shell);
+void	cleanup(t_shell *shell);
+void	free_env_entry(void *env_entry);
+void	heredoc_cleanup(t_shell *shell);
+void	free_cmds(t_shell *shell);
+
 #endif

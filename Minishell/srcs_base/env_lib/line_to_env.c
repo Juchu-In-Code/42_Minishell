@@ -16,11 +16,6 @@ bool	line_to_env(t_shell *shell, char *line)
 {
 	t_env	*entry;
 
-	// TODO:
-		// si ya existe...
-		// modify it( + check append mode)
-	// otra opción es pasar el modo como un 3er arg
-	// si no existe antes pero append está seteado, se crea normal
 	entry = line_to_dict_entry(line);
 	if (!entry)
 		return (false);

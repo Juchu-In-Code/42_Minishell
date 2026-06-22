@@ -12,7 +12,6 @@
 
 #include "../z_minishell.h"
 
-// NOTE: Both key and val must be heap allocated
 t_env	*create_dict_entry(char *key, char *val, int state)
 {
 	t_env	*entry;
@@ -42,10 +41,6 @@ t_env	*line_to_dict_entry(char *line)
 	key = ft_strunt(line, "=");
 	if (!sep || !key)
 		return (NULL);
-	// TODO:
-	//	que pasa si ya existe de antes?
-	// if (matches_ql(key))
-	// 	state = 1;
 	entry = create_dict_entry(key, ft_strdup(sep + 1), state);
 	return (entry);
 }

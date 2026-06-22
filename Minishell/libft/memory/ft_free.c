@@ -12,7 +12,7 @@
 
 #include "../libft.h"
 
-/* Takes a &pointer to free it and send it to NULL*/
+/* Takes a &pointer to free it and sends it to NULL*/
 void	ft_free(void **ptr)
 {
 	free(*ptr);

@@ -34,14 +34,14 @@ void	loop(t_shell *shell)
 			g_sigexit = 0;
 		}
 		tokenize(shell, input);
-		if (*input && shell->degug_mode)
+		if (*input && shell->debug_mode)
 			debug_tokens(shell->tokens, input);
 		if(token_syntax_checker(shell, shell->tokens, input))
 			if (assemble_cmds(shell))
 				execution_pipeline(shell, input);
-		if (input)
-			free(input);
-		input = NULL;
+		ft_free((void*)&input);
+		list_free(shell->tokens, NULL);
+		free_cmds(shell);
 		set_signal_interactive();
 	}
 }

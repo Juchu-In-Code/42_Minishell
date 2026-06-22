@@ -14,7 +14,7 @@ NAME			= minishell
 
 CC				= gcc
 CFLAGS			= -Wextra -Wall -Werror -g
-# CFLAGS			+=-fsanitize=address -fno-omit-frame-pointer
+CFLAGS			+=-fsanitize=address -fno-omit-frame-pointer
 RM				= rm -rf
 
 LIBFT_DIR		= ./libft
@@ -99,13 +99,20 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_UTILS)/,	\
 
 BASE_DIR_EXEC = $(BASE_DIR)/execution
 BASE_SRCS		+= $(addprefix $(BASE_DIR_EXEC)/, 		\
-					get_line_to_exec.c 		\
-					execute.c			\
-					)
+				get_line_to_exec.c 		\
+				execute.c			\
+				)
 BASE_DIR_EXPA = $(BASE_DIR)/expansion
 BASE_SRCS		+= $(addprefix $(BASE_DIR_EXPA)/, 		\
-					expansor.c			\
-					)
+				expansor.c			\
+				)
+
+BASE_DIR_CLEAN = $(BASE_DIR)/cleanup
+BASE_SRCS		+= $(addprefix $(BASE_DIR_CLEAN)/, 		\
+					cmds.c								\
+					env.c								\
+					heredoc.c							\
+				)
 
 BONUS_SRCS		= $(addprefix $(BONUS_DIR)/,	\
 					)

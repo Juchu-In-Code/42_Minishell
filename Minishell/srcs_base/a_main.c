@@ -19,7 +19,7 @@ static bool	verify(int ac, char **av, char **env, t_shell *shell)
 	if (ac == 2)
 	{
 		if(av[1][0] == '-' && av[1][1] == 'D')
-			shell->degug_mode = true;
+			shell->debug_mode = true;
 		else
 		{
 			printf(ANS_R E_MS E_DEBUG ANS_RES);
