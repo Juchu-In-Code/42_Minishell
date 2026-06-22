@@ -15,11 +15,19 @@
 void	loop(t_shell *shell)
 {
 	char	*input;
+	bool	end;
 
 	input = NULL;
 	set_signal_interactive();
-	while (shell->is_active && ft_readline(shell, &input))
+	while (shell->is_active )
 	{
+
+		end = ft_readline(shell, &input);
+		if(!end)
+		{
+			printf("exit\n");
+			exit(shell->last_exit_code);
+		}
 		if(g_sigexit)
 		{
 			shell->last_exit_code = g_sigexit;
