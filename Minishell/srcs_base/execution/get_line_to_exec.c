@@ -91,15 +91,12 @@ char	*get_line_to_exec(char *cmd, t_list *env)
 
 	if (!cmd || !*cmd)
 		return (NULL);
-	//if command string contains a '/'
-	//it's probably an absolute path
 	if(ft_strchr(cmd, '/'))
 	{
-		if (access(cmd, X_OK) == 0 && stat(cmd, &st) == 0 && S_ISREG(st.st_mode))
-			return(ft_strdup(cmd));
-		return NULL;
+		if (stat(cmd, &st) != 0)
+			return NULL;
+		return(ft_strdup(cmd));
 	}
-
 	command_to_execute = resolve_relative_path(cmd, env);
 	if (command_to_execute != NULL)
 		return command_to_execute;
