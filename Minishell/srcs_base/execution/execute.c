@@ -275,10 +275,15 @@ void    execution_pipeline(t_shell *shell, char *input)
         i = -1;
         prev_read = -1;
         last_pid = -1;
+
         while(++i <= shell->pipe_count)
 	{
 		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
 		fill_cmds_argv(&shell->cmds[i],input, shell);
+	}
+	i=-1;
+        while(++i <= shell->pipe_count)
+	{
 		fill_cmds_redirs(&shell->cmds[i], input, shell);
 		if(g_sigexit == 130)
 		{
