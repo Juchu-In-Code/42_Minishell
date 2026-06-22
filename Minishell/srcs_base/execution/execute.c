@@ -276,17 +276,19 @@ void    execution_pipeline(t_shell *shell, char *input)
         prev_read = -1;
         last_pid = -1;
         while(++i <= shell->pipe_count)
+	{
 		fill_cmds_redirs(&shell->cmds[i], input, shell);
-        i = -1;
-        while(++i <= shell->pipe_count)
-        {
-		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
-		fill_cmds_argv(&shell->cmds[i],input, shell);
 		if(g_sigexit == 130)
 		{
 			heredoc_cleanup(shell);
 			return;
 		}
+	}
+	i = -1;
+        while(++i <= shell->pipe_count)
+        {
+		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
+		fill_cmds_argv(&shell->cmds[i],input, shell);
 
 		//enter sin nada
 		if((!shell->cmds[i].final_args || !shell->cmds[i].final_args[0]) &&(!shell->cmds[i].redirs || !shell->cmds[i].redirs->head))
