@@ -63,21 +63,15 @@ static void	print_env_list(t_list *list, char *msg)
 	}
 }
 
-static bool	parse_key_value(char *line, uint8_t state, char **data)
+static bool	parse_key_value(char *line, char **data)
 {
 	char	*sep;
 
 	if (!line)
 		return (false);
-	if (state == 0)
-		return (false);
-	if (state == 1 || state == 2)
-		sep = ft_strchr(line, '=');
-	if (state == 1 || state == 2)
-		data[VAL] = ft_strdup(sep + 1);
-	else if (state == 3)
-		data[VAL] = ft_strdup("");
+	sep = ft_strchr(line, '=');
 	data[KEY] = ft_strunt(line, "+=");
+	data[VAL] = ft_strdup(sep + 1);
 	return (true);
 }
 
@@ -88,17 +82,22 @@ static bool	export_line(t_shell *shell, char *line)
 	uint8_t	state;
 
 	state = check_line(line);
-	if (!parse_key_value(line, state, data))
+	if (!state || state == 3)
+		return (state);
+	if (!parse_key_value(line, data))
 		return (false);
 	entry = get_env(shell->env, data[KEY]);
-	if (state == 0)
-		return false;
-	if (state == 1 && entry)
-		change_env_value(entry, data[VAL], state);
-	else if (state == 2 && entry)
-		append_env_value(entry, data[VAL], state);
-	else if (state == 3 && entry)
-		return (true);
+	if (entry)
+	{
+		if (state == 1)
+			change_env_value(entry, data[VAL], state);
+		if (state == 2)
+		{
+			append_env_value(entry, data[VAL], state);
+			free (data[VAL]);
+		}
+		free (data[KEY]);
+	}
 	else
 	{
 		entry = create_dict_entry(data[KEY], data[VAL], state);
@@ -111,6 +110,7 @@ int	ft_export(int ac, char **av, t_shell *shell)
 {
 	int	i;
 	int	ret_val;
+	int	err;
 	
 	if (ac == 1)
 	{
@@ -118,8 +118,13 @@ int	ft_export(int ac, char **av, t_shell *shell)
 		return (0);
 	}
 	ret_val = 0;
+	err = 0;
 	i = 0;
 	while (av[++i])
-		ret_val += export_line(shell, av[i]);
-	return (ret_val == 0);
+	{
+		ret_val = export_line(shell, av[i]);
+		if (!ret_val)
+			err = 1;
+	}
+	return (err);
 }
