@@ -1,0 +1,24 @@
+{
+    leak_readline
+    Memcheck:Leak
+    match-leak-kinds: reachable,possible,definite
+    fun:malloc
+    ...
+    fun:readline
+}
+{
+    leak_readline
+    Memcheck:Leak
+    match-leak-kinds: reachable,possible,definite
+    fun:realloc
+    ...
+    fun:readline
+}
+{
+    leak_readline
+    Memcheck:Leak
+    match-leak-kinds: reachable,possible,definite
+    fun:calloc
+    ...
+    fun:readline
+}

@@ -75,9 +75,11 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
                                 ft_fprintf(2, "minishell: %s: command not found\n", cmd->final_args[0]);
                                 exit(127);
                         }
+			char **env = env_list_to_ptr(shell->env);
 
-                        execve(path, cmd->final_args, env_list_to_ptr(shell->env));
+                        execve(path, cmd->final_args, env);
                         perror(cmd->final_args[0]);
+			ft_free_matrix((void**)env);
                         free(path);
                         exit(126);
                 }
@@ -141,7 +143,7 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 		if (tok->type == id_space)
 		{
 			if (cmd->final_args[i] != NULL)
-			i++;
+				i++;
 		}
 		//Normal string
 		else
@@ -160,7 +162,6 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 			{
 				cmd->final_args[i] = part;
 			}
-			// other parts to join
 			else
 			{
 				temp = cmd->final_args[i];

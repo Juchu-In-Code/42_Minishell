@@ -34,6 +34,7 @@ bool is_expandable(t_tok *token, char *line)
 	else if(dollar_sign[1] != '\0' && ft_isalpha(dollar_sign[1]))
 		output = true;
 	
-	free(token_str);
+	//free(token_str);
+	ft_free((void*)&token_str);
 	return(output);
 }

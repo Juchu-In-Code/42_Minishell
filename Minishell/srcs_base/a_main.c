@@ -43,7 +43,7 @@ int g_sigexit;
 
 int	main(int ac, char **av, char **env)
 {
-	t_shell	shell;
+	static	t_shell	shell;
 
 	if (!verify(ac, av, env, &shell))
 		return (EXIT_FAILURE);
