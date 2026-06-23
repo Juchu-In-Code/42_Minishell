@@ -26,15 +26,15 @@ static uint8_t	check_line(char *line)
 	index = ft_strchr_index(line, '=');
 	if (ft_isdigit(line[0]) || index == 0)
 		return (0);
+	if (index == -1)
+	{
+		status = 3;
+		index = ft_strlen(line);
+	}
 	if (line[index - 1] == '+')
 	{
 		status = 2;
 		index--;
-	}
-	else if (index == -1)
-	{
-		status = 3;
-		index = ft_strlen(line);
 	}
 	i = -1;
 	while (++i < index)
