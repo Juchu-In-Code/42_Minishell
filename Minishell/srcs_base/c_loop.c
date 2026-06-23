@@ -26,7 +26,8 @@ void	loop(t_shell *shell)
 		if(!end)
 		{
 			printf("exit\n");
-			exit(shell->last_exit_code);
+			shell->is_active = false;
+			break;
 		}
 		if(g_sigexit)
 		{
@@ -40,7 +41,9 @@ void	loop(t_shell *shell)
 			if (assemble_cmds(shell))
 				execution_pipeline(shell, input);
 		ft_free((void*)&input);
-		list_free(shell->tokens, NULL);
+
+		if(shell->tokens)
+			list_free(shell->tokens, NULL);
 		if(shell->cmds)
 			free_cmds(shell);
 		set_signal_interactive();

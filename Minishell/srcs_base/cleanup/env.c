@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   d_cleanup.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -22,13 +22,17 @@ void free_env_entry(void *env_entry)
         return;
     if(entry->dict[KEY])
     {
-        free(entry->dict[KEY]);
+
+        //free(entry->dict[KEY]);
+	ft_free((void**)&entry->dict[KEY]);
         entry->dict[KEY] = NULL;
     }
     if(entry->dict[VAL])
     {
-        free(entry->dict[VAL]);
+        //free(entry->dict[VAL]);
+	ft_free((void**)&entry->dict[VAL]);
         entry->dict[VAL] = NULL;
     }
-    free(entry);
+	//free(entry);
+	ft_free((void**)&entry);
 }

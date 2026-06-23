@@ -29,13 +29,14 @@ void	list_free(t_list *list, t_free free_func)
 				free_func(current->data);
 			else
 			{
-				free(current->data);
+				ft_free((void**)&current->data);
 				current->data = NULL;
 			}
 		}
-		free(current);
+		ft_free((void**)&current);
 		current = next;
 	}
-	free(list);
+	ft_free((void**)&list);
 	list = NULL;
 }
+

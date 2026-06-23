@@ -66,7 +66,10 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 			exit(0);
 
 		if(is_builtin(cmd->final_args))
+		{
+			rl_clear_history();
 			exit(exec_builtin(cmd->ac, cmd->final_args, shell));
+		}
                 else
                 {
                         path = get_line_to_exec(cmd->final_args[0], shell->env);
@@ -80,7 +83,9 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
                         execve(path, cmd->final_args, env);
                         perror(cmd->final_args[0]);
 			ft_free_matrix((void**)env);
-                        free(path);
+			rl_clear_history();
+                        //free(path);
+			ft_free((void**)&path);
                         exit(126);
                 }
         }
@@ -99,21 +104,21 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 
 char *expand_token(t_tok *tok, char *raw_input, t_shell *shell)
 {
-    char *str;
-    char *expanded;
+	char *str;
+	char *expanded;
 
-    if (tok->type == id_qsin || tok->type == id_qdob)
-        str = ft_substr(raw_input, tok->pos + 1, tok->size - 2);
-    else
-	str = ft_substr(raw_input, tok->pos, tok->size);
+	if (tok->type == id_qsin || tok->type == id_qdob)
+		str = ft_substr(raw_input, tok->pos + 1, tok->size - 2);
+	else
+		str = ft_substr(raw_input, tok->pos, tok->size);
 
-    if(tok->type == id_qsin)
-        return (str);
+	if(tok->type == id_qsin)
+		return (str);
 
-
-    expanded = expand(str, shell);
-    free(str); 
-    return (expanded);
+	expanded = expand(str, shell);
+	//free(str); 
+	ft_free((void**)&str);
+	return (expanded);
 }
 
 static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
@@ -167,8 +172,10 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 				temp = cmd->final_args[i];
 				cmd->final_args[i] = ft_strjoin(temp, part);
 
-				free(temp);
-				free(part);
+				//free(temp);
+				//free(part);
+				ft_free((void**)&temp);
+				ft_free((void**)&part);
 			}
 		}
 		curr = curr->next;
@@ -248,7 +255,8 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
 			printf("Delimiter -> %s\n", delimiter);
 			set_signal_heredoc();
 			redir->file_name = process_heredoc(delimiter, has_quotes, shell);
-			free(delimiter);
+			//free(delimiter);
+			ft_free((void**)&delimiter);
 			
 			if(g_sigexit == 130)
 			{

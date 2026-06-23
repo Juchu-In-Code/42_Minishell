@@ -14,7 +14,10 @@
 
 void cleanup(t_shell *shell)
 {
-   list_free(shell->env, free_env_entry);
-   list_free(shell->tokens, NULL);
-   return;
+	printf("cleaning envs\n");
+	if(shell->env->head)
+		list_free(shell->env, free_env_entry);
+	if(shell->tokens)
+		list_free(shell->tokens, NULL);
+	return;
 }

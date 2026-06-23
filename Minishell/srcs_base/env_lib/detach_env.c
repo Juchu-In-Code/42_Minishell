@@ -47,8 +47,13 @@ void	detach_env(t_list *list, char *key)
 	list->size--;
 
 	t_env *env = (t_env *)item->data;
-	free(env->dict[KEY]);
-	free(env->dict[VAL]);
-	free(item->data);
-	free(item);
+
+	//free(env->dict[KEY]);
+	//free(env->dict[VAL]);
+	//free(item->data);
+	//free(item);
+	ft_free((void**)&env->dict[KEY]);
+	ft_free((void**)&env->dict[VAL]);
+	ft_free((void**)&item->data);
+	ft_free((void**)&item);
 }

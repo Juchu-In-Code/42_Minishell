@@ -21,7 +21,8 @@ static char *get_temp_name()
 
 	num = ft_itoa(i++);
 	name = ft_strjoin("/tmp/.minishell_heredoc_", num);
-	free(num);
+	//free(num);
+	ft_free((void**)&num);
 	return (name);
 }
 
@@ -41,7 +42,8 @@ char	*process_heredoc(char *delimiter, bool has_quotes, t_shell *shell)
 	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if(fd < 0)
 	{
-		free(filename);
+		//free(filename);
+		ft_free((void**)&filename);
 		return(NULL);
 	}
 
@@ -51,7 +53,8 @@ char	*process_heredoc(char *delimiter, bool has_quotes, t_shell *shell)
 		if(!input || ft_strcmp(input, delimiter) == 0)
 		{
 			if(input)
-				free(input);
+				ft_free((void**)&input);
+				//free(input);
 			break;
 		}
 		if(has_quotes == true)
@@ -61,8 +64,11 @@ char	*process_heredoc(char *delimiter, bool has_quotes, t_shell *shell)
 
 		write(fd, to_write, ft_strlen(to_write));
 		write(fd, "\n", 1);
-		free(input);
-		free(to_write);
+
+		//free(input);
+		ft_free((void**)&input);
+		//free(to_write);
+		ft_free((void**)&to_write);
 	}
 	close(fd);
 	return (filename);

@@ -14,7 +14,8 @@
 
 void	change_env_value(t_env *env, char *new_val, int update_state)
 {
-	free(env->dict[VAL]);
+	//free(env->dict[VAL]);
+	ft_free((void**)&env->dict[VAL]);
 	env->state = update_state;
 	env->dict[VAL] = new_val;
 }
@@ -26,5 +27,6 @@ void	append_env_value(t_env *env, char *new_val, int update_state)
 	env->state = update_state;
 	aux_val = env->dict[VAL];
 	env->dict[VAL] = ft_strjoin(aux_val, new_val);
-	free(aux_val);
+	//free(aux_val);
+	ft_free((void**)&aux_val);
 }

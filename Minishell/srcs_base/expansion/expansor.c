@@ -21,7 +21,8 @@ static char *append_string(char *s1, char *s2)
 		return (s1);
 
 	new_str = ft_strjoin(s1, s2);
-	free(s1);
+	//free(s1);
+	ft_free((void**)&s1);
 	return (new_str);
 }
 
@@ -72,7 +73,9 @@ static char *process_dollar(char *str, int *i, t_shell *shell)
 
 	//get value
 	val = get_env_val(shell->env, key);
-	free(key);
+
+	//free(key);
+	ft_free((void**)&key);
 
 	//to not acciedently get rid of original pointer
 	if (val)
@@ -102,7 +105,8 @@ char *expand(char *str, t_shell *shell)
 		{
 			tmp_val = process_dollar(str, &i, shell);
 			res = append_string(res, tmp_val);
-			free(tmp_val);
+			//free(tmp_val);
+			ft_free((void**)&tmp_val);
 		}//cualquier otro caracter
 		else
 			res = append_char(res, str[i]);
