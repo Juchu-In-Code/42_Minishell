@@ -11,13 +11,18 @@
 /* ************************************************************************** */
 #include "../z_minishell.h"
 
+void	child_cleanup(t_shell *shell)
+{
+	free_cmds(shell);
+	cleanup(shell);
+}
 
 static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 {
-        int     fd[2];
-        char    *path;
-        //1 builtin with redirections(no child process);
-        if(shell->pipe_count == 0 && is_builtin(cmd->final_args))
+	int     fd[2];
+	char    *path;
+	//1 builtin with redirections(no child process);
+	if(shell->pipe_count == 0 && is_builtin(cmd->final_args))
 	{
 		int bk_in;
 		int bk_out;
@@ -37,69 +42,76 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 		return(-1);
 	}
 
-        pipe(fd);
-        pid_t pid = fork();
-        if(pid < 0) 
-        {
-                ft_fprintf(2, "Error creating child");
-                return (-1);//-1 is returned because no child process is created
-        }
-        else if(pid == 0)
-        {
+	pipe(fd);
+	pid_t pid = fork();
+	if(pid < 0) 
+	{
+		ft_fprintf(2, "Error creating child");
+		return (-1);//-1 is returned because no child process is created
+	}
+	else if(pid == 0)
+	{
 		set_signal_child();
-                //every command have to redirect input except the first one
-                if(i != 0)
-                        dup2(*prev_read_fd, STDIN_FILENO);
-                //every command have to redirect output except the last one
-                if(i != shell->pipe_count)
-                        dup2(fd[PWRITE], STDOUT_FILENO);
+		//every command have to redirect input except the first one
+		if(i != 0)
+			dup2(*prev_read_fd, STDIN_FILENO);
+		//every command have to redirect output except the last one
+		if(i != shell->pipe_count)
+			dup2(fd[PWRITE], STDOUT_FILENO);
 
-                if(i != 0)
-                        close(*prev_read_fd);
+		if(i != 0)
+			close(*prev_read_fd);
 
-                close(fd[PWRITE]);
-                close(fd[PREAD]);
+		close(fd[PWRITE]);
+		close(fd[PREAD]);
 
 		if(handle_redirections(cmd->redirs) == false)
+		{
+			child_cleanup(shell);
 			exit(1);
+		}
 		if(!cmd->final_args || !cmd->final_args[0])
+		{
+			child_cleanup(shell);
 			exit(0);
+		}
 
 		if(is_builtin(cmd->final_args))
-		{
-			rl_clear_history();
-			exit(exec_builtin(cmd->ac, cmd->final_args, shell));
+		{	
+			int status = exec_builtin(cmd->ac, cmd->final_args, shell);
+			child_cleanup(shell);
+			exit(status);
 		}
-                else
-                {
-                        path = get_line_to_exec(cmd->final_args[0], shell->env);
-                        if(path == NULL)
-                        {
-                                ft_fprintf(2, "minishell: %s: command not found\n", cmd->final_args[0]);
-                                exit(127);
-                        }
+		else
+		{
+			path = get_line_to_exec(cmd->final_args[0], shell->env);
+			if(path == NULL)
+			{
+				ft_fprintf(2, "minishell: %s: command not found\n", cmd->final_args[0]);
+				child_cleanup(shell);
+				exit(127);
+			}
 			char **env = env_list_to_ptr(shell->env);
 
-                        execve(path, cmd->final_args, env);
-                        perror(cmd->final_args[0]);
+			execve(path, cmd->final_args, env);
+			perror(cmd->final_args[0]);
 			ft_free_matrix((void**)env);
-			rl_clear_history();
-                        //free(path);
+			child_cleanup(shell);
 			ft_free((void**)&path);
-                        exit(126);
-                }
-        }
-        else
-        {
+			exit(126);
+		}
+	}
+	else
+	{
 		set_signal_parent();
-                if(i != 0)
-                        close(*prev_read_fd);
-                *prev_read_fd = fd[PREAD];
-                close(fd[PWRITE]);
-                if(i == shell->pipe_count)
-                        close(*prev_read_fd);
-                return(pid);
-        }
+		if(i != 0)
+			close(*prev_read_fd);
+		*prev_read_fd = fd[PREAD];
+		close(fd[PWRITE]);
+		if(i == shell->pipe_count)
+			close(*prev_read_fd);
+		return(pid);
+	}
 }
 
 char *expand_token(t_tok *tok, char *raw_input, t_shell *shell)
@@ -172,8 +184,6 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 				temp = cmd->final_args[i];
 				cmd->final_args[i] = ft_strjoin(temp, part);
 
-				//free(temp);
-				//free(part);
 				ft_free((void**)&temp);
 				ft_free((void**)&part);
 			}
@@ -227,17 +237,17 @@ int    count_cmds_args(t_list *args)
 
 static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
 {
-        t_item  *curr;
-        t_redir   *redir;
+	t_item  *curr;
+	t_redir   *redir;
 	char	*delimiter;
 	bool	has_quotes;
 	int	fd_tty;
-	
+
 	fd_tty = dup(STDIN_FILENO);
-        curr = cmd->redirs->head;
-        while(curr != NULL)
-        {
-                redir = (t_redir*)curr->data;
+	curr = cmd->redirs->head;
+	while(curr != NULL)
+	{
+		redir = (t_redir*)curr->data;
 		if(redir->redir_type == id_hdoc)
 		{
 			//delimiter = token_to_string(&redir->target, raw_input);
@@ -251,13 +261,12 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
 				has_quotes = false;
 				delimiter = token_to_string(&redir->target, raw_input);
 			}
-				
+
 			printf("Delimiter -> %s\n", delimiter);
 			set_signal_heredoc();
 			redir->file_name = process_heredoc(delimiter, has_quotes, shell);
-			//free(delimiter);
 			ft_free((void**)&delimiter);
-			
+
 			if(g_sigexit == 130)
 			{
 				dup2(fd_tty, STDIN_FILENO);
@@ -268,30 +277,30 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
 		else
 			redir->file_name = expand_token(&redir->target, raw_input, shell);
 
-                curr = curr->next;
-        }
+		curr = curr->next;
+	}
 	close(fd_tty);
 }
 
 void    execution_pipeline(t_shell *shell, char *input)
 {
-        int     prev_read;
-        int     i;
-        pid_t   last_pid;
-        pid_t   pid;
-        int status;
+	int     prev_read;
+	int     i;
+	pid_t   last_pid;
+	pid_t   pid;
+	int status;
 
-        i = -1;
-        prev_read = -1;
-        last_pid = -1;
+	i = -1;
+	prev_read = -1;
+	last_pid = -1;
 
-        while(++i <= shell->pipe_count)
+	while(++i <= shell->pipe_count)
 	{
 		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
 		fill_cmds_argv(&shell->cmds[i],input, shell);
 	}
 	i=-1;
-        while(++i <= shell->pipe_count)
+	while(++i <= shell->pipe_count)
 	{
 		fill_cmds_redirs(&shell->cmds[i], input, shell);
 		if(g_sigexit == 130)
@@ -301,15 +310,15 @@ void    execution_pipeline(t_shell *shell, char *input)
 		}
 	}
 	i = -1;
-        while(++i <= shell->pipe_count)
-        {
+	while(++i <= shell->pipe_count)
+	{
 		//enter sin nada
 		if((!shell->cmds[i].final_args || !shell->cmds[i].final_args[0]) &&(!shell->cmds[i].redirs || !shell->cmds[i].redirs->head))
 			continue; 
 
 		pid = execute(&shell->cmds[i], shell, &prev_read, i);
 		last_pid = pid;
-        }
+	}
 	if(last_pid != -1)
 	{
 		//explicitly waiting for the last process
@@ -331,3 +340,4 @@ void    execution_pipeline(t_shell *shell, char *input)
 	}
 	heredoc_cleanup(shell);
 }
+

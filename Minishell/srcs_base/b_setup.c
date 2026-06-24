@@ -19,9 +19,6 @@ bool	setup(t_shell *shell, char **env)
 
 	if (!clone_env(shell, env))
 		return(false);
-	shell->bkstd[IN] = dup(IN);
-	shell->bkstd[OUT] = dup(OUT);
-	shell->bkstd[ERR] = dup(ERR);
 	shell->is_active = true;
 	shell->last_exit_code = 0;
 	return (true);

@@ -173,7 +173,7 @@ run: re
 	@./minishell
 
 v: re
-	@valgrind -v --leak-check=full --track-origins=yes --show-leak-kinds=all --suppressions=../readline.supp --trace-children=yes --track-fds=yes ./minishell
+	@valgrind -v -s --leak-check=full --track-origins=yes --show-leak-kinds=all --suppressions=../readline.supp --trace-children=yes --track-fds=yes ./minishell
 
 
 # rebonus: fclean bonus
