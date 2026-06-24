@@ -109,7 +109,10 @@ static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 		*prev_read_fd = fd[PREAD];
 		close(fd[PWRITE]);
 		if(i == shell->pipe_count)
+		{
 			close(*prev_read_fd);
+			*prev_read_fd = -1;
+		}
 		return(pid);
 	}
 }
@@ -314,7 +317,14 @@ void    execution_pipeline(t_shell *shell, char *input)
 	{
 		//enter sin nada
 		if((!shell->cmds[i].final_args || !shell->cmds[i].final_args[0]) &&(!shell->cmds[i].redirs || !shell->cmds[i].redirs->head))
+		{
+			if (prev_read != -1)
+			{
+				close(prev_read);
+				prev_read = -1;
+			}
 			continue; 
+		}
 
 		pid = execute(&shell->cmds[i], shell, &prev_read, i);
 		last_pid = pid;
