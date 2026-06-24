@@ -14,7 +14,7 @@ NAME			= minishell
 
 CC				= gcc
 CFLAGS			= -Wextra -Wall -Werror -g
-#CFLAGS			+=-fsanitize=address -fno-omit-frame-pointer
+# CFLAGS			+=-fsanitize=address -fno-omit-frame-pointer
 RM				= rm -rf
 
 LIBFT_DIR		= ./libft
@@ -172,12 +172,14 @@ re: fclean all
 run: re
 	@./minishell
 
-v: re
+va:	all
 	@valgrind -v -s --leak-check=full --track-origins=yes --show-leak-kinds=all --suppressions=../readline.supp --trace-children=yes --track-fds=yes ./minishell
 
+v: re
+	@valgrind -v -s --leak-check=full --track-origins=yes --show-leak-kinds=all --suppressions=../readline.supp --trace-children=yes --track-fds=yes ./minishell
 
 # rebonus: fclean bonus
 
 #.PHONY: all clean bonus fclean re rebonus
 
-.PHONY: all clean fclean re run v
+.PHONY: all clean fclean re run v va
