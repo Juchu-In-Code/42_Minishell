@@ -169,6 +169,9 @@ fclean: clean
 
 re: fclean all
 
+run: re
+	@./minishell
+
 v: re
 	@valgrind -v --leak-check=full --track-origins=yes --show-leak-kinds=all --suppressions=../readline.supp --trace-children=yes --track-fds=yes ./minishell
 
@@ -177,4 +180,4 @@ v: re
 
 #.PHONY: all clean bonus fclean re rebonus
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re run v
