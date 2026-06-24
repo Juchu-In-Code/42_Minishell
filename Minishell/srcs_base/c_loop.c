@@ -43,7 +43,7 @@ void	loop(t_shell *shell)
 		ft_free((void*)&input);
 
 		if(shell->tokens)
-			list_free(shell->tokens, NULL);
+			list_free(&shell->tokens, NULL);
 		if(shell->cmds)
 			free_cmds(shell);
 		set_signal_interactive();

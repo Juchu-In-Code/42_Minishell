@@ -39,8 +39,8 @@ void free_cmds(t_shell *shell)
 		return;
 	while(++i <= shell->pipe_count)
 	{
-		list_free(shell->cmds[i].redirs, free_redir);
-		list_free(shell->cmds[i].args, NULL);
+		list_free(&shell->cmds[i].redirs, free_redir);
+		list_free(&shell->cmds[i].args, NULL);
 		ft_free_matrix((void**)shell->cmds[i].final_args);
 		ft_free((void*)&shell->cmds[i]);
 	}

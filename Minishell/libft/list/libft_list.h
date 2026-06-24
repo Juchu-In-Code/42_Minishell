@@ -37,6 +37,6 @@ void	list_insert_tail(t_list *list, void *data);
 void	list_insert_head(t_list *list, void *data);
 void	*list_remove_head(t_list *list, t_free free_func);
 void	*list_remove_tail(t_list *list, t_free free_func);
-void	list_free(t_list *list, t_free free_func);
+void	list_free(t_list **list, t_free free_func);
 
 #endif

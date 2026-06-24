@@ -12,13 +12,15 @@
 
 #include "../libft.h"
 
-void	list_free(t_list *list, t_free free_func)
+void	list_free(t_list **list_to_free, t_free free_func)
 {
+	t_list	*list;
 	t_item	*current;
 	t_item	*next;
 
-	if (!list)
+	if (!list_to_free || !*list_to_free)
 		return;
+	list	= *list_to_free;
 	current = list->head;
 	while (current)
 	{
@@ -36,7 +38,6 @@ void	list_free(t_list *list, t_free free_func)
 		ft_free((void**)&current);
 		current = next;
 	}
-	ft_free((void**)&list);
-	list = NULL;
+	ft_free((void**)list_to_free);
 }
 

@@ -14,9 +14,9 @@
 
 void cleanup(t_shell *shell)
 {
-	if(shell->env->head)
-		list_free(shell->env, free_env_entry);
+	if(shell->env)
+		list_free(&shell->env, free_env_entry);
 	if(shell->tokens)
-		list_free(shell->tokens, NULL);
+		list_free(&shell->tokens, NULL);
 	return;
 }
