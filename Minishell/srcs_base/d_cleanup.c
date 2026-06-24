@@ -18,5 +18,6 @@ void cleanup(t_shell *shell)
 		list_free(&shell->env, free_env_entry);
 	if(shell->tokens)
 		list_free(&shell->tokens, NULL);
+	clear_history();
 	return;
 }
