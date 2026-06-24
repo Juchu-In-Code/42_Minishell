@@ -15,7 +15,7 @@ static char	**alloc_env_array(size_t size)
 {
 	char	**result;
 
-	result = malloc(sizeof(char *) * (size + 1));
+	result = ft_calloc(size + 1, sizeof(char *));
 	if (result)
 		result[size] = NULL;
 	return (result);

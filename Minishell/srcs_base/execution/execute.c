@@ -141,7 +141,7 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 	char    *part;
 	char    *temp;
 
-	cmd->final_args = malloc(sizeof(char *) * (cmd->ac + 1));
+	cmd->final_args = ft_calloc(cmd->ac+1, sizeof(char *));
 	if(!cmd->final_args)
 		return;
 

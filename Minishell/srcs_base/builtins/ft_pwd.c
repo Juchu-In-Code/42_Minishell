@@ -19,10 +19,9 @@ int ft_pwd(int ac, char **av, t_shell *shell)
 	(void)av;
 	(void)shell;
 	
-	cwd = malloc(PATH_MAX);
+	cwd = ft_calloc(1, PATH_MAX);
 	getcwd(cwd, PATH_MAX);
 	printf("%s\n", cwd);
-	//free(cwd);
 	ft_free((void**)&cwd);
 	return (0);
 }
