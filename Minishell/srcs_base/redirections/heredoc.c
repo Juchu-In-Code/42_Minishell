@@ -6,7 +6,7 @@
 /*   By: viaremko <viaremko@proton.me>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 07:35:16 by viaremko          #+#    #+#             */
-/*   Updated: 2026/06/06 07:35:16 by viaremko         ###   ########.fr       */
+/*   Updated: 2026/06/25 13:48:07 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../z_minishell.h"
@@ -35,18 +35,13 @@ char	*process_heredoc(char *delimiter, bool has_quotes, t_shell *shell)
 	char	*to_write;
 	int	fd;
 
-	//filename is heapallocated;
-	//beware memory leaks;
 	filename = get_temp_name();
-
 	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if(fd < 0)
 	{
-		//free(filename);
 		ft_free((void**)&filename);
 		return(NULL);
 	}
-
 	while(1337)
 	{
 		input = readline("> ");
@@ -65,9 +60,7 @@ char	*process_heredoc(char *delimiter, bool has_quotes, t_shell *shell)
 		write(fd, to_write, ft_strlen(to_write));
 		write(fd, "\n", 1);
 
-		//free(input);
 		ft_free((void**)&input);
-		//free(to_write);
 		ft_free((void**)&to_write);
 	}
 	close(fd);
