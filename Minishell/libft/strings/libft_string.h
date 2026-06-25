@@ -15,7 +15,7 @@
 
 # include "../libft_incs.h"
 
-bool    ft_is_str_numeric(char *s);
+bool	ft_is_str_numeric(char *s);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
 char	*ft_strchr(const char *s, int c);
@@ -39,9 +39,7 @@ size_t	ft_strlenv(va_list args);
 t_bool	ft_str_isempty(char *str);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 char	*ft_strunt(const char *s, char *until);
-int     ft_count_arrays(char **arr);
-void    ft_print_matrix(char **arr);
-
-
+int		ft_count_arrays(char **arr);
+void	ft_print_matrix(char **arr);
 
 #endif

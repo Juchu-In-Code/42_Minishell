@@ -32,7 +32,7 @@ void	*list_remove_head(t_list *list, t_free free_func)
 		list->head->prev = NULL;
 	}
 	list->size--;
-	ft_free((void**)&item);
+	ft_free((void **)&item);
 	if (free_func)
 	{
 		free_func(data);
@@ -61,7 +61,7 @@ void	*list_remove_tail(t_list *list, t_free free_func)
 		list->tail->next = NULL;
 	}
 	list->size--;
-	ft_free((void**)&item);
+	ft_free((void **)&item);
 	if (free_func)
 	{
 		free_func(data);

@@ -19,8 +19,8 @@ void	list_free(t_list **list_to_free, t_free free_func)
 	t_item	*next;
 
 	if (!list_to_free || !*list_to_free)
-		return;
-	list	= *list_to_free;
+		return ;
+	list = *list_to_free;
 	current = list->head;
 	while (current)
 	{
@@ -31,13 +31,12 @@ void	list_free(t_list **list_to_free, t_free free_func)
 				free_func(current->data);
 			else
 			{
-				ft_free((void**)&current->data);
+				ft_free((void **)&current->data);
 				current->data = NULL;
 			}
 		}
-		ft_free((void**)&current);
+		ft_free((void **)&current);
 		current = next;
 	}
-	ft_free((void**)list_to_free);
+	ft_free((void **)list_to_free);
 }
-

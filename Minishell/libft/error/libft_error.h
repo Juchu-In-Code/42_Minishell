@@ -19,6 +19,6 @@ void	error_call(char *err, char *msg);
 void	error_exit(char *err, char *msg, int exit_code);
 void	perror_call(char *err, char *msg);
 void	perror_exit(char *err, char *msg, int exit_code);
-int	error_return(char *err, char *msg, int return_code);
+int		error_return(char *err, char *msg, int return_code);
 
 #endif

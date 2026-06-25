@@ -14,5 +14,7 @@
 # define LIBFT_UTILS_H
 
 # include "../libft_incs.h"
-int     ft_get_array_length(char **av);
+
+int	ft_get_array_length(char **av);
+
 #endif
