@@ -175,13 +175,13 @@ run: re
 	@./minishell
 
 va:	all
-	@valgrind -v -s --leak-check=full --track-origins=yes 		\
+	@valgrind -s --leak-check=full --track-origins=yes 		\
 		--show-leak-kinds=all --trace-children=yes				\
 		--suppressions=../readline.supp 						\
 		--track-fds=yes ./minishell
 
 v: re
-	@valgrind -v -s --leak-check=full --track-origins=yes 		\
+	@valgrind -s --leak-check=full --track-origins=yes 		\
 		--show-leak-kinds=all --trace-children=yes				\
 		--suppressions=../readline.supp 						\
 		--track-fds=yes ./minishell
