@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_unset.c                                         :+:      :+:    :+:   */
+/*   u_export.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: viaremko <lodyiaremko@proton.me>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 11:05:03 by viaremko          #+#    #+#             */
-/*   Updated: 2025/07/03 14:36:00 by viaremko         ###   ########.fr       */
+/*   Created: 2026/06/25 12:57:01 by viaremko          #+#    #+#             */
+/*   Updated: 2026/06/25 13:17:54 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../z_minishell.h"
 
-int	ft_unset(int ac, char **av, t_shell *shell)
+void	entry_helper(int state, t_env *entry, char **data)
 {
-	int	i;
-
-	i = 0;
-	while (++i < ac)
-		detach_env(shell->env, av[i]);
-	return (0);
+	if (state == 1)
+		change_env_value(entry, data[VAL], state);
+	if (state == 2)
+		append_env_value(entry, data[VAL], state);
+	if (state == 2)
+		free (data[VAL]);
+	free (data[KEY]);
 }

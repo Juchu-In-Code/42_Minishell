@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/30 11:05:03 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/06/30 11:12:22 by jgalizio         ###   ########.fr       */
+/*   Updated: 2026/06/25 12:37:16 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_echo(int ac, char **av, t_shell *shell)
 {
 	bool	no_new_line;
 	int		index;
-	
+
 	(void)shell;
 	no_new_line = false;
 	index = 1;

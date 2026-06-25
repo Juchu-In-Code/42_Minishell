@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: viaremko <lodyiaremko@proton.me>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,17 +11,16 @@
 /* ************************************************************************** */
 #include "../z_minishell.h"
 
-int ft_pwd(int ac, char **av, t_shell *shell)
+int	ft_pwd(int ac, char **av, t_shell *shell)
 {
 	char	*cwd;
 
 	(void)ac;
 	(void)av;
 	(void)shell;
-	
 	cwd = ft_calloc(1, PATH_MAX);
 	getcwd(cwd, PATH_MAX);
 	printf("%s\n", cwd);
-	ft_free((void**)&cwd);
+	ft_free((void **)&cwd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2026/06/25 10:01:56 by viaremko         ###   ########.fr       */
+/*   Updated: 2026/06/25 13:10:24 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,7 @@ int	exec_builtin(int ac, char **av, t_shell *shell);
 int		ft_pwd(int ac, char **av, t_shell* shell);
 int		ft_echo(int ac, char **av, t_shell* shell);
 int		ft_export(int ac, char **av, t_shell* shell);
+void		entry_helper(int state, t_env *entry, char **data);
 int		ft_cd(int ac, char **av, t_shell* shell);
 int		ft_exit(int ac, char **av, t_shell* shell);
 int		ft_env(int ac, char **av, t_shell* shell);

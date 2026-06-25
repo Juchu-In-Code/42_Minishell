@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                        :+:      :+:    :+:   */
+/*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: viaremko <viaremko@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 17:33:11 by viaremko          #+#    #+#             */
-/*   Updated: 2025/07/18 17:33:26 by viaremko         ###   ########.fr       */
+/*   Updated: 2026/06/25 13:19:45 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../z_minishell.h"
-/*NOTE: 
+
+/*NOTE:
  *	status = 0 -> ERROR;
  *	status = 1 -> VAL=KEY;
  *	status = 2 -> VAL+=KEY;
@@ -18,9 +19,9 @@
  */
 static uint8_t	check_line(char *line)
 {
-	uint8_t			status;
-	int				index;
-	int				i;
+	uint8_t	status;
+	int		index;
+	int		i;
 
 	status = 1;
 	index = ft_strchr_index(line, '=');
@@ -88,16 +89,7 @@ static bool	export_line(t_shell *shell, char *line)
 		return (false);
 	entry = get_env(shell->env, data[KEY]);
 	if (entry)
-	{
-		if (state == 1)
-			change_env_value(entry, data[VAL], state);
-		if (state == 2)
-		{
-			append_env_value(entry, data[VAL], state);
-			free (data[VAL]);
-		}
-		free (data[KEY]);
-	}
+		entry_helper(state, entry, data);
 	else
 	{
 		entry = create_dict_entry(data[KEY], data[VAL], state);
@@ -111,7 +103,7 @@ int	ft_export(int ac, char **av, t_shell *shell)
 	int	i;
 	int	ret_val;
 	int	err;
-	
+
 	if (ac == 1)
 	{
 		print_env_list(shell->env, "declare -x ");

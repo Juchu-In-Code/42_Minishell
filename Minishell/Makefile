@@ -6,7 +6,7 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 17:53:37 by jgalizio          #+#    #+#              #
-#    Updated: 2026/06/25 10:01:26 by viaremko         ###   ########.fr        #
+#    Updated: 2026/06/25 13:12:41 by viaremko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,9 +61,10 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_SIG)/,	\
 
 BASE_DIR_BUILTINS = $(BASE_DIR)/builtins
 BASE_SRCS		+= $(addprefix $(BASE_DIR_BUILTINS)/,	\
-				   	exec_builtin.c\
-			   		ft_export.c	\
-			   		ft_cd.c	\
+					exec_builtin.c\
+					ft_export.c	\
+					u_export.c \
+					ft_cd.c	\
 					ft_pwd.c\
 					ft_echo.c\
 					ft_exit.c\

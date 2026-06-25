@@ -11,15 +11,14 @@
 /* ************************************************************************** */
 #include "../z_minishell.h"
 
-int ft_env(int ac, char **av, t_shell *shell)
+int	ft_env(int ac, char **av, t_shell *shell)
 {
-    (void)av;
-    if(ac > 1)	
-    {
-    	ft_fprintf(2, "minishell: env: too many arguments\n");
-        return 1;
+	(void)av;
+	if (ac > 1)
+	{
+		ft_fprintf(2, "minishell: env: too many arguments\n");
+		return (1);
 	}
-
 	print_env(shell->env);
-    return 0;
+	return (0);
 }

@@ -1,5 +1,58 @@
 #include "../z_minishell.h"
 
+void	child_error_cleaner(t_shell *shell, char *env, char *env, int exit)
+{
+	perror(shell->cmds[i].final_args[0]);
+	ft_free_matrix((void**)env);
+	child_cleanup(shell);
+	ft_free((void**)&path);
+	exit(126);
+}
+void	cleanup_exit(t_shell *shell, int status)
+{
+	child_cleanup(shell);
+	exit(status);
+}
+
+void	handle_pipes(t_shell *shell, int *fd, int *prev_read_fd)
+{
+	if(i != 0)
+		dup2(*prev_read_fd, STDIN_FILENO);
+	if(i != shell->pipe_count)
+		dup2(fd[PWRITE], STDOUT_FILENO);
+	if(i != 0)
+		close(*prev_read_fd);
+	close(fd[PWRITE]);
+	close(fd[PREAD]);
+}
+
+void	child_process(t_shell *shell, int *prev_read_fd, int *fd, int i)
+{
+	char **env;
+	char    *path;
+
+	set_signal_child();
+	handle_pipes(shell, fd, prev_read_fd);
+	if(handle_redirections(shell->cmds[i].redirs) == false)
+		child_cleanup(shell);
+	if(handle_redirections(shell->cmds[i].redirs) == false)
+		exit(1);
+	if((!shell->cmds[i].final_args || !shell->cmds[i].final_args[0]) && child_cleanup(shell))
+		exit(0);
+
+	if(is_builtin(shell->cmds[i].final_args))
+		cleanup_exit(shell, exec_builtin);
+	else
+	{
+		path = get_line_to_exec(shell->cmds[i].final_args[0], shell->env);
+		if(!path  && child_cleanup(shell))
+			error_exit(shell->cmds[i].final_args[0], "command not found\n", 127);
+		env = env_list_to_ptr(shell->env);
+		execve(path, shell->cmds[i].final_args, env);
+		child_error_cleaner(t_shell *shell, char *env, char *env, 126);
+	}
+}
+
 int	lonely_builtin(t_shell *shell)
 {
 	int bk_in;
@@ -20,84 +73,36 @@ int	lonely_builtin(t_shell *shell)
 	return(-1);
 }
 
+void parent_process(int *fd, int *prev_read_fd, pid)
+{
+	set_signal_parent();
+	if(i != 0)
+		close(*prev_read_fd);
+	*prev_read_fd = fd[PREAD];
+	close(fd[PWRITE]);
+	if(i == shell->pipe_count)
+	{
+		close(*prev_read_fd);
+		*prev_read_fd = -1;
+	}
+	return pid;
+}
+
 static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 {
 	int     fd[2];
 	char    *path;
-	//1 builtin with redirections(no child process);
+
 	if(shell->pipe_count == 0 && is_builtin(cmd->final_args))
 		return(lonely_builtin());
-
 	pipe(fd);
 	pid_t pid = fork();
 	if(pid < 0) 
-		return(error_return("Error creating child", -1));
+		return(error_return("Minishell: ", "Error creating child", -1));
 	else if(pid == 0)
-	{
-		set_signal_child();
-		//every command have to redirect input except the first one
-		if(i != 0)
-			dup2(*prev_read_fd, STDIN_FILENO);
-		//every command have to redirect output except the last one
-		if(i != shell->pipe_count)
-			dup2(fd[PWRITE], STDOUT_FILENO);
-
-		if(i != 0)
-			close(*prev_read_fd);
-
-		close(fd[PWRITE]);
-		close(fd[PREAD]);
-
-		if(handle_redirections(cmd->redirs) == false)
-		{
-			child_cleanup(shell);
-			exit(1);
-		}
-		if(!cmd->final_args || !cmd->final_args[0])
-		{
-			child_cleanup(shell);
-			exit(0);
-		}
-
-		if(is_builtin(cmd->final_args))
-		{	
-			int status = exec_builtin(cmd->ac, cmd->final_args, shell);
-			child_cleanup(shell);
-			exit(status);
-		}
-		else
-		{
-			path = get_line_to_exec(cmd->final_args[0], shell->env);
-			if(path == NULL)
-			{
-				ft_fprintf(2, "minishell: %s: command not found\n", cmd->final_args[0]);
-				child_cleanup(shell);
-				exit(127);
-			}
-			char **env = env_list_to_ptr(shell->env);
-
-			execve(path, cmd->final_args, env);
-			perror(cmd->final_args[0]);
-			ft_free_matrix((void**)env);
-			child_cleanup(shell);
-			ft_free((void**)&path);
-			exit(126);
-		}
-	}
+		child_process(shell, prev_read_fd, fd, i)
 	else
-	{
-		set_signal_parent();
-		if(i != 0)
-			close(*prev_read_fd);
-		*prev_read_fd = fd[PREAD];
-		close(fd[PWRITE]);
-		if(i == shell->pipe_count)
-		{
-			close(*prev_read_fd);
-			*prev_read_fd = -1;
-		}
-		return(pid);
-	}
+		return(parent_process(fd, prev_read_fd, pid));
 }
 
 char *expand_token(t_tok *tok, char *raw_input, t_shell *shell)
@@ -114,10 +119,84 @@ char *expand_token(t_tok *tok, char *raw_input, t_shell *shell)
 		return (str);
 
 	expanded = expand(str, shell);
-	//free(str); 
 	ft_free((void**)&str);
 	return (expanded);
 }
+
+static bool	alloc_args(t_cmd *cmd)
+{
+	int i = -1;
+
+	cmd->final_args = ft_calloc(cmd->ac+1, sizeof(char *));
+	if(!cmd->final_args)
+		return false;
+	i = -1;
+	while (++i <= cmd->ac)
+		cmd->final_args[i] = NULL;
+	return true;
+}
+
+static helper_joins(t_shell, t_cmd *cmd, char *raw_input, t_tok *tok)
+{
+	char *part;
+	char *temp;
+
+	part = expand_token(tok, raw_input, shell);
+	if (!part)
+		part = ft_strdup("");
+
+	if (cmd->final_args[i] == NULL)
+		cmd->final_args[i] = part;
+	else
+	{
+		temp = cmd->final_args[i];
+		cmd->final_args[i] = ft_strjoin(temp, part);
+		ft_free((void**)&temp);
+		ft_free((void**)&part);
+	}
+}
+
+static void put_args(t_cmd *cmd, char *raw_input, t_shell *shell)
+{
+	t_item  *curr;
+	t_tok   *tok;
+	int     i;
+
+	curr = cmd->args->head;
+	i = 0;
+	while(curr != NULL)
+	{
+		tok = (t_tok*)curr->data;
+		if (tok->type == id_space)
+		{
+			if (cmd->final_args[i] != NULL)
+				i++;
+		}
+		else
+		{
+			helper_joins(t_shell, t_cmd *cmd, char *raw_input, t_tok *tok);
+			part = expand_token(tok, raw_input, shell);
+			if (!part)
+				part = ft_strdup("");
+			if (cmd->final_args[i] == NULL)
+				cmd->final_args[i] = part;
+			else
+			{
+				temp = cmd->final_args[i];
+				cmd->final_args[i] = ft_strjoin(temp, part);
+
+				ft_free((void**)&temp);
+				ft_free((void**)&part);
+			}
+		}
+		curr = curr->next;
+	}
+	if (cmd->final_args[i] != NULL)
+		i++;
+	cmd->final_args[i] = NULL;
+}
+
+
 
 static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 {
@@ -127,40 +206,24 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 	char    *part;
 	char    *temp;
 
-	cmd->final_args = ft_calloc(cmd->ac+1, sizeof(char *));
-	if(!cmd->final_args)
+	if(!alloc_args(cmd))
 		return;
-
-	i = -1;
-	while (++i <= cmd->ac)
-		cmd->final_args[i] = NULL;
-
+	put_args(cmd, raw_input, shell);
 	curr = cmd->args->head;
 	i = 0;
-
 	while(curr != NULL)
 	{
 		tok = (t_tok*)curr->data;
-
-		//Space case:
 		if (tok->type == id_space)
 		{
 			if (cmd->final_args[i] != NULL)
 				i++;
 		}
-		//Normal string
 		else
 		{
-			//TODO: expand here
-			//part = token_to_string(tok, raw_input);
-			//shell is needed to access env variables
 			part = expand_token(tok, raw_input, shell);
-
-			// if part is NULL - in case of empty expanded var -> set it to "" 
 			if (!part)
 				part = ft_strdup("");
-
-			// first part
 			if (cmd->final_args[i] == NULL)
 			{
 				cmd->final_args[i] = part;
@@ -176,7 +239,6 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 		}
 		curr = curr->next;
 	}
-
 	if (cmd->final_args[i] != NULL)
 		i++;
 	cmd->final_args[i] = NULL;
@@ -192,15 +254,12 @@ int    count_cmds_args(t_list *args)
 
 	if (!args || !args->head)
 		return (0);
-
 	count = 0;
 	has_content = false;
 	curr = args->head;
-
 	while (curr != NULL)
 	{
 		tok = (t_tok *)curr->data;
-
 		if (tok->type == id_space)
 		{
 			if (has_content == true)
@@ -211,13 +270,10 @@ int    count_cmds_args(t_list *args)
 		}
 		else
 			has_content = true;
-
 		curr = curr->next;
 	}
-
 	if (has_content == true)
 		count++;
-
 	return (count);
 }
 
