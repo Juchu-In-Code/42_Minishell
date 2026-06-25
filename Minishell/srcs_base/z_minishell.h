@@ -13,22 +13,22 @@
 #ifndef Z_MINISHELL_H
 # define Z_MINISHELL_H
 
-# include	<fcntl.h>
-# include	<stdio.h>
-# include	<sys/stat.h>
-# include	<stdlib.h>
-# include	<signal.h>
-# include	<sys/wait.h>
-# include	<sys/types.h>
-# include	<unistd.h>
-# include	<string.h>
-# include	<stdint.h>
-# include	<limits.h>
-# include	<stdbool.h>
-# include	<termios.h>
-# include	<readline/readline.h>
-# include	<readline/history.h>
-# include	"../libft/libft.h"
+# include <fcntl.h>
+# include <stdio.h>
+# include <sys/stat.h>
+# include <stdlib.h>
+# include <signal.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <unistd.h>
+# include <string.h>
+# include <stdint.h>
+# include <limits.h>
+# include <stdbool.h>
+# include <termios.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "../libft/libft.h"
 
 /*  __  __                           */
 /* |  \/  | __ _  ___ _ __ ___  ___  */
@@ -37,19 +37,19 @@
 /* |_|  |_|\__,_|\___|_|  \___/|___/ */
 /* ================================= */
 
-//  GNU Readline internal ignore markers
+//  readline internal ignore markers
 # define RL_START	"\001"
 # define RL_END		"\002"
 
 //	ansi color escape codes
-# define ANS_R		RL_START "\033[31m" RL_END
-# define ANS_G		RL_START "\033[32m" RL_END
-# define ANS_U		RL_START "\033[34m" RL_END
-# define ANS_Y		RL_START "\033[33m" RL_END
-# define ANS_C		RL_START "\033[36m" RL_END
-# define ANS_M		RL_START "\033[35m" RL_END
-# define ANS_W		RL_START "\033[37m" RL_END
-# define ANS_RES	RL_START "\033[0m"  RL_END
+# define ANS_R		"\001\033[31m\002"
+# define ANS_G		"\001\033[32m\002"
+# define ANS_U		"\001\033[34m\002"
+# define ANS_Y		"\001\033[33m\002"
+# define ANS_C		"\001\033[36m\002"
+# define ANS_M		"\001\033[35m\002"
+# define ANS_W		"\001\033[37m\002"
+# define ANS_RES	"\001\033[0m\002"
 
 //	enviroment variables dictionary
 # define KEY	0
@@ -79,7 +79,7 @@
 
 //	Text and Errors
 # define MS			"Minishell: "
-# define E_MS		ANS_R "Minishell: " ANS_RES
+# define E_MS		"ANS_R \"Minishell: \" ANS_RES"
 
 # define E_DEBUG	"Incorrect argument passed, use -D for debug mode.\n"
 # define E_ENV		"A correct set of environment variables must be provided.\n"
@@ -92,7 +92,7 @@
 /* |____/ \___|_| |_|_| |_|\___||___/ */
 /* ================================== */
 
-typedef	enum e_tokt
+typedef enum e_tokt
 {
 	// Symbols
 	id_pipe,
@@ -115,7 +115,7 @@ typedef	enum e_tokt
 	id_fin
 }	t_tokt;
 
-extern	int	g_sigexit;
+extern int	g_sigexit;
 
 /*  ____  _                   _        */
 /* / ___|| |_ _ __ _   _  ___| |_ ___  */
@@ -124,13 +124,13 @@ extern	int	g_sigexit;
 /* |____/ \__|_|   \__,_|\___|\__|___/ */
 /* =================================== */
 
-typedef	struct	s_env
+typedef struct s_env
 {
 	char			*dict[2];
 	uint8_t			state;
 }	t_env;
 
-typedef	struct	s_cmd
+typedef struct s_cmd
 {
 	ssize_t			io[2];
 	t_list			*redirs;
@@ -139,7 +139,7 @@ typedef	struct	s_cmd
 	int				ac;
 }	t_cmd;
 
-typedef	struct	s_tok
+typedef struct s_tok
 {
 	t_tokt			type;
 	size_t			pos;
@@ -147,14 +147,14 @@ typedef	struct	s_tok
 	uint8_t			state;
 }	t_tok;
 
-typedef	struct	s_redir
+typedef struct s_redir
 {
 	t_tokt			redir_type;
 	t_tok			target;
 	char			*file_name;
 }	t_redir;
 
-typedef	struct	s_shell
+typedef struct s_shell
 {
 	bool			is_active;
 	bool			debug_mode;
@@ -166,12 +166,13 @@ typedef	struct	s_shell
 	t_cmd			*cmds;
 }	t_shell;
 
-typedef	int	(*t_builtin_fn)(int ac, char **av, t_shell *shell);
+typedef int	(*t_builtin_fn)(int ac, char **av, t_shell *shell);
 
-typedef	struct	s_builtin {
-	char            *name;
-	t_builtin_fn    func;
-} t_builtin;
+typedef struct s_builtin
+{
+	char			*name;
+	t_builtin_fn	func;
+}	t_builtin;
 
 /*            ____            _        _                                      */
 /*           |  _ \ _ __ ___ | |_ ___ | |_ _   _ _ __   ___  ___              */
@@ -196,9 +197,7 @@ bool	line_to_env(t_shell *shell, char *line);
 void	print_env(t_list *list);
 void	change_env_value(t_env *env, char *new_val, int update_state);
 void	append_env_value(t_env *env, char *new_val, int update_state);
-t_env   *create_dict_entry(char *key, char *val, int state);
-
-
+t_env	*create_dict_entry(char *key, char *val, int state);
 
 // readline
 bool	ft_readline(t_shell *shell, char **buff);
@@ -206,15 +205,15 @@ bool	ft_readline(t_shell *shell, char **buff);
 // signals
 void	set_signal_parent(void);
 void	set_signal_child(void);
-void	set_signal_heredoc(void); 
+void	set_signal_heredoc(void);
 void	set_signal_interactive(void);
 
 //execution
-char     *get_line_to_exec(char *key, t_list *env);
+char	*get_line_to_exec(char *key, t_list *env);
 void	execution_pipeline(t_shell *shell, char *input);
 
 //expansion
-char *expand(char *str, t_shell *shell);
+char	*expand(char *str, t_shell *shell);
 
 //redirections
 bool	handle_redirections(t_list *redirs);
@@ -222,14 +221,14 @@ char	*process_heredoc(char *delimiter, bool has_quotes, t_shell *shell);
 
 // builtins
 bool	is_builtin(char **av);
-int	exec_builtin(int ac, char **av, t_shell *shell);
-int		ft_pwd(int ac, char **av, t_shell* shell);
-int		ft_echo(int ac, char **av, t_shell* shell);
-int		ft_export(int ac, char **av, t_shell* shell);
-int		ft_cd(int ac, char **av, t_shell* shell);
-int		ft_exit(int ac, char **av, t_shell* shell);
-int		ft_env(int ac, char **av, t_shell* shell);
-int 	ft_unset(int ac, char **av, t_shell *shell);
+int		exec_builtin(int ac, char **av, t_shell *shell);
+int		ft_pwd(int ac, char **av, t_shell *shell);
+int		ft_echo(int ac, char **av, t_shell *shell);
+int		ft_export(int ac, char **av, t_shell *shell);
+int		ft_cd(int ac, char **av, t_shell *shell);
+int		ft_exit(int ac, char **av, t_shell *shell);
+int		ft_env(int ac, char **av, t_shell *shell);
+int		ft_unset(int ac, char **av, t_shell *shell);
 
 // tokenize
 bool	tokenize(t_shell *shell, char *input);

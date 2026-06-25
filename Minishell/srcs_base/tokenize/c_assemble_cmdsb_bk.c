@@ -47,43 +47,47 @@ static void	create_cmd_lists(t_cmd	*cmd)
 	cmd->ac = 0;
 }
 
+static void	manage_redirs(t_shell *shell, int cmd, t_item *c_it, t_tok *c_t)
+{
+	t_item	*n_it;
+	t_tok	*n_t;
+
+	n_it = c_it->next;
+	n_t = n_it->data;
+	if (n_t->type == id_space)
+	{
+		n_it = n_it->next;
+		n_t = n_it->data;
+	}
+	list_insert_tail(shell->cmds[cmd].redirs, clone_rdrs(*c_t, *n_t));
+	c_it = n_it->next;
+}
+
 bool	assemble_cmds(t_shell *shell)
 {
-	t_item	*current_item;
-	t_tok	*current_token;
-	t_item	*next_item;
-	t_tok	*next_token;
-	int		cmd;
+	t_item			*c_it;
+	t_tok			*c_t;
+	static int		cmd;
 
 	shell->cmds = ft_calloc(shell->pipe_count + 1, sizeof(t_cmd));
 	if (!shell->cmds)
 		return (false);
-	cmd = 0;
 	create_cmd_lists(&shell->cmds[cmd]);
-	current_item = shell->tokens->head;
-	while (current_item)
+	c_it = shell->tokens->head;
+	while (c_it)
 	{
-		current_token = current_item->data;
-		if (is_redir(current_token->type))
+		c_t = c_it->data;
+		if (is_redir(c_t->type))
 		{
-			next_item = current_item->next;
-			next_token = next_item->data;
-			if (next_token->type == id_space)
-			{
-				next_item = next_item->next;
-				next_token = next_item->data;
-			}
-			list_insert_tail(shell->cmds[cmd].redirs, clone_rdrs(*current_token, *next_token));
-			current_item = next_item->next;
+			manage_redirs(shell, cmd, c_it, c_t);
 			continue ;
 		}
-		if (is_quoted(current_token->type)
-			|| current_token->type == id_string
-			|| current_token->type == id_space)
-			list_insert_tail(shell->cmds[cmd].args, copy_token(current_token));
-		if (current_token->type == id_pipe)
+		if (is_quoted(c_t->type) || c_t->type == id_string
+			|| c_t->type == id_space)
+			list_insert_tail(shell->cmds[cmd].args, copy_token(c_t));
+		if (c_t->type == id_pipe)
 			create_cmd_lists(&shell->cmds[++cmd]);
-		current_item = current_item->next;
 	}
+	c_it = c_it->next;
 	return (true);
 }

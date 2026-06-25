@@ -35,7 +35,7 @@ void	debug_tokens(t_list *token_list, char *input)
 	{
 		token = current->data;
 		if (token->type == id_fin)
-			break;
+			break ;
 		put_debug_indicator(input, token->pos, token->size);
 		print_toktype(token->type);
 		printf(ANS_U" -> [ ");
