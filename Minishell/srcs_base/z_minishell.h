@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2025/07/02 13:18:44 by viaremko         ###   ########.fr       */
+/*   Updated: 2026/06/25 10:01:56 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,5 +253,6 @@ void	cleanup(t_shell *shell);
 void	free_env_entry(void *env_entry);
 void	heredoc_cleanup(t_shell *shell);
 void	free_cmds(t_shell *shell);
+void	child_cleanup(t_shell *shell);
 
 #endif

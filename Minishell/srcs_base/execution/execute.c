@@ -6,16 +6,10 @@
 /*   By: viaremko <viaremko@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 14:06:12 by viaremko          #+#    #+#             */
-/*   Updated: 2025/07/26 14:13:33 by viaremko         ###   ########.fr       */
+/*   Updated: 2026/06/25 10:02:12 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../z_minishell.h"
-
-void	child_cleanup(t_shell *shell)
-{
-	free_cmds(shell);
-	cleanup(shell);
-}
 
 static pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i)
 {

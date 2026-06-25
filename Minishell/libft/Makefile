@@ -6,12 +6,12 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 14:34:08 by jgalizio          #+#    #+#              #
-#    Updated: 2025/07/02 17:11:42 by jgalizio         ###   ########.fr        #
+#    Updated: 2026/06/25 09:49:54 by viaremko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= libft.a
-CFLAGS			= -Wall -Werror -Wextra -g
+CFLAGS			= -Wall -Werror -Wextra -g -fPIE
 AR				= ar crs
 RM				= rm -rf
 

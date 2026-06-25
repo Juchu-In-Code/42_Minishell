@@ -6,7 +6,7 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 17:53:37 by jgalizio          #+#    #+#              #
-#    Updated: 2025/07/02 13:16:32 by viaremko         ###   ########.fr        #
+#    Updated: 2026/06/25 10:01:26 by viaremko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -112,6 +112,7 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_CLEAN)/, 		\
 					cmds.c								\
 					env.c								\
 					heredoc.c							\
+					child_cleanup.c		\
 				)
 
 BONUS_SRCS		= $(addprefix $(BONUS_DIR)/,	\
