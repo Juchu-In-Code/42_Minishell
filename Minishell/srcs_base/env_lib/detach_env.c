@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   detouch_env.c                                      :+:      :+:    :+:   */
+/*   detach_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: viaremko <viaremko@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 21:48:29 by viaremko          #+#    #+#             */
-/*   Updated: 2025/07/17 21:48:34 by viaremko         ###   ########.fr       */
+/*   Updated: 2026/06/25 13:51:37 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../z_minishell.h"
@@ -16,7 +16,7 @@ static t_item	*get_list_item(t_list *list, char *key)
 	t_item	*curr_node;
 	t_env	*curr_env;
 
-	if (!list || !key || !*key )
+	if (!list || !key || !*key)
 		return (NULL);
 	curr_node = list->head;
 	while (curr_node)
@@ -32,6 +32,7 @@ static t_item	*get_list_item(t_list *list, char *key)
 void	detach_env(t_list *list, char *key)
 {
 	t_item	*item;
+	t_env	*env;
 
 	item = get_list_item(list, key);
 	if (!list || !item)
@@ -45,15 +46,9 @@ void	detach_env(t_list *list, char *key)
 	else
 		list->tail = item->prev;
 	list->size--;
-
-	t_env *env = (t_env *)item->data;
-
-	//free(env->dict[KEY]);
-	//free(env->dict[VAL]);
-	//free(item->data);
-	//free(item);
-	ft_free((void**)&env->dict[KEY]);
-	ft_free((void**)&env->dict[VAL]);
-	ft_free((void**)&item->data);
-	ft_free((void**)&item);
+	env = (t_env *)item->data;
+	ft_free((void **)&env->dict[KEY]);
+	ft_free((void **)&env->dict[VAL]);
+	ft_free((void **)&item->data);
+	ft_free((void **)&item);
 }
