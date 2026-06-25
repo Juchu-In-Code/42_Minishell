@@ -57,6 +57,7 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_ENV)/,				\
 BASE_DIR_SIG = $(BASE_DIR)/signals
 BASE_SRCS		+= $(addprefix $(BASE_DIR_SIG)/,	\
 					signals.c		\
+					u_signals.c		\
 					)
 
 BASE_DIR_BUILTINS = $(BASE_DIR)/builtins

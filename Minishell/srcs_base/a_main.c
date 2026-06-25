@@ -16,23 +16,23 @@ static bool	verify(int ac, char **av, char **env, t_shell *shell)
 {
 	if (ac == 2)
 	{
-		if(av[1][0] == '-' && av[1][1] == 'D')
+		if (av[1][0] == '-' && av[1][1] == 'D')
 			shell->debug_mode = true;
 		else
 			error_return(E_MS, E_DEBUG, false);
 	}
 	if (ac > 2)
-			error_return(E_MS, E_ARG, false);
+		error_return(E_MS, E_ARG, false);
 	if (!env || !*env)
-			error_return(E_MS, E_ENV, false);
+		error_return(E_MS, E_ENV, false);
 	return (true);
 }
 
-int g_sigexit;
+int			g_sigexit;
 
 int	main(int ac, char **av, char **env)
 {
-	static	t_shell	shell;
+	static t_shell	shell;
 
 	if (!verify(ac, av, env, &shell))
 		return (EXIT_FAILURE);

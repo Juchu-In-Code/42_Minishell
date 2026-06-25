@@ -12,22 +12,22 @@
 
 #include "../z_minishell.h"
 
-void free_env_entry(void *env_entry)
+void	free_env_entry(void *env_entry)
 {
 	t_env	*entry;
 
-	entry = (t_env*)env_entry;
-	if(!entry)
-		return;
-	if(entry->dict[KEY])
+	entry = (t_env *)env_entry;
+	if (!entry)
+		return ;
+	if (entry->dict[KEY])
 	{
-		ft_free((void**)&entry->dict[KEY]);
+		ft_free((void **)&entry->dict[KEY]);
 		entry->dict[KEY] = NULL;
 	}
-	if(entry->dict[VAL])
+	if (entry->dict[VAL])
 	{
-		ft_free((void**)&entry->dict[VAL]);
+		ft_free((void **)&entry->dict[VAL]);
 		entry->dict[VAL] = NULL;
 	}
-	ft_free((void**)&entry);
+	ft_free((void **)&entry);
 }

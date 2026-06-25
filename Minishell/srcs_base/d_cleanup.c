@@ -12,12 +12,12 @@
 
 #include "z_minishell.h"
 
-void cleanup(t_shell *shell)
+void	cleanup(t_shell *shell)
 {
-	if(shell->env)
+	if (shell->env)
 		list_free(&shell->env, free_env_entry);
-	if(shell->tokens)
+	if (shell->tokens)
 		list_free(&shell->tokens, NULL);
 	clear_history();
-	return;
+	return ;
 }

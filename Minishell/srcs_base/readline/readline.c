@@ -14,26 +14,26 @@
 
 char	*get_prompt(t_shell *shell)
 {
-	char *val;
-	char *prompt;
+	char	*val;
+	char	*prompt;
 
 	if (!shell->last_exit_code)
 	{
-		write (1, ANS_G, sizeof(ANS_G));
-		return (ft_strdup(">> "ANS_RES));
+		write(1, ANS_G, sizeof(ANS_G));
+		return (ft_strdup(">> " ANS_RES));
 	}
 	else
 	{
 		val = ft_itoa(shell->last_exit_code);
-		prompt = ft_strjoinv(ANS_R,val,">> ",ANS_RES, NULL);
-		ft_free((void**)&val);
+		prompt = ft_strjoinv(ANS_R, val, ">> ", ANS_RES, NULL);
+		ft_free((void **)&val);
 		return (prompt);
 	}
 }
 
 bool	ft_readline(t_shell *shell, char **buff)
 {
-	char *prompt;
+	char	*prompt;
 
 	prompt = NULL;
 	if (isatty(STDIN_FILENO))
@@ -41,7 +41,7 @@ bool	ft_readline(t_shell *shell, char **buff)
 		prompt = get_prompt(shell);
 		*buff = readline(prompt);
 		if (prompt)
-			ft_free((void**)&prompt);
+			ft_free((void **)&prompt);
 	}
 	else
 		*buff = get_next_line(STDIN_FILENO);
@@ -49,5 +49,5 @@ bool	ft_readline(t_shell *shell, char **buff)
 		return (false);
 	if (**buff)
 		add_history(*buff);
-	return(true);
+	return (true);
 }

@@ -11,28 +11,29 @@
 /* ************************************************************************** */
 #include "../z_minishell.h"
 
-char *token_to_string(t_tok *token, char *raw_line)
+char	*token_to_string(t_tok *token, char *raw_line)
 {
 	char	*token_str;
 
 	token_str = ft_substr(raw_line, token->pos, token->size);
-	return(token_str);
+	return (token_str);
 }
 
-bool is_expandable(t_tok *token, char *line)
+bool	is_expandable(t_tok *token, char *line)
 {
 	char	*dollar_sign;
 	char	*token_str;
-	bool	output = false;
+	bool	output;
 
+	output = false;
 	token_str = ft_substr(line, token->pos, token->size);
 	dollar_sign = ft_strchr(token_str, '$');
-	if(dollar_sign == NULL)
+	if (dollar_sign == NULL)
 		output = false;
-	else if(dollar_sign[1] != '\0' && dollar_sign[1] == '?')
+	else if (dollar_sign[1] != '\0' && dollar_sign[1] == '?')
 		output = true;
-	else if(dollar_sign[1] != '\0' && ft_isalpha(dollar_sign[1]))
+	else if (dollar_sign[1] != '\0' && ft_isalpha(dollar_sign[1]))
 		output = true;
-	ft_free((void*)&token_str);
-	return(output);
+	ft_free((void *)&token_str);
+	return (output);
 }

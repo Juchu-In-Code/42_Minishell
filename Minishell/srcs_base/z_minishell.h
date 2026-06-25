@@ -206,7 +206,13 @@ bool	ft_readline(t_shell *shell, char **buff);
 void	set_signal_parent(void);
 void	set_signal_child(void);
 void	set_signal_heredoc(void);
-void	set_signal_interactive(void);
+void 	set_signal_interactive(void);
+void    set_signal(int signal, void (*sig_instruction)(int));
+void    sig_heredoc(int sig);
+void    sig_interactive(int sig);
+
+
+
 
 //execution
 char	*get_line_to_exec(char *key, t_list *env);
@@ -237,7 +243,6 @@ void	__debug_tokens(t_list *token_list, char *input);
 void	debug_tokens(t_list *token_list, char *input);
 bool	token_syntax_checker(t_shell *shell, t_list *token_list, char *input);
 bool	assemble_cmds(t_shell *shell);
-t_tok	*create_token(t_tokt type, size_t i, size_t size);
 
 // utils
 void	put_char_range(char c, int len, char *color);

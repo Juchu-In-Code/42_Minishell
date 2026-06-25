@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   u_signals.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,26 +11,32 @@
 /* ************************************************************************** */
 #include "../z_minishell.h"
 
-void	set_signal_parent(void)
+void	sig_interactive(int sig)
 {
-	set_signal(SIGINT, SIG_IGN);
-	set_signal(SIGQUIT, SIG_IGN);
+	(void)sig;
+	g_sigexit = 130;
+	write(STDOUT_FILENO, ANS_R"\n", sizeof(ANS_R"\n"));
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
-void	set_signal_child(void)
+void	sig_heredoc(int sig)
 {
-	set_signal(SIGINT, SIG_DFL);
-	set_signal(SIGQUIT, SIG_DFL);
+	(void)sig;
+	g_sigexit = 130;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	close(STDIN_FILENO);
 }
 
-void	set_signal_heredoc(void)
+void	set_signal(int signal, void (*sig_instruction)(int))
 {
-	set_signal(SIGINT, sig_heredoc);
-	set_signal(SIGQUIT, SIG_IGN);
-}
+	struct sigaction	sa;
 
-void	set_signal_interactive(void)
-{
-	set_signal(SIGINT, sig_interactive);
-	set_signal(SIGQUIT, SIG_IGN);
+	ft_memset(&sa, 0, sizeof(sa));
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = sig_instruction;
+	sigaction(signal, &sa, NULL);
 }
