@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:34:39 by jgalizio          #+#    #+#             */
-/*   Updated: 2026/06/25 10:24:07 by jgalizio         ###   ########.fr       */
+/*   Updated: 2026/06/25 10:37:27 by jgalizio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,6 @@ void	error_call(char *err, char *msg)
 	}
 }
 
-int	error_return(char *err, char *msg, int return_code)
-{
-	error_call(err, msg);
-	return (return_code);
-}
-
-void	error_exit(char *err, char *msg, int exit_code)
-{
-	error_call(err, msg);
-	exit(exit_code);
-}
-
 void	perror_call(char *err, char *msg)
 {
 	if (!err)
@@ -64,6 +52,18 @@ void	perror_call(char *err, char *msg)
 		else
 			ft_fprintf(2, "[!]\t%s: %s\n", err, msg);
 	}
+}
+
+int	error_return(char *err, char *msg, int return_code)
+{
+	error_call(err, msg);
+	return (return_code);
+}
+
+void	error_exit(char *err, char *msg, int exit_code)
+{
+	error_call(err, msg);
+	exit(exit_code);
 }
 
 void	perror_exit(char *err, char *msg, int exit_code)

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 #include "z_minishell.h"
 
-
 void	loop(t_shell *shell)
 {
 	char	*input;
@@ -19,17 +18,16 @@ void	loop(t_shell *shell)
 
 	input = NULL;
 	set_signal_interactive();
-	while (shell->is_active )
+	while (shell->is_active)
 	{
-
 		end = ft_readline(shell, &input);
-		if(!end)
+		if (!end)
 		{
 			printf("exit\n");
 			shell->is_active = false;
-			break;
+			break ;
 		}
-		if(g_sigexit)
+		if (g_sigexit)
 		{
 			shell->last_exit_code = g_sigexit;
 			g_sigexit = 0;
@@ -37,14 +35,13 @@ void	loop(t_shell *shell)
 		tokenize(shell, input);
 		if (*input && shell->debug_mode)
 			debug_tokens(shell->tokens, input);
-		if(token_syntax_checker(shell, shell->tokens, input))
+		if (token_syntax_checker(shell, shell->tokens, input))
 			if (assemble_cmds(shell))
 				execution_pipeline(shell, input);
-		ft_free((void*)&input);
-
-		if(shell->tokens)
+		ft_free((void *)&input);
+		if (shell->tokens)
 			list_free(&shell->tokens, NULL);
-		if(shell->cmds)
+		if (shell->cmds)
 			free_cmds(shell);
 		set_signal_interactive();
 	}

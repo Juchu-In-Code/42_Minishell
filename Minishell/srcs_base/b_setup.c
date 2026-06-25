@@ -11,14 +11,13 @@
 /* ************************************************************************** */
 #include "z_minishell.h"
 
-extern int g_sigexit;
+extern int	g_sigexit;
 
 bool	setup(t_shell *shell, char **env)
 {
 	g_sigexit = 0;
-
 	if (!clone_env(shell, env))
-		return(false);
+		return (false);
 	shell->is_active = true;
 	shell->last_exit_code = 0;
 	return (true);

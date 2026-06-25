@@ -93,7 +93,6 @@ bool	tokenize(t_shell *shell, char *input)
 		return (false);
 	while (++i < len)
 	{
-
 		if (ft_isspace(input[i]))
 		{
 			list_insert_tail(shell->tokens, create_token(id_space, i, 1));
@@ -101,13 +100,13 @@ bool	tokenize(t_shell *shell, char *input)
 				i++;
 		}
 		if (!input[i])
-			break;
+			break ;
 		if (tokenize_qts(&token, input, &i)
 			|| tokenize_ops(&token, input, &i)
 			|| tokenize_string(&token, input, &i))
 			list_insert_tail(shell->tokens, token);
 		else
-		 return (false);
+			return (false);
 	}
 	list_insert_tail(shell->tokens, create_token(id_fin, i, 0));
 	return (true);
