@@ -21,7 +21,9 @@ void heredoc_cleanup(t_shell *shell)
 	i = -1;
 	while (++i <= shell->pipe_count)
 	{
-		if(!shell->cmds || !shell->cmds[i].redirs ||!shell->cmds[i].redirs->head)
+		if(!shell->cmds
+				|| !shell->cmds[i].redirs
+				|| !shell->cmds[i].redirs->head)
 			continue;
 
 		curr = shell->cmds[i].redirs->head;

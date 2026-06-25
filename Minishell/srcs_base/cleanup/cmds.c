@@ -21,11 +21,9 @@ static void free_redir(void *redir_passed)
 		return;
 	if (redir_to_free->file_name)
 	{
-		//free(redir_to_free->file_name);
 		ft_free((void**)&redir_to_free->file_name);
 		redir_to_free->file_name = NULL;
 	}
-	//free(redir_to_free);
 	ft_free((void**)&redir_to_free);
 	redir_to_free = NULL;
 }
@@ -44,7 +42,6 @@ void free_cmds(t_shell *shell)
 		ft_free_matrix((void**)shell->cmds[i].final_args);
 		ft_free((void*)&shell->cmds[i]);
 	}
-	//free(shell->cmds);
 	ft_free((void**)&shell->cmds);
 	shell->cmds = NULL;
 }

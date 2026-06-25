@@ -12,8 +12,6 @@
 
 #include "z_minishell.h"
 
-//TODO: Send msg errors through stderr
-
 static bool	verify(int ac, char **av, char **env, t_shell *shell)
 {
 	if (ac == 2)
@@ -21,21 +19,12 @@ static bool	verify(int ac, char **av, char **env, t_shell *shell)
 		if(av[1][0] == '-' && av[1][1] == 'D')
 			shell->debug_mode = true;
 		else
-		{
-			printf(ANS_R E_MS E_DEBUG ANS_RES);
-			return (false);
-		}
+			error_return(E_MS, E_DEBUG, false);
 	}
 	if (ac > 2)
-	{
-			printf(ANS_R E_MS E_ARG ANS_RES);
-		return (false);
-	}
+			error_return(E_MS, E_ARG, false);
 	if (!env || !*env)
-	{
-		printf(ANS_R E_MS E_ENV ANS_RES);
-		return (false);
-	}
+			error_return(E_MS, E_ENV, false);
 	return (true);
 }
 

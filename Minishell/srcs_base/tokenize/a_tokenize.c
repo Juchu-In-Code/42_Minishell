@@ -12,7 +12,7 @@
 
 #include "../z_minishell.h"
 
-t_tok	*create_token(t_tokt type, size_t i, size_t size)
+static t_tok	*create_token(t_tokt type, size_t i, size_t size)
 {
 	t_tok	*token;
 
@@ -25,7 +25,7 @@ t_tok	*create_token(t_tokt type, size_t i, size_t size)
 	return (token);
 }
 
-bool	tokenize_string(t_tok **token, char *input, int *i)
+static bool	tokenize_string(t_tok **token, char *input, int *i)
 {
 	int	size;
 
@@ -41,7 +41,7 @@ bool	tokenize_string(t_tok **token, char *input, int *i)
 	return (true);
 }
 
-bool	tokenize_qts(t_tok **token, char *input, int *i)
+static bool	tokenize_qts(t_tok **token, char *input, int *i)
 {
 	int	match;
 	int	size;
@@ -60,7 +60,7 @@ bool	tokenize_qts(t_tok **token, char *input, int *i)
 	return (true);
 }
 
-bool	tokenize_ops(t_tok **token, char *input, int *i)
+static bool	tokenize_ops(t_tok **token, char *input, int *i)
 {
 	int	match;
 
@@ -101,8 +101,7 @@ bool	tokenize(t_shell *shell, char *input)
 		}
 		if (!input[i])
 			break ;
-		if (tokenize_qts(&token, input, &i)
-			|| tokenize_ops(&token, input, &i)
+		if (tokenize_qts(&token, input, &i) || tokenize_ops(&token, input, &i)
 			|| tokenize_string(&token, input, &i))
 			list_insert_tail(shell->tokens, token);
 		else

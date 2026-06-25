@@ -26,7 +26,6 @@ char	*get_prompt(t_shell *shell)
 	{
 		val = ft_itoa(shell->last_exit_code);
 		prompt = ft_strjoinv(ANS_R,val,">> ",ANS_RES, NULL);
-		//free (val);
 		ft_free((void**)&val);
 		return (prompt);
 	}
@@ -43,7 +42,6 @@ bool	ft_readline(t_shell *shell, char **buff)
 		*buff = readline(prompt);
 		if (prompt)
 			ft_free((void**)&prompt);
-			//free (prompt);
 	}
 	else
 		*buff = get_next_line(STDIN_FILENO);

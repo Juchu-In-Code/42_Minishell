@@ -12,7 +12,6 @@
 
 #include "../z_minishell.h"
 
-//to use with "void	list_free(t_list *list, t_free free_func)" as a t_free function.
 void free_env_entry(void *env_entry)
 {
 	t_env	*entry;
