@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 #include "z_minishell.h"
 
-extern int	g_sigexit;
-
 bool	setup(t_shell *shell, char **env)
 {
 	g_sigexit = 0;

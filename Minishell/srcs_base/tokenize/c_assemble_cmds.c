@@ -47,43 +47,48 @@ static void	create_cmd_lists(t_cmd	*cmd)
 	cmd->ac = 0;
 }
 
+static t_item	*manage_redirs(t_shell *shell, t_item *c_item, int cmd)
+{
+	t_item	*n_item;
+	t_tok	*n_token;
+	t_tok	*c_token;
+
+	c_token = c_item->data;
+	n_item = c_item->next;
+	n_token = n_item->data;
+	if (n_token->type == id_space)
+	{
+		n_item = n_item->next;
+		n_token = n_item->data;
+	}
+	list_insert_tail(shell->cmds[cmd].redirs, clone_rdrs(*c_token, *n_token));
+	return (n_item->next);
+}
+
 bool	assemble_cmds(t_shell *shell)
 {
-	t_item	*current_item;
-	t_tok	*current_token;
-	t_item	*next_item;
-	t_tok	*next_token;
-	int		cmd;
+	t_item		*c_item;
+	t_tok		*c_token;
+	int			cmd;
 
-	shell->cmds = ft_calloc(shell->pipe_count + 1, sizeof(t_cmd));
-	if (!shell->cmds)
-		return (false);
 	cmd = 0;
+	shell->cmds = ft_calloc(shell->pipe_count + 1, sizeof(t_cmd));
 	create_cmd_lists(&shell->cmds[cmd]);
-	current_item = shell->tokens->head;
-	while (current_item)
+	c_item = shell->tokens->head;
+	while (c_item)
 	{
-		current_token = current_item->data;
-		if (is_redir(current_token->type))
+		c_token = c_item->data;
+		if (is_redir(c_token->type))
 		{
-			next_item = current_item->next;
-			next_token = next_item->data;
-			if (next_token->type == id_space)
-			{
-				next_item = next_item->next;
-				next_token = next_item->data;
-			}
-			list_insert_tail(shell->cmds[cmd].redirs, clone_rdrs(*current_token, *next_token));
-			current_item = next_item->next;
+			c_item = manage_redirs(shell, c_item, cmd);
 			continue ;
 		}
-		if (is_quoted(current_token->type)
-			|| current_token->type == id_string
-			|| current_token->type == id_space)
-			list_insert_tail(shell->cmds[cmd].args, copy_token(current_token));
-		if (current_token->type == id_pipe)
-			create_cmd_lists(&shell->cmds[++cmd]);
-		current_item = current_item->next;
+		if (is_quoted(c_token->type) || c_token->type == id_string
+			|| c_token->type == id_space)
+			list_insert_tail(shell->cmds[cmd].args, copy_token(c_token));
+		if (c_token->type == id_pipe && ++cmd)
+			create_cmd_lists(&shell->cmds[cmd]);
+		c_item = c_item->next;
 	}
 	return (true);
 }

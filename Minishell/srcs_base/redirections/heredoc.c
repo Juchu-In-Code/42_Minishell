@@ -32,7 +32,7 @@ static void	write_heredoc(int fd, char *delimiter, bool quotes, t_shell *shell)
 
 	while (1337)
 	{
-		input = readline("> ");
+		input = readline(ANS_U"> "ANS_RES);
 		if (!input || ft_strcmp(input, delimiter) == 0)
 		{
 			if (input)

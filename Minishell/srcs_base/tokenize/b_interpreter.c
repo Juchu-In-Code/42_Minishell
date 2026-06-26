@@ -36,6 +36,18 @@ bool	verify_token(t_tokt t, int *context)
 	return (true);
 }
 
+static bool	syntax_error_handler(t_shell *shell, char *input, t_tok *token)
+{
+	printf(ANS_Y"\nMinishell:\n"ANS_RES);
+	put_debug_indicator(input, token->pos, token->size);
+	if (token->type != id_fin)
+		printf(ANS_R" Unexpected token found, syntax error\n"ANS_RES);
+	else
+		printf(ANS_R"^ Unexpected end of line, syntax error\n"ANS_RES);
+	shell->last_exit_code = 2;
+	return (false);
+}
+
 bool	token_syntax_checker(t_shell *shell, t_list *token_list, char *input)
 {
 	t_item	*current;
@@ -54,19 +66,10 @@ bool	token_syntax_checker(t_shell *shell, t_list *token_list, char *input)
 			token = current->data;
 		}
 		if (token->type == id_err_tok || !verify_token(token->type, &context))
-		{
-			printf("\nMinishell:\n");
-			put_debug_indicator(input, token->pos, token->size);
-			if (token->type != id_fin)
-				printf(ANS_R" Unexpected token found, syntax error\n"ANS_RES);
-			else
-				printf(ANS_R"^ Unexpected end of line, syntax error\n"ANS_RES);
-			shell->last_exit_code = 2;
-			return(false);
-		}
+			return (syntax_error_handler(shell, input, token));
 		if (token->type == id_pipe)
 			shell->pipe_count++;
 		current = current->next;
 	}
-	return(true);
+	return (true);
 }

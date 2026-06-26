@@ -13,7 +13,6 @@
 
 int	ft_exit(int ac, char **av, t_shell *shell)
 {
-	ft_fprintf(1, "exit\n");
 	if (ac == 1)
 	{
 		shell->is_active = false;
@@ -21,14 +20,14 @@ int	ft_exit(int ac, char **av, t_shell *shell)
 	}
 	if (ft_is_str_numeric(av[1]) == false)
 	{
-		ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
+		ft_fprintf(2, E_MS" exit: %s: numeric argument required\n",
 			av[1]);
 		shell->is_active = false;
 		return (2);
 	}
 	if (ac > 2)
 	{
-		ft_fprintf(2, "minishell: exit: too many arguments\n");
+		ft_fprintf(2, E_MS" exit: too many arguments\n");
 		return (1);
 	}
 	shell->is_active = false;
