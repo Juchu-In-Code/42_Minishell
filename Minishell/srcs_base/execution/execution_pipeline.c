@@ -6,11 +6,10 @@
 /*   By: viaremko <viaremko@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 14:06:12 by viaremko          #+#    #+#             */
-/*   Updated: 2026/06/26 10:44:19 by viaremko         ###   ########.fr       */
+/*   Updated: 2026/06/26 11:34:22 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../z_minishell.h"
-
 char *expand_token(t_tok *tok, char *raw_input, t_shell *shell)
 {
 	char *str;
@@ -48,7 +47,6 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 	while(curr != NULL)
 	{
 		tok = (t_tok*)curr->data;
-
 		if (tok->type == id_space)
 		{
 			if (cmd->final_args[i] != NULL)
@@ -60,9 +58,7 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 			if (!part)
 				part = ft_strdup("");
 			if (cmd->final_args[i] == NULL)
-			{
 				cmd->final_args[i] = part;
-			}
 			else
 			{
 				temp = cmd->final_args[i];
@@ -79,7 +75,7 @@ static void    fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell)
 }
 
 
-int    count_cmds_args(t_list *args)
+static	int    count_cmds_args(t_list *args)
 {
 	t_item	*curr;
 	t_tok	*tok;
@@ -88,15 +84,12 @@ int    count_cmds_args(t_list *args)
 
 	if (!args || !args->head)
 		return (0);
-
 	count = 0;
 	has_content = false;
 	curr = args->head;
-
 	while (curr != NULL)
 	{
 		tok = (t_tok *)curr->data;
-
 		if (tok->type == id_space)
 		{
 			if (has_content == true)
@@ -107,13 +100,10 @@ int    count_cmds_args(t_list *args)
 		}
 		else
 			has_content = true;
-
 		curr = curr->next;
 	}
-
 	if (has_content == true)
 		count++;
-
 	return (count);
 }
 
@@ -163,23 +153,22 @@ static void    fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell)
 	close(fd_tty);
 }
 
-void    execution_pipeline(t_shell *shell, char *input)
+static	void handle_argv(t_shell *shell, char *input)
 {
-	int     prev_read;
-	int     i;
-	pid_t   last_pid;
-	pid_t   pid;
-	int status;
-
+	int i;
+	
 	i = -1;
-	prev_read = -1;
-	last_pid = -1;
-
 	while(++i <= shell->pipe_count)
 	{
 		shell->cmds[i].ac = count_cmds_args(shell->cmds[i].args);
 		fill_cmds_argv(&shell->cmds[i],input, shell);
 	}
+}
+
+static	bool	handle_redirs(t_shell *shell, char *input)
+{
+	int i;
+
 	i=-1;
 	while(++i <= shell->pipe_count)
 	{
@@ -187,13 +176,23 @@ void    execution_pipeline(t_shell *shell, char *input)
 		if(g_sigexit == 130)
 		{
 			heredoc_cleanup(shell);
-			return;
+			return false;
 		}
 	}
+	return true;
+}
+
+static pid_t	handle_execution(t_shell *shell)
+{
+	pid_t last_pid;
+	int prev_read;
+	int	i;
 	i = -1;
+	prev_read = -1;
+
 	while(++i <= shell->pipe_count)
 	{
-		if((!shell->cmds[i].final_args || !shell->cmds[i].final_args[0]) &&(!shell->cmds[i].redirs || !shell->cmds[i].redirs->head))
+		if((!shell->cmds[i].final_args || !shell->cmds[i].final_args[0]) && (!shell->cmds[i].redirs || !shell->cmds[i].redirs->head))
 		{
 			if (prev_read != -1)
 			{
@@ -202,9 +201,16 @@ void    execution_pipeline(t_shell *shell, char *input)
 			}
 			continue; 
 		}
-		pid = execute(&shell->cmds[i], shell, &prev_read, i);
-		last_pid = pid;
+		last_pid = execute(&shell->cmds[i], shell, &prev_read, i);
 	}
+	return	last_pid;
+}
+
+static	void handle_exit_status(t_shell *shell, pid_t last_pid)
+{
+	int status;
+	int i;
+
 	if(last_pid != -1)
 	{
 		waitpid(last_pid, &status, 0);
@@ -219,6 +225,17 @@ void    execution_pipeline(t_shell *shell, char *input)
 	i = -1;
 	while(++i < shell->pipe_count)
 		wait(NULL);
-	heredoc_cleanup(shell);
 }
 
+void    execution_pipeline(t_shell *shell, char *input)
+{
+	pid_t   last_pid;
+	last_pid = -1;
+
+	handle_argv(shell, input);
+	if(!handle_redirs(shell, input))
+		return;
+	last_pid = handle_execution(shell);
+	handle_exit_status(shell, last_pid);
+	heredoc_cleanup(shell);
+}

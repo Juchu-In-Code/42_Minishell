@@ -6,7 +6,7 @@
 /*   By: viaremko <viaremko@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 14:06:12 by viaremko          #+#    #+#             */
-/*   Updated: 2026/06/26 10:49:36 by viaremko         ###   ########.fr       */
+/*   Updated: 2026/06/26 11:56:55 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../z_minishell.h"
@@ -74,8 +74,8 @@ static	void	child_process(t_shell *shell, int *prev_read_fd, int *fd, int i)
 		path = get_line_to_exec(shell->cmds[i].final_args[0], shell->env);
 		if(!path)
 		{
-			child_cleanup(shell);
-			error_exit(shell->cmds[i].final_args[0], "command not found\n", 127);
+			ft_fprintf(2, "minishell: %s, command not found\n", shell->cmds[i].final_args[0]);
+			cleanup_exit(shell, 127);
 		}
 		env = env_list_to_ptr(shell->env);
 		execve(path, shell->cmds[i].final_args, env);
