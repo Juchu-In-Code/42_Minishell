@@ -6,7 +6,7 @@
 /*   By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:11:35 by jgalizio          #+#    #+#             */
-/*   Updated: 2026/06/25 13:30:47 by viaremko         ###   ########.fr       */
+/*   Updated: 2026/06/26 10:46:00 by viaremko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ void    sig_interactive(int sig);
 //execution
 char	*get_line_to_exec(char *key, t_list *env);
 void	execution_pipeline(t_shell *shell, char *input);
+pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i);
 
 //expansion
 char	*expand(char *str, t_shell *shell);
@@ -259,5 +260,7 @@ void	free_env_entry(void *env_entry);
 void	heredoc_cleanup(t_shell *shell);
 void	free_cmds(t_shell *shell);
 void	child_cleanup(t_shell *shell);
+void	cleanup_exit(t_shell *shell, int status);
+void	child_error_cleaner(t_shell *shell, char **env, char *path, int i);
 
 #endif

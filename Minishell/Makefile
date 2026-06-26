@@ -6,7 +6,7 @@
 #    By: jgalizio <jgalizio@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 17:53:37 by jgalizio          #+#    #+#              #
-#    Updated: 2026/06/25 13:12:41 by viaremko         ###   ########.fr        #
+#    Updated: 2026/06/26 10:48:00 by viaremko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -102,7 +102,9 @@ BASE_SRCS		+= $(addprefix $(BASE_DIR_UTILS)/,	\
 BASE_DIR_EXEC = $(BASE_DIR)/execution
 BASE_SRCS		+= $(addprefix $(BASE_DIR_EXEC)/, 		\
 				get_line_to_exec.c 		\
+				execution_pipeline.c\
 				execute.c			\
+				e_execute.c  \
 				)
 BASE_DIR_EXPA = $(BASE_DIR)/expansion
 BASE_SRCS		+= $(addprefix $(BASE_DIR_EXPA)/, 		\
