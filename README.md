@@ -52,7 +52,6 @@ To verify and debug the lexical analyzer, `minishell` includes a custom debug mo
 <p align="center">
   <img src="assets/terminal-debug.gif" alt="Terminal Screenshot: Token Debugger Output" width="100%">
 </p>
----
 
 ## Signal Management
 
