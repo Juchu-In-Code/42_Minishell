@@ -15,9 +15,9 @@
 void	child_error_cleaner(t_shell *shell, char **env, char *path, int i)
 {
 	perror(shell->cmds[i].final_args[0]);
-	ft_free_matrix((void**)env);
+	ft_free_matrix((void **)env);
 	child_cleanup(shell);
-	ft_free((void**)&path);
+	ft_free((void **)&path);
 	exit(126);
 }
 
@@ -26,4 +26,3 @@ void	cleanup_exit(t_shell *shell, int status)
 	child_cleanup(shell);
 	exit(status);
 }
-

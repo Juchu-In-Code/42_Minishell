@@ -78,12 +78,12 @@
 # define T_QSIN		1
 
 //	Text and Errors
-# define MS			"Minishell: "
-# define E_MS		"ANS_R \"Minishell: \" ANS_RES"
+# define E_MS		"Minishell: "
 
 # define E_DEBUG	"Incorrect argument passed, use -D for debug mode.\n"
 # define E_ENV		"A correct set of environment variables must be provided.\n"
 # define E_ARG		"Too many arguments passed\n"
+# define E_CMD		"Command not found\n"
 
 /*  ____        __ _                  */
 /* |  _ \  ___ / _(_)_ __   ___  ___  */
@@ -206,18 +206,19 @@ bool	ft_readline(t_shell *shell, char **buff);
 void	set_signal_parent(void);
 void	set_signal_child(void);
 void	set_signal_heredoc(void);
-void 	set_signal_interactive(void);
-void    set_signal(int signal, void (*sig_instruction)(int));
-void    sig_heredoc(int sig);
-void    sig_interactive(int sig);
-
-
-
+void	set_signal_interactive(void);
+void	set_signal(int signal, void (*sig_instruction)(int));
+void	sig_heredoc(int sig);
+void	sig_interactive(int sig);
 
 //execution
 char	*get_line_to_exec(char *key, t_list *env);
 void	execution_pipeline(t_shell *shell, char *input);
-pid_t   execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i);
+pid_t	execute(t_cmd *cmd, t_shell *shell, int *prev_read_fd, int i);
+void	fill_cmds_argv(t_cmd *cmd, char *raw_input, t_shell *shell);
+int		count_cmds_args(t_list *args);
+void	fill_cmds_redirs(t_cmd *cmd, char *raw_input, t_shell *shell);
+char	*expand_token(t_tok *tok, char *raw_input, t_shell *shell);
 
 //expansion
 char	*expand(char *str, t_shell *shell);
@@ -228,19 +229,18 @@ char	*process_heredoc(char *delimiter, bool has_quotes, t_shell *shell);
 
 // builtins
 bool	is_builtin(char **av);
-int	exec_builtin(int ac, char **av, t_shell *shell);
-int		ft_pwd(int ac, char **av, t_shell* shell);
-int		ft_echo(int ac, char **av, t_shell* shell);
-int		ft_export(int ac, char **av, t_shell* shell);
-void		entry_helper(int state, t_env *entry, char **data);
-int		ft_cd(int ac, char **av, t_shell* shell);
-int		ft_exit(int ac, char **av, t_shell* shell);
-int		ft_env(int ac, char **av, t_shell* shell);
-int 	ft_unset(int ac, char **av, t_shell *shell);
+int		exec_builtin(int ac, char **av, t_shell *shell);
+int		ft_pwd(int ac, char **av, t_shell *shell);
+int		ft_echo(int ac, char **av, t_shell *shell);
+int		ft_export(int ac, char **av, t_shell *shell);
+void	entry_helper(int state, t_env *entry, char **data);
+int		ft_cd(int ac, char **av, t_shell *shell);
+int		ft_exit(int ac, char **av, t_shell *shell);
+int		ft_env(int ac, char **av, t_shell *shell);
+int		ft_unset(int ac, char **av, t_shell *shell);
 
 // tokenize
 bool	tokenize(t_shell *shell, char *input);
-void	__debug_tokens(t_list *token_list, char *input);
 void	debug_tokens(t_list *token_list, char *input);
 bool	token_syntax_checker(t_shell *shell, t_list *token_list, char *input);
 bool	assemble_cmds(t_shell *shell);
