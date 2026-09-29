@@ -5,7 +5,6 @@ A lightweight, POSIX-inspired UNIX command-line interpreter built entirely from 
 
 [![Language](https://img.shields.io/badge/Language-C-blue.svg)](https://en.wikipedia.org/wiki/C_(programming_language))
 [![Platform](https://img.shields.io/badge/Platform-UNIX%20%2F%20Linux-lightgrey.svg)](https://www.linux.org/)
-[![Standard](https://img.shields.io/badge/Standard-POSIX.1-orange.svg)](https://pubs.opengroup.org/onlinepubs/9699919799/)
 [![Status](https://img.shields.io/badge/Status-Completed-success.svg)]()
 
 </div>
@@ -19,7 +18,6 @@ A lightweight, POSIX-inspired UNIX command-line interpreter built entirely from 
 ---
 
 ## Technical Features
-
 ### 1. Command Execution & Process Management
 * **Interactive REPL:** Continuous Read-Eval-Print Loop featuring active command history.
 * **Binary Resolution:** Dynamic executable resolution via the `PATH` environment variable, alongside absolute and relative path execution.
@@ -66,7 +64,7 @@ Custom asynchronous signal handlers ensure stability and responsiveness during e
 ---
 
 ## Technical Competencies Demonstrated
-
+* **Modular Code Architecture:** Built upon a robust, custom standard C library (**libft**), recycling modular memory utilities, linked lists, and string-parsing functions written from scratch.
 * **System Calls:** Deep integration with low-level UNIX system calls for file descriptor management and process control.
 * **Memory Management:** Rigorous tracking and clearing of heap allocations to prevent memory leaks and segmentation faults during string manipulation.
 * **Data Structures:** Efficient management of environment variables, abstract syntax trees, and command tokens in C.
